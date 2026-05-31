@@ -1,8 +1,23 @@
-# ALSO — clickable prototype
+# Chorus — v0 clickable prototype
 
-Pixel-faithful rebuild of the 6 ALSO screens, fully wired for click-through, branded with
-the ALSO woven-coil logo and the "Industrial Logistics" design system, and structured to
-import into Figma. The part viewer is a **real-time 3D CAD model** (Three.js).
+Pixel-faithful rebuild of the 6 Chorus screens, fully wired for click-through, branded with
+the Chorus coil logo and the "Industrial Logistics" design system, and structured to
+import into Figma. The part viewer is a **real-time 3D CAD model** (Three.js). Chorus is the
+product; **ALSO** is the example customer account (Mathieu Kury, `mkury@also.com`).
+
+## Preview
+
+**Part detail — real-time 3D CAD viewer**
+
+![Part detail with live 3D CAD viewer](screenshots/part-detail.png)
+
+**Parts list — thumbnails are rendered 3D CAD models**
+
+![Parts list](screenshots/parts.png)
+
+| Login | Supplier portal | Quote submission |
+|---|---|---|
+| ![Login](screenshots/login.png) | ![Supplier portal](screenshots/supplier.png) | ![Quote submission](screenshots/quote.png) |
 
 ## Screens
 | # | File | Screen |
