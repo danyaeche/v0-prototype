@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Chorus · Top tube assembly</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+<style>
+  .detail { padding: 22px 26px; max-width: 1120px; margin: 0 auto; }
+  .crumbs { display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 13px; margin-bottom: 16px; }
+  .crumbs a:hover { color: var(--ink); }
+  .crumbs .sep { color: var(--muted-2); }
+  .detail-head { display: flex; align-items: flex-start; justify-content: space-between; }
+  .detail-head h1 { font-size: 22px; margin: 0 0 4px; display: flex; align-items: center; gap: 10px; }
+  .detail-head .sub { color: var(--muted); font-size: 13px; }
+  .specs { display: flex; gap: 56px; margin: 18px 0 20px; }
+  .specs .k { font-size: 11px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); margin-bottom: 3px; }
+  .specs .v { font-size: 14px; font-weight: 500; }
+  .grid3 { display: grid; grid-template-columns: 220px 1fr 300px; gap: 16px; align-items: start; }
+  .col-card { background:#fff; border:1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); }
+  .col-card h3 { font-size: 13px; font-weight: 600; padding: 14px 16px; margin: 0; border-bottom: 1px solid var(--line-2); }
+  .rev { padding: 11px 16px; border-bottom: 1px solid var(--line-2); cursor: pointer; }
+  .rev:hover { background:#fafbfb; }
+  .rev .t { display:flex; align-items:center; gap:8px; font-size:13.5px; font-weight:500; }
+  .rev .d { font-size:12px; color: var(--muted); margin-top:2px; }
+  .rev.dim .t { color: var(--muted-2); font-weight:450; }
+  .rev-foot { padding: 11px 16px; }
+  .rev-foot a { color: var(--green); font-size: 13px; font-weight: 500; }
+  .viewer { aspect-ratio: 16/11; background: radial-gradient(120% 120% at 50% 20%, #fbfcfc 0%, #eef1f1 55%, #e2e6e6 100%); border:1px solid var(--line); border-radius: var(--radius); position: relative; overflow: hidden; }
+  .cad-host { position:absolute; inset:0; cursor: grab; }
+  .cad-host:active { cursor: grabbing; }
+  .cad-host canvas { display:block; }
+  .cad-hint { position:absolute; top:12px; left:14px; font-size:11px; color:var(--muted); background:rgba(255,255,255,.6); padding:3px 8px; border-radius:999px; pointer-events:none; max-width:60%; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .cad-load { position:absolute; top:11px; right:12px; display:inline-flex; align-items:center; gap:6px; font-size:11.5px; font-weight:500; color:var(--ink); background:#fff; border:1px solid var(--line); padding:5px 10px; border-radius:999px; cursor:pointer; box-shadow:var(--shadow); }
+  .cad-load:hover { background:#f6f6f6; }
+  .cad-host.drag { outline:2px dashed var(--green); outline-offset:-8px; background:rgba(0,149,113,.04); }
+  .viewer .tools { position:absolute; bottom:12px; left:50%; transform:translateX(-50%); display:flex; gap:4px; background:#fff; border:1px solid var(--line); border-radius:8px; padding:5px; box-shadow: var(--shadow); }
+  .viewer .tools button { width:30px; height:30px; border:0; background:transparent; border-radius:6px; display:grid; place-items:center; }
+  .viewer .tools button:hover { background:#f1f3f3; }
+  .cmt { padding: 13px 16px; border-bottom: 1px solid var(--line-2); }
+  .cmt .top { display:flex; align-items:center; gap:8px; }
+  .cmt .av { width:24px; height:24px; border-radius:6px; background:#cdd6d2; color:#3f4a47; display:grid; place-items:center; font-size:10px; font-weight:600; flex:none; }
+  .cmt .nm { font-size:12.5px; font-weight:600; }
+  .cmt .tm { font-size:11px; color: var(--muted); }
+  .cmt .body { font-size:13px; color: var(--ink-2); margin: 7px 0 0 32px; }
+  .quote-bar { display:flex; align-items:center; justify-content:space-between; margin-top:16px; background:#fff; border:1px solid var(--line); border-radius: var(--radius); padding:16px 18px; box-shadow: var(--shadow); }
+  .quote-bar .amt { font-size:22px; font-weight:600; }
+  .menu-btn { width:38px; }
+</style>
+</head>
+<body>
+<div class="main" style="padding:0">
+  <div class="detail">
+    <div class="crumbs"><a href="parts.html">Parts</a><span class="sep">/</span><span style="color:var(--ink);font-weight:500">Top tube assembly (TM-4-1001)</span>
+      <span style="margin-left:auto;display:flex;gap:10px">
+        <a class="btn btn--sm" href="part-detail.html">New revision</a>
+        <a class="btn btn--sm menu-btn" href="#">⋯</a>
+      </span>
+    </div>
+
+    <div class="detail-head">
+      <div>
+        <h1>Top tube assembly <span class="badge badge--green">Current</span></h1>
+        <div class="sub">TM-4-1001</div>
+      </div>
+    </div>
+
+    <div class="specs">
+      <div><div class="k">Category</div><div class="v">Frame</div></div>
+      <div><div class="k">Material</div><div class="v">6061-T6 Aluminum</div></div>
+      <div><div class="k">Updated</div><div class="v">May 16, 2025</div></div>
+    </div>
+
+    <div class="grid3">
+      <!-- Revisions -->
+      <div class="col-card">
+        <h3>Revisions</h3>
+        <div class="rev"><div class="t">Rev 3 <span class="badge badge--green">Current</span></div><div class="d">May 16, 2025</div></div>
+        <div class="rev dim"><div class="t">Rev 2</div><div class="d">May 13, 2025</div></div>
+        <div class="rev dim"><div class="t">Rev 1</div><div class="d">Apr 25, 2025</div></div>
+        <div class="rev dim"><div class="t">Rev 0</div><div class="d">Apr 8, 2025</div></div>
+        <div class="rev-foot"><a href="#">View all revisions</a></div>
+      </div>
+
+      <!-- Viewer (real-time 3D) -->
+      <div class="viewer">
+        <div id="cadHost" class="cad-host"></div>
+        <div class="cad-hint">Loading model…</div>
+        <label class="cad-load" title="Load a CAD file (.stl, .glb, .gltf, .obj)">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M12 16V4m0 0L7 9m5-5 5 5M5 20h14" stroke="#1c1c1c" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Load CAD
+          <input id="cadFile" type="file" accept=".stl,.glb,.gltf,.obj" hidden />
+        </label>
+        <div class="tools">
+          <button id="cadZoomIn" title="Zoom in"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="6" stroke="#3f4a47" stroke-width="1.6"/><path d="M11 8v6M8 11h6M20 20l-4-4" stroke="#3f4a47" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+          <button id="cadFit" title="Fit"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" stroke="#3f4a47" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+          <button id="cadZoomOut" title="Zoom out"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="6" stroke="#3f4a47" stroke-width="1.6"/><path d="M8 11h6M20 20l-4-4" stroke="#3f4a47" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+          <button id="cadSpin" title="Toggle auto-rotate"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12a7 7 0 1 1 2 5" stroke="#3f4a47" stroke-width="1.6" stroke-linecap="round"/><path d="M7 13v4H3" stroke="#3f4a47" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+          <button id="cadReset" title="Reset view"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="#3f4a47" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+          <button id="cadGrid" title="Toggle grid"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="4" y="4" width="16" height="16" rx="2" stroke="#3f4a47" stroke-width="1.6"/><path d="M4 10h16M4 15h16M10 4v16M15 4v16" stroke="#3f4a47" stroke-width="1.2"/></svg></button>
+        </div>
+      </div>
+
+      <!-- Comments -->
+      <div class="col-card">
+        <h3>Comments</h3>
+        <div class="cmt">
+          <div class="top"><span class="av">MK</span><span class="nm">Mathieu Kury</span><span class="tm">May 16, 10:22 AM</span></div>
+          <div class="body">Updated for tolerances</div>
+        </div>
+        <div class="cmt">
+          <div class="top"><span class="av">BC</span><span class="nm">Benjamin Chen</span><span class="tm">May 15, 4:09 PM</span></div>
+          <div class="body">Rev 3 looks good — sent to supplier for new quotes.</div>
+        </div>
+        <div class="cmt">
+          <div class="top"><span class="av">TS</span><span class="nm">Thomas Sullivan</span><span class="tm">May 15, 9:15 AM</span></div>
+          <div class="body">Added FEA result references.</div>
+        </div>
+        <div class="rev-foot"><a href="#">View all comments</a></div>
+      </div>
+    </div>
+
+    <!-- Quote summary -->
+    <div class="quote-bar">
+      <div>
+        <div style="font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);margin-bottom:4px">Quote summary</div>
+        <div style="display:flex;align-items:baseline;gap:10px"><span class="amt">$4,742.30</span><span class="muted fs-13">3 quotes</span></div>
+        <div class="muted fs-12" style="margin-top:3px">Updated May 16 · Received May 15, 2025</div>
+      </div>
+      <div style="display:flex;gap:10px">
+        <a class="btn" href="quote-submission.html">View quotes</a>
+        <a class="btn btn--primary" href="quote-submission.html">Request quote</a>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="cadstore.js"></script>
+<script type="importmap">
+{
+  "imports": {
+    "three": "./vendor/three/build/three.module.js",
+    "three/addons/": "./vendor/three/addons/"
+  }
+}
+</script>
+<script type="module">
+  import * as THREE from 'three';
+  import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+  import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+  import { STLLoader } from 'three/addons/loaders/STLLoader.js';
+  import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+  import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
+
+  const host = document.getElementById('cadHost');
+
+  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setSize(host.clientWidth, host.clientHeight);
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.05;
+  host.appendChild(renderer.domElement);
+
+  const scene = new THREE.Scene();
+
+  // Image-based lighting for realistic metal reflections
+  const pmrem = new THREE.PMREMGenerator(renderer);
+  scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+
+  const camera = new THREE.PerspectiveCamera(35, host.clientWidth / host.clientHeight, 0.1, 100);
+  const HOME = new THREE.Vector3(3.4, 2.2, 4.4);
+  camera.position.copy(HOME);
+
+  const controls = new OrbitControls(camera, renderer.domElement);
+  controls.enableDamping = true;
+  controls.dampingFactor = 0.08;
+  controls.enablePan = false;
+  controls.minDistance = 3;
+  controls.maxDistance = 14;
+  controls.autoRotate = true;
+  controls.autoRotateSpeed = 1.1;
+
+  // Lights (complement the environment map)
+  scene.add(new THREE.AmbientLight(0xffffff, 0.25));
+  const key = new THREE.DirectionalLight(0xffffff, 1.6);
+  key.position.set(4, 6, 5);
+  scene.add(key);
+  const rim = new THREE.DirectionalLight(0xffffff, 0.6);
+  rim.position.set(-5, 2, -4);
+  scene.add(rim);
+
+  // ---- Machined-aluminium material + model holder ----
+  const alu = new THREE.MeshStandardMaterial({ color: 0xc2c8c5, metalness: 0.96, roughness: 0.33 });
+  const holder = new THREE.Group();
+  holder.rotation.x = 0.18;
+  scene.add(holder);
+  const hint = document.querySelector('.cad-hint');
+
+  // Normalise any loaded model to a consistent size and centre it at the origin
+  function showModel(obj, applyAlu) {
+    if (applyAlu) obj.traverse(o => { if (o.isMesh) o.material = alu; });
+    const box = new THREE.Box3().setFromObject(obj);
+    const c = box.getCenter(new THREE.Vector3());
+    const r = box.getBoundingSphere(new THREE.Sphere()).radius || 1;
+    obj.position.sub(c);
+    const wrap = new THREE.Group();
+    wrap.add(obj);
+    wrap.scale.setScalar(2.4 / r);
+    holder.clear();
+    holder.add(wrap);
+    resetView();
+  }
+  function showGeometry(geom) {
+    geom.computeVertexNormals();
+    showModel(new THREE.Mesh(geom, alu), false);
+  }
+
+  // Fallback procedural part if the file can't be fetched
+  function buildProcedural() {
+    const g = new THREE.Group();
+    const cyl = (len, r, rx, ry, rz, x, y, z) => {
+      const m = new THREE.Mesh(new THREE.CylinderGeometry(r, r, len, 48), alu);
+      m.rotation.set(rx, ry, rz); m.position.set(x, y, z); g.add(m);
+    };
+    cyl(3.4, 0.52, 0, 0, Math.PI / 2, 0, 0, 0);
+    cyl(0.5, 0.74, 0, 0, Math.PI / 2, -1.7, 0, 0);
+    cyl(0.5, 0.74, 0, 0, Math.PI / 2, 1.7, 0, 0);
+    cyl(1.9, 0.42, 0, 0, -Math.PI / 7, 1.7, 0.95, 0);
+    return g;
+  }
+
+  // ---- Parse a buffer/string by file extension and show it ----
+  function parseAndShow(ext, data) {
+    if (ext === 'stl') showGeometry(new STLLoader().parse(data));
+    else if (ext === 'obj') showModel(new OBJLoader().parse(data), true);
+    else if (ext === 'glb' || ext === 'gltf') new GLTFLoader().parse(data, '', g => showModel(g.scene, false));
+    else throw new Error('Unsupported .' + ext);
+  }
+
+  // ---- Default: the sample STL shipped on disk (procedural fallback) ----
+  function loadDefault() {
+    new STLLoader().load(
+      'models/top-tube-assembly.stl',
+      geom => { showGeometry(geom); hint.textContent = 'top-tube-assembly.stl · drag a CAD file to replace'; },
+      undefined,
+      () => { showModel(buildProcedural(), false); hint.textContent = 'Drag to orbit · scroll to zoom'; }
+    );
+  }
+
+  // ---- A file handed off from the Parts "Upload CAD" button (via IndexedDB) ----
+  (window.CadStore ? CadStore.takeCad() : Promise.resolve(null))
+    .then(rec => {
+      if (rec && rec.blob) {
+        const ext = rec.name.split('.').pop().toLowerCase();
+        const data = ext === 'obj' ? rec.blob.text() : rec.blob.arrayBuffer();
+        return data.then(d => { parseAndShow(ext, d); hint.textContent = rec.name; });
+      }
+      loadDefault();
+    })
+    .catch(() => loadDefault());
+
+  // ---- Load a user's own CAD file (drag-drop or picker) ----
+  function loadFile(file) {
+    const ext = file.name.split('.').pop().toLowerCase();
+    const reader = new FileReader();
+    reader.onload = () => {
+      try { parseAndShow(ext, reader.result); hint.textContent = file.name; }
+      catch (e) { hint.textContent = 'Could not load ' + file.name; }
+    };
+    if (ext === 'obj') reader.readAsText(file); else reader.readAsArrayBuffer(file);
+  }
+  const hostEl = host;
+  ['dragenter', 'dragover'].forEach(ev => hostEl.addEventListener(ev, e => { e.preventDefault(); hostEl.classList.add('drag'); }));
+  ['dragleave', 'drop'].forEach(ev => hostEl.addEventListener(ev, e => { e.preventDefault(); hostEl.classList.remove('drag'); }));
+  hostEl.addEventListener('drop', e => { const f = e.dataTransfer.files[0]; if (f) loadFile(f); });
+  document.getElementById('cadFile').addEventListener('change', e => { const f = e.target.files[0]; if (f) loadFile(f); });
+
+  // toggleable grid
+  const grid = new THREE.GridHelper(12, 24, 0xbcbfbf, 0xd6d9d9);
+  grid.position.y = -1.4; grid.visible = false; scene.add(grid);
+
+  // ---- Toolbar wiring ----
+  const dolly = f => { camera.position.sub(controls.target).multiplyScalar(f).add(controls.target); };
+  document.getElementById('cadZoomIn').onclick  = () => dolly(0.86);
+  document.getElementById('cadZoomOut').onclick = () => dolly(1.16);
+  document.getElementById('cadSpin').onclick    = () => { controls.autoRotate = !controls.autoRotate; };
+  document.getElementById('cadGrid').onclick    = () => { grid.visible = !grid.visible; };
+  const resetView = () => { camera.position.copy(HOME); controls.target.set(0, 0, 0); controls.update(); };
+  document.getElementById('cadFit').onclick   = resetView;
+  document.getElementById('cadReset').onclick = resetView;
+
+  // ---- Resize ----
+  new ResizeObserver(() => {
+    const w = host.clientWidth, h = host.clientHeight;
+    if (!w || !h) return;
+    camera.aspect = w / h; camera.updateProjectionMatrix();
+    renderer.setSize(w, h);
+  }).observe(host);
+
+  // ---- Render loop ----
+  (function animate() {
+    requestAnimationFrame(animate);
+    controls.update();
+    renderer.render(scene, camera);
+  })();
+</script>
+<script src="switcher.js"></script>
+</body>
+</html>

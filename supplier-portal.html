@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Chorus · Supplier portal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+<style>
+  .portal { min-height: 100vh; display: grid; place-items: start center; padding: 32px 24px; }
+  .portal-card { width: min(820px, 100%); background:#fff; border:1px solid var(--line); border-radius:16px; overflow:hidden; box-shadow: var(--shadow-lg); }
+  .portal-hero { background: var(--panel-dark); color:#fff; padding: 26px 32px 30px; }
+  .portal-hero .topbar { display:flex; align-items:center; justify-content:space-between; }
+  .secure { display:flex; align-items:center; gap:7px; font-size:12.5px; color:#9fbdb2; }
+  .portal-hero .eyebrow { color:#9fbdb2; font-size:14px; margin: 22px 0 6px; }
+  .portal-hero h1 { font-size:28px; letter-spacing:-.02em; margin:0 0 12px; font-weight:600; }
+  .portal-hero .meta { color:#84a99c; font-size:12.5px; }
+  .portal-hero p { color:#bcd2c9; font-size:13.5px; max-width:430px; margin:14px 0 0; line-height:1.55; }
+  .prow { display:flex; align-items:center; gap:16px; padding:16px 32px; border-bottom:1px solid var(--line-2); }
+  .prow:last-of-type { border-bottom:0; }
+  .prow .info { flex:1; min-width:0; }
+  .prow .nm { font-size:14px; font-weight:500; }
+  .prow .id { font-size:12px; color:var(--muted); }
+  .prow .rev { width:90px; font-size:13px; color:var(--ink-2); }
+  .prow .dt { width:70px; font-size:13px; color:var(--muted); }
+  .prow .act { width:170px; display:flex; justify-content:flex-end; }
+  .status-pill { display:inline-flex; align-items:center; gap:7px; font-size:13px; font-weight:500; }
+  .status-pill.green { color: var(--green-600t); }
+  .status-pill.amber { color: var(--amber-600); }
+  .status-pill.red { color: var(--red-600); }
+  .portal-foot { display:flex; gap:24px; padding:16px 32px; border-top:1px solid var(--line); color:var(--muted); font-size:13px; }
+  .portal-foot a { display:flex; align-items:center; gap:7px; }
+  .portal-foot a:hover { color: var(--ink); }
+</style>
+</head>
+<body>
+<div class="portal">
+  <div class="portal-card">
+    <div class="portal-hero">
+      <div class="topbar">
+        <a class="brand brand--light" href="supplier-portal.html">
+          <img src="logo.png" class="mark" alt="Chorus" />
+          chorus
+        </a>
+        <span class="secure"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="9" rx="2" stroke="#9fbdb2" stroke-width="1.6"/><path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="#9fbdb2" stroke-width="1.6"/></svg>Secure portal</span>
+      </div>
+      <div class="eyebrow">You're invited to review the</div>
+      <h1>TM-4 Bike DFM cycle</h1>
+      <div class="meta">Sent by Mathieu Kury · Requested May 16, 2025 (10 days ago)</div>
+      <p>Log in, review parts, submit a quote, and send us your reply, and we'll add you to the review cycle.</p>
+    </div>
+
+    <div class="prow">
+      <div class="info"><div class="nm">Top tube assembly</div><div class="id">TM-4-1001</div></div>
+      <div class="rev">Rev 3 · May 16</div>
+      <div class="act"><a class="btn btn--primary btn--sm" href="quote-submission.html">Review &amp; quote</a></div>
+    </div>
+    <div class="prow">
+      <div class="info"><div class="nm">Seat component - lower</div><div class="id">TM-4-1002</div></div>
+      <div class="rev">Rev 2 · May 15</div>
+      <div class="act"><span class="status-pill green"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="m5 12 5 5 9-11" stroke="#1f7a4d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Quote submitted</span></div>
+    </div>
+    <div class="prow">
+      <div class="info"><div class="nm">Wheel interface - rear</div><div class="id">TM-4-1003</div></div>
+      <div class="rev">Rev 1 · May 14</div>
+      <div class="act"><span class="status-pill amber"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" stroke="#b7791f" stroke-width="1.7"/><path d="M12 8v4l3 2" stroke="#b7791f" stroke-width="1.7" stroke-linecap="round"/></svg>Awaiting decision</span></div>
+    </div>
+    <div class="prow">
+      <div class="info"><div class="nm">Chain mount - hardware</div><div class="id">TM-4-1004</div></div>
+      <div class="rev">Rev 4 · May 13</div>
+      <div class="act"><span class="status-pill red"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 4 3 19h18z" stroke="#c0392b" stroke-width="1.7" stroke-linejoin="round"/><path d="M12 10v4M12 16.5v.5" stroke="#c0392b" stroke-width="1.7" stroke-linecap="round"/></svg>Needs DFM response</span></div>
+    </div>
+
+    <div class="portal-foot">
+      <a href="#"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 12v7h16v-7M12 3v12m0-12 4 4m-4-4-4 4" stroke="#6b7280" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Share</a>
+      <a href="#"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z" stroke="#6b7280" stroke-width="1.6"/><circle cx="12" cy="12" r="2.6" stroke="#6b7280" stroke-width="1.6"/></svg>Preview</a>
+      <a href="#"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><circle cx="9" cy="8" r="3" stroke="#6b7280" stroke-width="1.6"/><path d="M4 19c0-3 2.2-5 5-5s5 2 5 5M16 11h4M18 9v4" stroke="#6b7280" stroke-width="1.6" stroke-linecap="round"/></svg>DFM partners</a>
+    </div>
+  </div>
+</div>
+<script src="switcher.js"></script>
+</body>
+</html>

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Chorus · Parts</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+<style>
+  .tbl .thumb { width: 48px; height: 38px; background: #eef0f0; }
+  .thumb-img { width: 100%; height: 100%; object-fit: contain; display: block; }
+</style>
+</head>
+<body>
+<div class="app">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <a class="brand brand--light" href="parts.html">
+      <img src="logo.png" class="mark" alt="Chorus" />
+      chorus
+    </a>
+    <div class="ws-label">Workspace</div>
+    <div class="ws-switch">TM-4 Bike DFM <span class="chev"></span></div>
+    <nav class="nav">
+      <a href="parts.html"><svg viewBox="0 0 24 24" fill="none"><path d="M4 6h16M4 12h16M4 18h10" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>Overview</a>
+      <a href="parts.html" class="active"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3 4 7.5v9L12 21l8-4.5v-9L12 3Z" stroke="currentColor" stroke-width="1.6"/><path d="M4 7.5 12 12l8-4.5M12 12v9" stroke="currentColor" stroke-width="1.6"/></svg>Parts</a>
+      <a href="part-detail.html"><svg viewBox="0 0 24 24" fill="none"><path d="M6 3h9l4 4v14H6z" stroke="currentColor" stroke-width="1.6"/><path d="M14 3v5h5M9 13h6M9 16h6" stroke="currentColor" stroke-width="1.6"/></svg>DFQs</a>
+      <a href="supplier-portal.html"><svg viewBox="0 0 24 24" fill="none"><circle cx="9" cy="8" r="3" stroke="currentColor" stroke-width="1.6"/><path d="M4 19c0-3 2.2-5 5-5s5 2 5 5M15 11h5M17 8v6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>Suppliers</a>
+      <a href="part-detail.html"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12a8 8 0 1 0 8-8" stroke="currentColor" stroke-width="1.6"/><path d="M12 7v5l3 2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>Activity</a>
+      <a href="parts.html"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.6"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>Settings</a>
+    </nav>
+    <div class="spacer"></div>
+    <div class="user">
+      <div class="avatar">MK</div>
+      <div class="meta"><div class="n">Mathieu Kury</div><div class="e">mkury@also.com</div></div>
+      <span class="chev"></span>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="main">
+    <div class="page-head">
+      <h1>Parts</h1>
+      <div class="page-actions">
+        <a class="btn" href="#">Invite people</a>
+        <label class="btn btn--primary" title="Upload a CAD file (.stl, .glb, .gltf, .obj)">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 16V4m0 0L7 9m5-5 5 5M5 20h14" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Upload CAD
+          <input id="uploadCad" type="file" accept=".stl,.glb,.gltf,.obj" hidden />
+        </label>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <div class="search">
+        <div class="input-group">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="#9aa1a8" stroke-width="1.7"/><path d="m20 20-3.5-3.5" stroke="#9aa1a8" stroke-width="1.7" stroke-linecap="round"/></svg>
+          <input placeholder="Search parts..." />
+        </div>
+      </div>
+      <a class="btn" href="#">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 6h16M7 12h10M10 18h4" stroke="#3f4a47" stroke-width="1.7" stroke-linecap="round"/></svg>
+        Filters
+      </a>
+    </div>
+
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead><tr><th>Part ↑</th><th>Rev.</th><th>Status</th><th style="text-align:right">Updated</th></tr></thead>
+        <tbody>
+          <tr class="clickable" onclick="location.href='part-detail.html'">
+            <td><div class="part-cell"><span class="thumb"><img class="thumb-img" data-model="tube" alt="" /></span><span><span class="pname">Top tube assembly</span><br/><span class="pid">TM-4-1001</span></span></div></td>
+            <td>Rev 3</td><td><span class="badge badge--green">Current</span></td><td style="text-align:right" class="muted">May 16</td>
+          </tr>
+          <tr class="clickable" onclick="location.href='part-detail.html'">
+            <td><div class="part-cell"><span class="thumb"><img class="thumb-img" data-model="saddle" alt="" /></span><span><span class="pname">Seat component - lower</span><br/><span class="pid">TM-4-1002</span></span></div></td>
+            <td>Rev 2</td><td><span class="badge badge--green">Current</span></td><td style="text-align:right" class="muted">May 15</td>
+          </tr>
+          <tr class="clickable" onclick="location.href='part-detail.html'">
+            <td><div class="part-cell"><span class="thumb"><img class="thumb-img" data-model="hub" alt="" /></span><span><span class="pname">Wheel interface - rear</span><br/><span class="pid">TM-4-1003</span></span></div></td>
+            <td>Rev 1</td><td><span class="badge badge--red">Needs quote</span></td><td style="text-align:right" class="muted">May 14</td>
+          </tr>
+          <tr class="clickable" onclick="location.href='part-detail.html'">
+            <td><div class="part-cell"><span class="thumb"><img class="thumb-img" data-model="bracket" alt="" /></span><span><span class="pname">Chain mount - hardware</span><br/><span class="pid">TM-4-1004</span></span></div></td>
+            <td>Rev 4</td><td><span class="badge badge--green">Quoted</span></td><td style="text-align:right" class="muted">May 13</td>
+          </tr>
+          <tr class="clickable" onclick="location.href='part-detail.html'">
+            <td><div class="part-cell"><span class="thumb"><img class="thumb-img" data-model="fork" alt="" /></span><span><span class="pname">Fork exit - deferred end</span><br/><span class="pid">TM-4-1005</span></span></div></td>
+            <td>Rev 2</td><td><span class="badge badge--blue">Pricing</span></td><td style="text-align:right" class="muted">May 12</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="tbl-foot">
+        <div class="pager">
+          <a href="#">‹</a><span class="cur">1</span><a href="#">2</a><a href="#">3</a><a href="#">4</a><span>…</span>
+        </div>
+        <div class="muted fs-13">Showing 1–5 of 24</div>
+      </div>
+    </div>
+  </main>
+</div>
+<script src="cadstore.js"></script>
+<script>
+  // "Upload CAD" → stash the chosen file in IndexedDB, then open it in the 3D viewer.
+  document.getElementById('uploadCad').addEventListener('change', async e => {
+    const file = e.target.files[0];
+    if (!file) return;
+    try {
+      await CadStore.putCad(file.name, file); // stores the Blob directly — no size cap
+      location.href = 'part-detail.html';
+    } catch (err) {
+      alert('Could not store that file for preview.');
+    }
+  });
+</script>
+<script type="importmap">
+{ "imports": { "three": "./vendor/three/build/three.module.js", "three/addons/": "./vendor/three/addons/" } }
+</script>
+<script type="module">
+  // Render each part-list thumbnail as a real 3D metallic CAD model (Three.js → PNG).
+  import * as THREE from 'three';
+  import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+  import { STLLoader } from 'three/addons/loaders/STLLoader.js';
+
+  const SIZE = 192;
+  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, preserveDrawingBuffer: true });
+  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+  renderer.setSize(SIZE, SIZE);
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.05;
+
+  const scene = new THREE.Scene();
+  const pmrem = new THREE.PMREMGenerator(renderer);
+  scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+
+  const camera = new THREE.PerspectiveCamera(34, 1, 0.1, 100);
+  camera.position.set(2.7, 1.9, 3.5); camera.lookAt(0, 0, 0);
+  scene.add(new THREE.AmbientLight(0xffffff, 0.3));
+  const key = new THREE.DirectionalLight(0xffffff, 1.5); key.position.set(3, 5, 4); scene.add(key);
+
+  const alu = new THREE.MeshStandardMaterial({ color: 0xc2c8c5, metalness: 0.95, roughness: 0.34 });
+  const holder = new THREE.Group(); holder.rotation.set(0.2, 0.5, 0); scene.add(holder);
+
+  const cyl = (r, h, seg = 28) => new THREE.Mesh(new THREE.CylinderGeometry(r, r, h, seg), alu);
+
+  const MODELS = {
+    saddle() {
+      const g = new THREE.Group();
+      const top = new THREE.Mesh(new THREE.SphereGeometry(1.2, 40, 20, 0, Math.PI * 2, 0, Math.PI / 2), alu);
+      top.scale.set(1.45, 0.5, 1); g.add(top);
+      const post = cyl(0.22, 1.2); post.position.y = -0.55; g.add(post);
+      return g;
+    },
+    hub() {
+      const g = new THREE.Group();
+      g.add(new THREE.Mesh(new THREE.TorusGeometry(1.15, 0.34, 24, 48), alu));
+      const axle = cyl(0.5, 1.5, 32); axle.rotation.x = Math.PI / 2; g.add(axle);
+      return g;
+    },
+    bracket() {
+      const g = new THREE.Group();
+      g.add(new THREE.Mesh(new THREE.BoxGeometry(2.6, 0.5, 1.5), alu));
+      [-0.8, 0.8].forEach(x => { const b = cyl(0.3, 1.1); b.position.set(x, 0.6, 0); g.add(b); });
+      return g;
+    },
+    fork() {
+      const g = new THREE.Group();
+      const a = cyl(0.38, 2.2); a.position.set(-0.5, -0.2, 0); a.rotation.z = 0.5; g.add(a);
+      const b = cyl(0.38, 2.2); b.position.set(0.5, -0.2, 0); b.rotation.z = -0.5; g.add(b);
+      const j = cyl(0.45, 0.7); j.position.set(0, 1.0, 0); g.add(j);
+      return g;
+    },
+    fallback() { const m = cyl(0.5, 2.6, 32); m.rotation.z = Math.PI / 2; return m; },
+    tube() {
+      return new Promise(res => new STLLoader().load(
+        'models/top-tube-assembly.stl',
+        geo => { geo.computeVertexNormals(); res(new THREE.Mesh(geo, alu)); },
+        undefined, () => res(MODELS.fallback())
+      ));
+    },
+  };
+
+  function fit(obj) {
+    const box = new THREE.Box3().setFromObject(obj);
+    const c = box.getCenter(new THREE.Vector3());
+    const r = box.getBoundingSphere(new THREE.Sphere()).radius || 1;
+    obj.position.sub(c);
+    const wrap = new THREE.Group(); wrap.add(obj); wrap.scale.setScalar(1.75 / r);
+    holder.clear(); holder.add(wrap);
+  }
+
+  (async () => {
+    for (const img of document.querySelectorAll('.thumb-img[data-model]')) {
+      const build = MODELS[img.dataset.model] || MODELS.fallback;
+      try {
+        const obj = await build();
+        fit(obj);
+        renderer.render(scene, camera);
+        img.src = renderer.domElement.toDataURL('image/png');
+      } catch (e) { /* leave blank on failure */ }
+    }
+  })();
+</script>
+<script src="switcher.js"></script>
+</body>
+</html>
