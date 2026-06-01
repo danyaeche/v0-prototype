@@ -8,11 +8,15 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="styles.css" />
 <style>
+  .ov { max-width: 880px; margin: 0 auto; }
+  .ov .stat-grid { margin-bottom: 0; }
+  .sec-label { margin: 28px 0 12px; font-family: "Space Grotesk", sans-serif; font-size: 12px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+  .ov .panel { margin-bottom: 0; }
   .tbl .thumb { width: 48px; height: 38px; background: #eef0f0; }
   .thumb-img { width: 100%; height: 100%; object-fit: contain; display: block; }
-  .cols-2-13, .cols-2 { margin-bottom: 16px; }
   .lrow.clickable { cursor: pointer; }
   .lrow.clickable:hover { background: var(--green-50); }
+  .act-hint { font-size: 13px; color: var(--green); font-weight: 500; white-space: nowrap; }
 </style>
 </head>
 <body>
@@ -20,70 +24,112 @@
   <aside class="sidebar" data-active="overview"></aside>
 
   <main class="main">
-    <div class="page-head">
-      <h1>Overview</h1>
-      <div class="page-actions">
-        <a class="btn" href="suppliers.html">Invite CM</a>
-        <a class="btn btn--primary" href="part-detail.html">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg>
-          New part
-        </a>
+    <div class="ov">
+      <div class="page-head">
+        <h1>Overview</h1>
+        <div class="page-actions">
+          <a class="btn" href="manufacturers.html">Invite manufacturer</a>
+          <a class="btn btn--primary" href="part-detail.html">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg>
+            New part
+          </a>
+        </div>
       </div>
-    </div>
-    <div class="subtitle">ALSO · SimplyOps — TM-4 Bike DFM cycle</div>
+      <div class="subtitle">ALSO · SimplyOps — TM-4 Bike DFM cycle · demo June 12</div>
 
-    <div class="stat-grid">
-      <div class="stat">
-        <div class="k">Open parts</div>
-        <div class="v">5</div>
-        <div class="d">Across TM-4 Bike DFM</div>
+      <!-- HERO STATUS STRIP -->
+      <div class="stat-grid">
+        <div class="stat">
+          <div class="k">Open parts</div>
+          <div class="v">5</div>
+          <div class="d">In this cycle</div>
+        </div>
+        <div class="stat">
+          <div class="k">Awaiting manufacturer</div>
+          <div class="v accent">2</div>
+          <div class="d">Out for quote / pricing</div>
+        </div>
+        <div class="stat">
+          <div class="k">Quotes received</div>
+          <div class="v">3</div>
+          <div class="d">From 4 manufacturers</div>
+        </div>
+        <div class="stat">
+          <div class="k">Days to demo</div>
+          <div class="v">12</div>
+          <div class="d">Build review · June 12</div>
+        </div>
       </div>
-      <div class="stat">
-        <div class="k">Awaiting CM</div>
-        <div class="v accent">2</div>
-        <div class="d">Out for quote / pricing</div>
-      </div>
-      <div class="stat">
-        <div class="k">Quotes received</div>
-        <div class="v">3</div>
-        <div class="d">From 4 contract manufacturers</div>
-      </div>
-      <div class="stat">
-        <div class="k">Days to demo</div>
-        <div class="v">12</div>
-        <div class="d">Build review · June 12</div>
-      </div>
-    </div>
 
-    <div class="cols-2-13">
-      <!-- LEFT: parts needing attention -->
+      <!-- SECTION: Needs your attention -->
+      <div class="sec-label">Needs your attention</div>
       <div class="panel">
         <div class="panel-head">
-          <h2>Parts needing attention</h2>
+          <h2>Needs your attention</h2>
           <a href="parts.html">All parts</a>
         </div>
         <div class="tbl-wrap" style="border:0;box-shadow:none;">
           <table class="tbl">
-            <thead><tr><th>Part</th><th>Rev.</th><th>Status</th><th style="text-align:right">Updated</th></tr></thead>
+            <thead><tr><th>Part</th><th>Rev.</th><th>Status</th><th style="text-align:right">Action</th></tr></thead>
             <tbody>
               <tr class="clickable" onclick="location.href='part-detail.html'">
                 <td><div class="part-cell"><span class="thumb"><img class="thumb-img" data-model="hub" alt="" /></span><span><span class="pname">Wheel interface - rear</span><br/><span class="pid">TM-4-1003</span></span></div></td>
-                <td>Rev 1</td><td><span class="badge badge--red">Needs quote</span></td><td style="text-align:right" class="muted">May 14</td>
+                <td>Rev 1</td><td><span class="badge badge--red">Needs quote</span></td><td style="text-align:right"><span class="act-hint">Request quote →</span></td>
               </tr>
               <tr class="clickable" onclick="location.href='part-detail.html'">
                 <td><div class="part-cell"><span class="thumb"><img class="thumb-img" data-model="fork" alt="" /></span><span><span class="pname">Fork exit - deferred end</span><br/><span class="pid">TM-4-1005</span></span></div></td>
-                <td>Rev 2</td><td><span class="badge badge--blue">Pricing</span></td><td style="text-align:right" class="muted">May 12</td>
+                <td>Rev 2</td><td><span class="badge badge--blue">Pricing</span></td><td style="text-align:right"><span class="act-hint">Review pricing →</span></td>
               </tr>
               <tr class="clickable" onclick="location.href='part-detail.html'">
                 <td><div class="part-cell"><span class="thumb"><img class="thumb-img" data-model="tube" alt="" /></span><span><span class="pname">Top tube assembly</span><br/><span class="pid">TM-4-1001</span></span></div></td>
-                <td>Rev 3</td><td><span class="badge badge--green">New revision</span></td><td style="text-align:right" class="muted">May 16</td>
+                <td>Rev 3</td><td><span class="badge badge--green">New revision</span></td><td style="text-align:right"><span class="act-hint">Send redline →</span></td>
               </tr>
             </tbody>
           </table>
         </div>
       </div>
 
-      <!-- RIGHT: recent activity -->
+      <!-- SECTION: DFM cycle status -->
+      <div class="sec-label">DFM cycle status</div>
+      <div class="panel">
+        <div class="panel-head">
+          <h3>DFM cycle status</h3>
+          <a href="revision-diff.html">Compare Rev 2 ↔ Rev 3</a>
+        </div>
+        <div class="panel-body">
+          <div class="lrow">
+            <div class="grow">
+              <div class="t">Redline round</div>
+              <div class="s">Round 2 of an expected 3 · 5 redlines resolved</div>
+            </div>
+            <span class="tag">Round 2</span>
+          </div>
+          <div class="lrow">
+            <div class="grow">
+              <div class="t">Quotes coverage</div>
+              <div class="s">3 of 5 parts quoted by at least one manufacturer</div>
+            </div>
+            <span class="pill green"><span class="dot"></span>60%</span>
+          </div>
+          <div class="lrow clickable" onclick="location.href='revision-diff.html'">
+            <div class="grow">
+              <div class="t">Open redline — Top tube assembly</div>
+              <div class="s">Rev 2 → Rev 3 · 3 dimension changes awaiting acknowledgement</div>
+            </div>
+            <span class="pill blue"><span class="dot"></span>Compare</span>
+          </div>
+          <div class="lrow">
+            <div class="grow">
+              <div class="t">Audit log</div>
+              <div class="s">Every redline, quote and portal open recorded</div>
+            </div>
+            <a class="btn btn--sm" href="activity.html">View log</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION: Recent activity -->
+      <div class="sec-label">Recent activity</div>
       <div class="panel">
         <div class="panel-head">
           <h3>Recent activity</h3>
@@ -126,82 +172,11 @@
             <div class="tl-item">
               <div class="tl-ic blue"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12a8 8 0 1 0 8-8" stroke="currentColor" stroke-width="1.6"/><path d="M12 7v5l3 2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></div>
               <div class="tl-body">
-                <div class="tl-t">Daily digest sent to <b>3 contract manufacturers</b></div>
+                <div class="tl-t">Daily digest sent to <b>3 manufacturers</b></div>
                 <div class="tl-m">2 parts awaiting response · 1 redline pending acknowledgement</div>
               </div>
               <div class="tl-time">Yesterday</div>
             </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="cols-2">
-      <!-- Active CMs -->
-      <div class="panel">
-        <div class="panel-head">
-          <h3>Active CMs</h3>
-          <a href="suppliers.html">All suppliers</a>
-        </div>
-        <div class="panel-body">
-          <div class="lrow clickable" onclick="location.href='supplier-portal.html'">
-            <div class="grow">
-              <div class="t">Hsinchu Precision</div>
-              <div class="s">Hsinchu, Taiwan · quoting 2 parts</div>
-            </div>
-            <span class="pill green"><span class="dot"></span>Quote in</span>
-          </div>
-          <div class="lrow clickable" onclick="location.href='supplier-portal.html'">
-            <div class="grow">
-              <div class="t">Taichung MetalWorks</div>
-              <div class="s">Taichung, Taiwan · reviewing 4 parts</div>
-            </div>
-            <span class="pill amber"><span class="dot"></span>In review</span>
-          </div>
-          <div class="lrow clickable" onclick="location.href='supplier-portal.html'">
-            <div class="grow">
-              <div class="t">Kaohsiung CNC</div>
-              <div class="s">Kaohsiung, Taiwan · invited May 16</div>
-            </div>
-            <span class="pill muted"><span class="dot"></span>Awaiting open</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- DFM cycle status -->
-      <div class="panel">
-        <div class="panel-head">
-          <h3>DFM cycle status</h3>
-          <a href="revision-diff.html">Compare Rev 2 ↔ Rev 3</a>
-        </div>
-        <div class="panel-body">
-          <div class="lrow">
-            <div class="grow">
-              <div class="t">Redline round</div>
-              <div class="s">Round 2 of an expected 3 · 5 redlines resolved</div>
-            </div>
-            <span class="tag">Round 2</span>
-          </div>
-          <div class="lrow">
-            <div class="grow">
-              <div class="t">Quotes coverage</div>
-              <div class="s">3 of 5 parts quoted by at least one CM</div>
-            </div>
-            <span class="pill green"><span class="dot"></span>60%</span>
-          </div>
-          <div class="lrow clickable" onclick="location.href='revision-diff.html'">
-            <div class="grow">
-              <div class="t">Open redline — Top tube assembly</div>
-              <div class="s">Rev 2 → Rev 3 · 3 dimension changes awaiting CM ack</div>
-            </div>
-            <span class="pill blue"><span class="dot"></span>Compare</span>
-          </div>
-          <div class="lrow">
-            <div class="grow">
-              <div class="t">Audit log</div>
-              <div class="s">Every redline, quote and portal open recorded</div>
-            </div>
-            <a class="btn btn--sm" href="activity.html">View log</a>
           </div>
         </div>
       </div>

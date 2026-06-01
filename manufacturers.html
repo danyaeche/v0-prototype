@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Chorus · Manufacturers</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+<style>
+  .sup-card .sup-actions { display: flex; gap: 8px; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--line); }
+  .sup-card .sup-actions .btn { flex: 1; justify-content: center; }
+  .sup-status { margin: 10px 0 12px; }
+  .magic-note { display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 13px; }
+  .magic-note svg { flex: none; }
+  .tbl .mono { font-family: "Space Grotesk", monospace; font-size: 12.5px; }
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar" data-active="manufacturers"></aside>
+
+  <main class="main">
+    <div class="page-head">
+      <h1>Manufacturers</h1>
+      <div class="page-actions">
+        <a class="btn btn--primary" href="#">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg>
+          Invite manufacturer
+        </a>
+      </div>
+    </div>
+    <p class="subtitle">Contract manufacturers fabricating parts in the TM-4 Bike DFM cycle · magic-link access, no account required</p>
+
+    <div class="sup-grid">
+
+      <div class="sup-card">
+        <div class="sup-top">
+          <div class="sup-logo">HP</div>
+          <div>
+            <div class="sup-name">Hsinchu Precision</div>
+            <div class="sup-loc">Hsinchu, Taiwan</div>
+          </div>
+        </div>
+        <div class="sup-status"><span class="pill green"><span class="dot"></span>Active</span></div>
+        <div class="sup-meta">
+          <div><span class="k">Parts shared</span><span class="v">4</span></div>
+          <div><span class="k">Quotes</span><span class="v">3</span></div>
+          <div><span class="k">Last active</span><span class="v">2h ago</span></div>
+        </div>
+        <div class="sup-actions">
+          <a class="btn btn--primary btn--sm" href="supplier-portal.html">Open portal</a>
+          <a class="btn btn--sm" href="#">Copy magic link</a>
+        </div>
+      </div>
+
+      <div class="sup-card">
+        <div class="sup-top">
+          <div class="sup-logo">TM</div>
+          <div>
+            <div class="sup-name">Taichung MetalWorks</div>
+            <div class="sup-loc">Taichung, Taiwan</div>
+          </div>
+        </div>
+        <div class="sup-status"><span class="pill green"><span class="dot"></span>Quote submitted</span></div>
+        <div class="sup-meta">
+          <div><span class="k">Parts shared</span><span class="v">3</span></div>
+          <div><span class="k">Quotes</span><span class="v">2</span></div>
+          <div><span class="k">Last active</span><span class="v">Yesterday</span></div>
+        </div>
+        <div class="sup-actions">
+          <a class="btn btn--primary btn--sm" href="supplier-portal.html">Open portal</a>
+          <a class="btn btn--sm" href="#">Copy magic link</a>
+        </div>
+      </div>
+
+      <div class="sup-card">
+        <div class="sup-top">
+          <div class="sup-logo">KC</div>
+          <div>
+            <div class="sup-name">Kaohsiung CNC</div>
+            <div class="sup-loc">Kaohsiung, Taiwan</div>
+          </div>
+        </div>
+        <div class="sup-status"><span class="pill green"><span class="dot"></span>Active</span></div>
+        <div class="sup-meta">
+          <div><span class="k">Parts shared</span><span class="v">2</span></div>
+          <div><span class="k">Quotes</span><span class="v">1</span></div>
+          <div><span class="k">Last active</span><span class="v">3d ago</span></div>
+        </div>
+        <div class="sup-actions">
+          <a class="btn btn--primary btn--sm" href="supplier-portal.html">Open portal</a>
+          <a class="btn btn--sm" href="#">Copy magic link</a>
+        </div>
+      </div>
+
+      <div class="sup-card">
+        <div class="sup-top">
+          <div class="sup-logo">SR</div>
+          <div>
+            <div class="sup-name">Shenzhen RapidTool</div>
+            <div class="sup-loc">Shenzhen, China</div>
+          </div>
+        </div>
+        <div class="sup-status"><span class="pill amber"><span class="dot"></span>Invited</span></div>
+        <div class="sup-meta">
+          <div><span class="k">Parts shared</span><span class="v">1</span></div>
+          <div><span class="k">Quotes</span><span class="v">0</span></div>
+          <div><span class="k">Last active</span><span class="v">Pending</span></div>
+        </div>
+        <div class="sup-actions">
+          <a class="btn btn--primary btn--sm" href="supplier-portal.html">Open portal</a>
+          <a class="btn btn--sm" href="#">Copy magic link</a>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="panel" style="margin-top:22px">
+      <div class="panel-head">
+        <h2>Magic-link access log</h2>
+        <span class="magic-note">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M10 14a4 4 0 0 0 5.66 0l3-3a4 4 0 1 0-5.66-5.66l-1.5 1.5M14 10a4 4 0 0 0-5.66 0l-3 3a4 4 0 1 0 5.66 5.66l1.5-1.5" stroke="#7a7a7a" stroke-width="1.6" stroke-linecap="round"/></svg>
+          CMs access shared parts via single-use magic link — no account required.
+        </span>
+      </div>
+      <div class="panel-body">
+        <div class="tbl-wrap">
+          <table class="tbl">
+            <thead><tr><th>CM</th><th>Link sent</th><th>Last opened</th><th>Parts</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr class="clickable" onclick="location.href='supplier-portal.html'">
+                <td>Hsinchu Precision</td>
+                <td class="muted">May 14</td>
+                <td class="muted">2h ago</td>
+                <td><span class="mono">TM-4-1001, 1004 +2</span></td>
+                <td><span class="badge badge--green">Opened</span></td>
+              </tr>
+              <tr class="clickable" onclick="location.href='supplier-portal.html'">
+                <td>Taichung MetalWorks</td>
+                <td class="muted">May 13</td>
+                <td class="muted">Yesterday</td>
+                <td><span class="mono">TM-4-1003, 1005 +1</span></td>
+                <td><span class="badge badge--green">Quote submitted</span></td>
+              </tr>
+              <tr class="clickable" onclick="location.href='supplier-portal.html'">
+                <td>Kaohsiung CNC</td>
+                <td class="muted">May 12</td>
+                <td class="muted">3d ago</td>
+                <td><span class="mono">TM-4-1002, 1004</span></td>
+                <td><span class="badge badge--green">Opened</span></td>
+              </tr>
+              <tr class="clickable" onclick="location.href='supplier-portal.html'">
+                <td>Shenzhen RapidTool</td>
+                <td class="muted">May 16</td>
+                <td class="muted">—</td>
+                <td><span class="mono">TM-4-1005</span></td>
+                <td><span class="badge badge--soft">Sent · not opened</span></td>
+              </tr>
+              <tr class="clickable" onclick="location.href='supplier-portal.html'">
+                <td>Hsinchu Precision</td>
+                <td class="muted">May 9</td>
+                <td class="muted">May 10</td>
+                <td><span class="mono">TM-4-1001</span></td>
+                <td><span class="badge badge--red">Expired</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+<script src="sidebar.js"></script>
+<script src="switcher.js"></script>
+</body>
+</html>
