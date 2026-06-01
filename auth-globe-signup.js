@@ -21,13 +21,13 @@ if (host) {
 
   const R = 2.3;
 
-  // gradient palette across the globe (violet → magenta → pink → orange)
+  // monochrome white → grey gradient across the globe
   const STOPS = [
-    new THREE.Color(0x6a5cff), // violet
-    new THREE.Color(0xb24bff), // purple
-    new THREE.Color(0xff4d9d), // pink
-    new THREE.Color(0xff6a5a), // coral
-    new THREE.Color(0xff8a3d), // orange
+    new THREE.Color(0xffffff), // white
+    new THREE.Color(0xd6dadb), // light grey
+    new THREE.Color(0x9aa2a4), // mid grey
+    new THREE.Color(0xc4cacb), // light grey
+    new THREE.Color(0xeef1f1), // near-white
   ];
   function grad(t) { // t 0..1
     const x = Math.min(0.9999, Math.max(0, t)) * (STOPS.length - 1);
@@ -75,8 +75,8 @@ if (host) {
   })();
 
   const dotMat = new THREE.ShaderMaterial({
-    uniforms: { uTex: { value: dotTex }, uSize: { value: 26.0 * Math.min(devicePixelRatio, 2) } },
-    transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
+    uniforms: { uTex: { value: dotTex }, uSize: { value: 24.0 * Math.min(devicePixelRatio, 2) } },
+    transparent: true, depthWrite: false, blending: THREE.NormalBlending,
     vertexShader: `
       attribute float alpha; attribute float psize; attribute vec3 pcolor;
       varying float vA; varying vec3 vC; uniform float uSize;
@@ -160,10 +160,11 @@ if (host) {
       const q = dots.quaternion;
       for (let i = 0; i < COUNT; i++) {
         tmp.copy(base[i]).applyQuaternion(q);
-        const front = (tmp.z + 1) * 0.5;
-        const rim = 1 - Math.abs(tmp.z);
-        // visible scattered face + brighter rim; only the far side is strongly dimmed
-        arr[i] = (0.4 + 0.6 * rim) * (0.45 + 0.55 * front);
+        const front = (tmp.z + 1) * 0.5;          // 0 back, 1 front
+        // Dissolve into the card: bright near the front-center, fading toward the silhouette
+        // edge (no hard sphere boundary) and on the far hemisphere.
+        const edge = Math.max(0, tmp.z);          // 1 at front pole, 0 at the rim/back
+        arr[i] = (0.18 + 0.82 * Math.pow(edge, 1.1)) * (0.3 + 0.7 * front);
       }
       aAttr.needsUpdate = true;
     }
