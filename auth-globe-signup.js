@@ -12,13 +12,14 @@ if (host) {
   const scene = new THREE.Scene();
   // Stripe framing: globe is huge and only partly shown — it emerges from the lower/back of
   // the panel, top curve in the upper area, the rest bleeding off the bottom & sides.
-  // Stripe framing: large globe, top arc in the upper area, sides & bottom bleeding off the card.
+  // Stripe framing: camera level (so we never see over the top / the bottom rim), globe pushed
+  // down so only its top portion shows — the apex sits around the vertical middle of the panel.
   const camera = new THREE.PerspectiveCamera(34, 1, 0.1, 100);
-  camera.position.set(0, 0, 10.2);
-  camera.lookAt(0, -1.0, 0);
+  camera.position.set(0, 0, 10);
+  camera.lookAt(0, 0, 0);
 
   const world = new THREE.Group();
-  world.position.set(0, -1.0, 0);
+  world.position.set(0, -2.2, 0);   // globe pushed down; top apex sits around panel middle
   world.rotation.z = 0.04;
   scene.add(world);
 
