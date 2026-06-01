@@ -25,8 +25,8 @@ if (host) {
 
   const R = 3.2;                       // big → overflows / clipped by the card
 
-  // monochrome white → grey gradient (by longitude)
-  const STOPS = [0xffffff, 0xe4e8e8, 0xbfc5c6, 0xd2d7d7, 0xeef1f1].map(h => new THREE.Color(h));
+  // monochrome white → light-grey gradient (by longitude) — kept bright for contrast
+  const STOPS = [0xffffff, 0xf2f4f4, 0xd6dcdc, 0xe8ecec, 0xffffff].map(h => new THREE.Color(h));
   const grad = t => { const x = Math.min(0.9999, Math.max(0, t)) * (STOPS.length - 1);
     const i = Math.floor(x); return STOPS[i].clone().lerp(STOPS[i + 1], x - i); };
 
@@ -40,15 +40,17 @@ if (host) {
     const c = document.createElement('canvas'); c.width = c.height = 64;
     const x = c.getContext('2d');
     const g = x.createRadialGradient(32, 32, 0, 32, 32, 32);
+    // crisp, near-solid center → tiny bright points (high contrast against the dark ocean)
     g.addColorStop(0, 'rgba(255,255,255,1)');
-    g.addColorStop(0.5, 'rgba(255,255,255,0.5)');
+    g.addColorStop(0.62, 'rgba(255,255,255,0.95)');
+    g.addColorStop(0.85, 'rgba(255,255,255,0.35)');
     g.addColorStop(1, 'rgba(255,255,255,0)');
     x.fillStyle = g; x.beginPath(); x.arc(32, 32, 32, 0, Math.PI*2); x.fill();
     return new THREE.CanvasTexture(c);
   })();
 
   const dotMat = new THREE.ShaderMaterial({
-    uniforms: { uTex: { value: dotTex }, uSize: { value: 5.5 * Math.min(devicePixelRatio, 2) } },
+    uniforms: { uTex: { value: dotTex }, uSize: { value: 3.4 * Math.min(devicePixelRatio, 2) } },
     transparent: true, depthWrite: false, blending: THREE.NormalBlending,
     vertexShader: `
       attribute float alpha; attribute float psize; attribute vec3 pcolor;
@@ -70,8 +72,12 @@ if (host) {
   function build(isLand) {
     // Regular lat/long dot matrix (rows follow the curvature, even spacing via cos(lat)),
     // sampled against the land mask → classic dotted-continents globe.
-    const ROWS = 116;                    // latitude bands
-    const BASE = 150;                    // max dots on the equator row
+    // ZOOM OUT the continents: tile the map MAPX times around the globe so each landmass is
+    // smaller and more continents come into view as it rotates. Denser grid keeps them crisp.
+    const ROWS = 168;                    // latitude bands (denser → smaller features stay clean)
+    const BASE = 220;                    // max dots on the equator row
+    const MAPX = 2.0;                    // horizontal map repeats → continents ~half size
+    const MAPY = 1.45;                   // vertical squeeze so they aren't stretched
     const dir = [], cArr = [], sArr = [];
     for (let r = 0; r < ROWS; r++) {
       const lat = (r / (ROWS - 1) - 0.5) * Math.PI;     // -PI/2 .. PI/2
@@ -81,13 +87,13 @@ if (host) {
       for (let c = 0; c < n; c++) {
         const lon = (c / n) * Math.PI * 2;               // 0..2PI
         const v = new THREE.Vector3(Math.cos(lon) * rr, y, Math.sin(lon) * rr);
-        const u = 0.5 + lon / (2 * Math.PI);
-        const vv = 0.5 - lat / Math.PI;
-        if (!isLand(u % 1, vv)) continue;
+        const u = ((0.5 + lon / (2 * Math.PI)) * MAPX) % 1;        // zoomed-out longitude
+        const vv = (0.5 + (0.5 - lat / Math.PI - 0.5) * MAPY);     // zoomed-out latitude
+        if (vv < 0 || vv > 1 || !isLand(u, vv)) continue;
         dir.push(v);
-        const col = grad(u % 1);                          // white→grey by longitude
+        const col = grad((0.5 + lon / (2 * Math.PI)));   // white→grey by true longitude
         cArr.push(col.r, col.g, col.b);
-        sArr.push(0.62 + Math.random() * 0.5);
+        sArr.push(0.85 + Math.random() * 0.3);            // near-uniform tiny dots
       }
     }
     base = dir; COUNT = dir.length;
@@ -177,8 +183,8 @@ if (host) {
           tmp.copy(base[i]).applyQuaternion(q);
           const front = (tmp.z + 1) * 0.5;          // 0 back, 1 front
           const rim = 1 - Math.abs(tmp.z);          // 1 at the silhouette edge
-          // Stripe: denser/brighter rim, airy face, faint back
-          arr[i] = (0.22 + 0.78 * Math.pow(rim, 1.5)) * (0.4 + 0.6 * front);
+          // bright, high-contrast land dots; rim a touch brighter, only the far side fades
+          arr[i] = (0.7 + 0.3 * Math.pow(rim, 1.5)) * (0.45 + 0.55 * front);
         }
         geo.getAttribute('alpha').needsUpdate = true;
       }
