@@ -12,17 +12,17 @@ if (host) {
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(34, 1, 0.1, 100);
   camera.position.set(0, 0, 10.5);
-  camera.lookAt(0, 0.15, 0);
+  camera.lookAt(0, 1.7, 0);          // aim up → globe's top sits in the upper-middle
 
   const world = new THREE.Group();
-  world.position.y = 0.15;
+  world.position.y = 1.7;            // lift the globe up the panel
   world.rotation.z = 0.06;
   scene.add(world);
 
   const R = 3.2;                       // big → overflows / clipped by the card
 
-  // Stripe gradient (by longitude): violet → purple → magenta → pink → coral → orange
-  const STOPS = [0x8f86ff, 0xb86bff, 0xe663e6, 0xff6aa3, 0xff7a86, 0xff9d5c].map(h => new THREE.Color(h));
+  // monochrome white → grey gradient (by longitude)
+  const STOPS = [0xffffff, 0xe4e8e8, 0xbfc5c6, 0xd2d7d7, 0xeef1f1].map(h => new THREE.Color(h));
   const grad = t => { const x = Math.min(0.9999, Math.max(0, t)) * (STOPS.length - 1);
     const i = Math.floor(x); return STOPS[i].clone().lerp(STOPS[i + 1], x - i); };
 
