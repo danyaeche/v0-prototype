@@ -15,11 +15,11 @@ if (host) {
   // Stripe framing: camera level (so we never see over the top / the bottom rim), globe pushed
   // down so only its top portion shows — the apex sits around the vertical middle of the panel.
   const camera = new THREE.PerspectiveCamera(34, 1, 0.1, 100);
-  camera.position.set(0, 0, 10);
+  camera.position.set(0, 0, 10.8);
   camera.lookAt(0, 0, 0);
 
   const world = new THREE.Group();
-  world.position.set(0, -2.2, 0);   // globe pushed down; top apex sits around panel middle
+  world.position.set(0, -1.7, 0);   // show more of the upper hemisphere; top near panel middle
   world.rotation.z = 0.04;
   scene.add(world);
 
@@ -85,7 +85,7 @@ if (host) {
   })();
 
   const dotMat = new THREE.ShaderMaterial({
-    uniforms: { uTex: { value: dotTex }, uSize: { value: 3.4 * Math.min(devicePixelRatio, 2) } },
+    uniforms: { uTex: { value: dotTex }, uSize: { value: 2.15 * Math.min(devicePixelRatio, 2) } },
     transparent: true, depthWrite: false, blending: THREE.NormalBlending,
     vertexShader: `
       attribute float alpha; attribute float psize; attribute vec3 pcolor;
@@ -114,10 +114,10 @@ if (host) {
     // legible), but each point gets positional jitter, a size from a small-biased distribution,
     // a subtle base opacity, and occasional dropouts — so the cluster feels alive, not gridded.
     // ZOOM OUT the continents: tile the map MAPX times around the globe.
-    const ROWS = 190;                    // latitude bands
-    const BASE = 250;                    // max dots on the equator row
-    const MAPX = 2.0;                    // horizontal map repeats → continents ~half size
-    const MAPY = 1.45;                   // vertical squeeze so they aren't stretched
+    const ROWS = 300;                    // dense latitude bands → fine pinprick cloud
+    const BASE = 420;                    // max dots on the equator row
+    const MAPX = 1.32;                   // continents large & recognizable (like the reference)
+    const MAPY = 1.18;                   // mild vertical squeeze
     const dir = [], cArr = [], sArr = [];
     baseA = [];
 
@@ -140,26 +140,32 @@ if (host) {
       const n = Math.max(1, Math.round(BASE * cosL));
       const cellLon = (Math.PI * 2) / n;                 // angular cell width at this row
       const cellLat = Math.PI / ROWS;
-      const jit = Math.min(cellLon, cellLat) * 0.62;     // jitter ~⅔ of a cell
+      const jit = Math.min(cellLon, cellLat) * 0.42;     // tighter jitter → crisp coastlines
       const y = Math.sin(lat), rr = cosL;
       for (let c = 0; c < n; c++) {
         const lon = (c / n) * Math.PI * 2;
+        const trueU = 0.5 + lon / (2 * Math.PI);
         // membership decided on the CLEAN grid sample → continent shapes stay crisp
-        const u = ((0.5 + lon / (2 * Math.PI)) * MAPX) % 1;
+        const u = (trueU * MAPX) % 1;
         const vv = 0.5 + (0.5 - lat / Math.PI - 0.5) * MAPY;
-        if (vv < 0 || vv > 1 || !isLand(u, vv)) continue;
-        // density voids: drop a few points to create organic gaps
-        if (Math.random() < 0.10) continue;
+        const onLand = vv >= 0 && vv <= 1 && isLand(u, vv);
 
-        const v0 = new THREE.Vector3(Math.cos(lon) * rr, y, Math.sin(lon) * rr);
-        const v = jitter(v0, jit);                       // organic off-grid position
-        dir.push(v);
-        const col = grad((0.5 + lon / (2 * Math.PI)));
-        cArr.push(col.r, col.g, col.b);
-        // size: small-biased distribution → mostly tiny specks, a few larger points
-        sArr.push(0.45 + Math.pow(Math.random(), 1.9) * 1.7);
-        // subtle per-point base opacity
-        baseA.push(0.62 + Math.random() * 0.38);
+        if (onLand) {
+          if (Math.random() < 0.06) continue;            // light voids inside landmasses
+          const v = jitter(new THREE.Vector3(Math.cos(lon) * rr, y, Math.sin(lon) * rr), jit);
+          dir.push(v);
+          const col = grad(trueU); cArr.push(col.r, col.g, col.b);
+          // mostly tiny pinpricks, rare slightly-larger "hub" dots
+          sArr.push(0.35 + Math.pow(Math.random(), 2.6) * 1.5);
+          baseA.push(0.6 + Math.random() * 0.4);
+        } else if (Math.random() < 0.012) {
+          // sparse faint ocean scatter (atmospheric dots over water, like the reference)
+          const v = jitter(new THREE.Vector3(Math.cos(lon) * rr, y, Math.sin(lon) * rr), jit * 2.2);
+          dir.push(v);
+          const col = grad(trueU); cArr.push(col.r, col.g, col.b);
+          sArr.push(0.3 + Math.random() * 0.5);
+          baseA.push(0.12 + Math.random() * 0.18);        // very faint
+        }
       }
     }
     base = dir; COUNT = dir.length;
