@@ -22,29 +22,33 @@ if (host) {
   scene.add(world);
 
   const R = 2.05;
-  // see-through wireframe: fine, faint teal-tinted lines, no opaque core
-  const lineMat = new THREE.LineBasicMaterial({ color: 0x9fc4c4, transparent: true, opacity: 0.42 });
+  const lineMat = new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.30 });
 
-  // ---- Dense lat/long wireframe globe (clean & see-through, like the reference) ----
+  // ---- Wireframe globe ----
   const globe = new THREE.Group();
-  // longitudes (meridians) — denser
-  const MERIDIANS = 36;
+  // longitudes (meridians)
+  const MERIDIANS = 16;
   for (let i = 0; i < MERIDIANS; i++) {
     const c = new THREE.EllipseCurve(0, 0, R, R, 0, Math.PI * 2);
-    const pts = c.getPoints(160).map(p => new THREE.Vector3(p.x, p.y, 0));
+    const pts = c.getPoints(120).map(p => new THREE.Vector3(p.x, p.y, 0));
     const l = new THREE.LineLoop(new THREE.BufferGeometry().setFromPoints(pts), lineMat);
     l.rotation.y = (i / MERIDIANS) * Math.PI;
     globe.add(l);
   }
-  // latitudes (parallels) — denser
-  const PARALLELS = 24;
+  // latitudes (parallels)
+  const PARALLELS = 11;
   for (let j = 1; j < PARALLELS; j++) {
     const lat = (j / PARALLELS) * Math.PI - Math.PI / 2;
     const r = Math.cos(lat) * R, y = Math.sin(lat) * R;
     const c = new THREE.EllipseCurve(0, 0, r, r, 0, Math.PI * 2);
-    const pts = c.getPoints(160).map(p => new THREE.Vector3(p.x, y, p.y));
+    const pts = c.getPoints(120).map(p => new THREE.Vector3(p.x, y, p.y));
     globe.add(new THREE.LineLoop(new THREE.BufferGeometry().setFromPoints(pts), lineMat));
   }
+  // faint dark core so front lines read brighter than the back
+  globe.add(new THREE.Mesh(
+    new THREE.SphereGeometry(R * 0.99, 48, 32),
+    new THREE.MeshBasicMaterial({ color: 0x0c0c0c, transparent: true, opacity: 0.78 })
+  ));
   world.add(globe);
 
   // ---- Signal arcs: bright tube trails that emanate from the surface, bulge out, return ----
@@ -52,7 +56,7 @@ if (host) {
   const RAD = 8;                  // radial segments of the tube
   const IPS = RAD * 6;            // index entries per tubular segment (for drawRange)
   const TAIL = 0.34;              // fraction of the arc lit at once (the moving "comet")
-  const ARC_COLOR = 0xbfe9ff;     // soft cyan-white so it reads against the dark panel
+  const ARC_COLOR = 0xcfe0e0;     // soft, dim white-grey (not a bright glow)
 
   function randPt() {             // random point on the unit sphere → scaled to R
     const u = Math.random() * 2 - 1, th = Math.random() * Math.PI * 2;
@@ -72,9 +76,9 @@ if (host) {
     const c = document.createElement('canvas'); c.width = c.height = 64;
     const x = c.getContext('2d');
     const g = x.createRadialGradient(32, 32, 0, 32, 32, 32);
-    g.addColorStop(0, 'rgba(255,255,255,1)');
-    g.addColorStop(0.4, 'rgba(210,240,255,0.85)');
-    g.addColorStop(1, 'rgba(190,233,255,0)');
+    g.addColorStop(0, 'rgba(230,238,238,0.85)');
+    g.addColorStop(0.4, 'rgba(207,224,224,0.5)');
+    g.addColorStop(1, 'rgba(207,224,224,0)');
     x.fillStyle = g; x.beginPath(); x.arc(32, 32, 32, 0, Math.PI*2); x.fill();
     return new THREE.CanvasTexture(c);
   })();
@@ -82,25 +86,25 @@ if (host) {
   function makeArc() {
     const o = { curve: newCurve(), t: Math.random(), speed: 0.18 + Math.random() * 0.14, mesh: null };
     const rebuild = () => {
-      const geo = new THREE.TubeGeometry(o.curve, SEG, 0.045, RAD, false);
+      const geo = new THREE.TubeGeometry(o.curve, SEG, 0.03, RAD, false);
       if (o.mesh) { o.mesh.geometry.dispose(); o.mesh.geometry = geo; }
       else {
         const mat = new THREE.MeshBasicMaterial({ color: ARC_COLOR, transparent: true,
-          opacity: 0.95, blending: THREE.AdditiveBlending, depthWrite: false });
+          opacity: 0.4, depthWrite: false });
         o.mesh = new THREE.Mesh(geo, mat); world.add(o.mesh);
       }
       o.mesh.geometry.setDrawRange(0, 0);
     };
     rebuild();
-    // glowing head dot
+    // small soft head dot (no additive glow)
     o.head = new THREE.Sprite(new THREE.SpriteMaterial({ map: dotTex, color: ARC_COLOR,
-      transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, opacity: 0 }));
-    o.head.scale.setScalar(0.5);
+      transparent: true, depthWrite: false, opacity: 0 }));
+    o.head.scale.setScalar(0.26);
     world.add(o.head);
     o.respawn = () => { o.curve = newCurve(); rebuild(); };
     return o;
   }
-  const arcs = Array.from({ length: 6 }, makeArc);
+  const arcs = Array.from({ length: 14 }, makeArc);
 
   function resize() {
     const w = host.clientWidth, h = host.clientHeight;
@@ -126,11 +130,11 @@ if (host) {
       const start = Math.round(tail * SEG) * IPS;
       const count = Math.max(0, Math.round(head * SEG) * IPS - start);
       o.mesh.geometry.setDrawRange(start, count);
-      o.mesh.material.opacity = 0.9 * Math.sin(Math.min(1, o.t) * Math.PI);
-      // glowing head rides the leading tip
+      o.mesh.material.opacity = 0.42 * Math.sin(Math.min(1, o.t) * Math.PI);
+      // soft head rides the leading tip
       if (head < 1) {
         o.head.position.copy(o.curve.getPoint(head));
-        o.head.material.opacity = 0.95 * Math.sin(head * Math.PI);
+        o.head.material.opacity = 0.5 * Math.sin(head * Math.PI);
       } else {
         o.head.material.opacity = 0;
       }
