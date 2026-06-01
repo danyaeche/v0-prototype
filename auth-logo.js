@@ -1,5 +1,5 @@
-// Auth hero — a minimal dotted particle globe with a couple of thin orbital arcs,
-// slowly rotating. Light particles on the dark panel, fading toward shadow at the back.
+// Auth hero — a clean latitude/longitude wireframe globe, slowly rotating,
+// with a few satellites orbiting on thin tilted rings. White lines on the dark panel.
 import * as THREE from 'three';
 
 const host = document.getElementById('authHero');
@@ -9,71 +9,67 @@ if (host) {
   host.appendChild(renderer.domElement);
 
   const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(36, 1, 0.1, 100);
+  const camera = new THREE.PerspectiveCamera(34, 1, 0.1, 100);
   camera.position.set(0, 0, 10);
   camera.lookAt(0, 0.5, 0);
 
+  scene.add(new THREE.AmbientLight(0xffffff, 0.6));
+  const key = new THREE.DirectionalLight(0xffffff, 2.0); key.position.set(4, 5, 6); scene.add(key);
+
   const world = new THREE.Group();
-  world.position.y = 0.65;
-  world.rotation.z = 0.22;
+  world.position.y = 0.6;
+  world.rotation.z = 0.18;
   scene.add(world);
 
-  const R = 2.0;
+  const R = 2.05;
+  const lineMat = new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.30 });
 
-  // ---- Dotted globe: points distributed evenly on a sphere (Fibonacci) ----
-  const COUNT = 1400;
-  const pos = new Float32Array(COUNT * 3);
-  const golden = Math.PI * (3 - Math.sqrt(5));
-  for (let i = 0; i < COUNT; i++) {
-    const y = 1 - (i / (COUNT - 1)) * 2;      // 1..-1
-    const r = Math.sqrt(1 - y * y);
-    const th = golden * i;
-    pos[i*3]   = Math.cos(th) * r * R;
-    pos[i*3+1] = y * R;
-    pos[i*3+2] = Math.sin(th) * r * R;
+  // ---- Wireframe globe ----
+  const globe = new THREE.Group();
+  // longitudes (meridians)
+  const MERIDIANS = 16;
+  for (let i = 0; i < MERIDIANS; i++) {
+    const c = new THREE.EllipseCurve(0, 0, R, R, 0, Math.PI * 2);
+    const pts = c.getPoints(120).map(p => new THREE.Vector3(p.x, p.y, 0));
+    const l = new THREE.LineLoop(new THREE.BufferGeometry().setFromPoints(pts), lineMat);
+    l.rotation.y = (i / MERIDIANS) * Math.PI;
+    globe.add(l);
   }
-  const geo = new THREE.BufferGeometry();
-  geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-
-  // soft round sprite for each dot
-  const sprite = (() => {
-    const c = document.createElement('canvas'); c.width = c.height = 64;
-    const x = c.getContext('2d');
-    const g = x.createRadialGradient(32, 32, 0, 32, 32, 32);
-    g.addColorStop(0, 'rgba(255,255,255,1)');
-    g.addColorStop(0.5, 'rgba(255,255,255,0.5)');
-    g.addColorStop(1, 'rgba(255,255,255,0)');
-    x.fillStyle = g; x.beginPath(); x.arc(32, 32, 32, 0, Math.PI*2); x.fill();
-    return new THREE.CanvasTexture(c);
-  })();
-
-  const dots = new THREE.Points(geo, new THREE.PointsMaterial({
-    map: sprite, size: 0.05, transparent: true, opacity: 0.9,
-    depthWrite: false, blending: THREE.AdditiveBlending, sizeAttenuation: true,
-  }));
-  world.add(dots);
-
-  // ---- A few thin orbital arcs ----
-  function arc(radius, tiltX, tiltY, opacity) {
-    const c = new THREE.EllipseCurve(0, 0, radius, radius, 0, Math.PI * 2);
-    const pts = c.getPoints(160).map(p => new THREE.Vector3(p.x, p.y, 0));
-    const line = new THREE.LineLoop(
-      new THREE.BufferGeometry().setFromPoints(pts),
-      new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity })
-    );
-    line.rotation.x = tiltX; line.rotation.y = tiltY;
-    return line;
+  // latitudes (parallels)
+  const PARALLELS = 11;
+  for (let j = 1; j < PARALLELS; j++) {
+    const lat = (j / PARALLELS) * Math.PI - Math.PI / 2;
+    const r = Math.cos(lat) * R, y = Math.sin(lat) * R;
+    const c = new THREE.EllipseCurve(0, 0, r, r, 0, Math.PI * 2);
+    const pts = c.getPoints(120).map(p => new THREE.Vector3(p.x, y, p.y));
+    globe.add(new THREE.LineLoop(new THREE.BufferGeometry().setFromPoints(pts), lineMat));
   }
-  const ringA = arc(R * 1.32, 1.28, 0.15, 0.22);
-  const ringB = arc(R * 1.5,  1.05, -0.4, 0.14);
-  world.add(ringA, ringB);
+  // faint dark core so front lines read brighter than the back
+  globe.add(new THREE.Mesh(
+    new THREE.SphereGeometry(R * 0.99, 48, 32),
+    new THREE.MeshBasicMaterial({ color: 0x0c0c0c, transparent: true, opacity: 0.78 })
+  ));
+  world.add(globe);
 
-  // one small satellite riding ring A
-  const sat = new THREE.Mesh(
-    new THREE.SphereGeometry(0.06, 16, 12),
-    new THREE.MeshBasicMaterial({ color: 0xffffff })
-  );
-  ringA.add(sat);
+  // ---- Satellites on thin tilted orbit rings ----
+  const ringMat = (o) => new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: o });
+  const orbits = [
+    { r: R * 1.42, tiltX: 1.25, tiltY: 0.15, speed: 0.55, size: 0.075, phase: 0,   ringOp: 0.18 },
+    { r: R * 1.68, tiltX: 0.95, tiltY: -0.5, speed: -0.4, size: 0.06,  phase: 2.2, ringOp: 0.12 },
+    { r: R * 1.95, tiltX: 1.4,  tiltY: 0.6,  speed: 0.3,  size: 0.05,  phase: 4.1, ringOp: 0.08 },
+  ];
+  const satMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
+  const sats = orbits.map(o => {
+    const ring = new THREE.Group();
+    ring.rotation.x = o.tiltX; ring.rotation.y = o.tiltY;
+    const c = new THREE.EllipseCurve(0, 0, o.r, o.r, 0, Math.PI * 2);
+    const pts = c.getPoints(140).map(p => new THREE.Vector3(p.x, p.y, 0));
+    ring.add(new THREE.LineLoop(new THREE.BufferGeometry().setFromPoints(pts), ringMat(o.ringOp)));
+    const sat = new THREE.Mesh(new THREE.SphereGeometry(o.size, 18, 14), satMat);
+    ring.add(sat);
+    world.add(ring);
+    return { ...o, sat };
+  });
 
   function resize() {
     const w = host.clientWidth, h = host.clientHeight;
@@ -88,10 +84,11 @@ if (host) {
   (function animate() {
     requestAnimationFrame(animate);
     const t = (performance.now() - start) / 1000;
-    dots.rotation.y += 0.0035;          // slow globe spin
-    ringA.rotation.z += 0.0015;
-    const a = t * 0.5;                   // satellite travels its ring
-    sat.position.set(Math.cos(a) * R * 1.32, Math.sin(a) * R * 1.32, 0);
+    globe.rotation.y += 0.004;                 // slow globe spin
+    sats.forEach(o => {
+      const a = o.phase + t * o.speed;
+      o.sat.position.set(Math.cos(a) * o.r, Math.sin(a) * o.r, 0);
+    });
     renderer.render(scene, camera);
   })();
 }
