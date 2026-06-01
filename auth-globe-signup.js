@@ -11,11 +11,11 @@ if (host) {
 
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(34, 1, 0.1, 100);
-  camera.position.set(0, 0, 17);     // further back → globe ~50-60% of the panel
-  camera.lookAt(0, 0, 0);
+  camera.position.set(0, 0, 8.4);    // close in → globe is huge and bleeds off the edges
+  camera.lookAt(-0.4, -0.2, 0);      // off-center so it feels like it extends past the card
 
   const world = new THREE.Group();
-  world.position.y = 0;              // centered in the panel
+  world.position.set(-0.4, -0.2, 0);
   world.rotation.z = 0.06;
   scene.add(world);
 
