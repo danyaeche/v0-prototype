@@ -10,7 +10,7 @@ if (host) {
 
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(34, 1, 0.1, 100);
-  camera.position.set(0, 0, 10);
+  camera.position.set(0, 0, 13.5);
   camera.lookAt(0, 0.5, 0);
 
   scene.add(new THREE.AmbientLight(0xffffff, 0.6));
@@ -51,24 +51,21 @@ if (host) {
   ));
   world.add(globe);
 
-  // ---- Satellites on thin tilted orbit rings ----
+  // ---- Orbit trails only (no satellite spheres) — thin tilted rings ----
   const ringMat = (o) => new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: o });
   const orbits = [
-    { r: R * 1.42, tiltX: 1.25, tiltY: 0.15, speed: 0.55, size: 0.075, phase: 0,   ringOp: 0.18 },
-    { r: R * 1.68, tiltX: 0.95, tiltY: -0.5, speed: -0.4, size: 0.06,  phase: 2.2, ringOp: 0.12 },
-    { r: R * 1.95, tiltX: 1.4,  tiltY: 0.6,  speed: 0.3,  size: 0.05,  phase: 4.1, ringOp: 0.08 },
+    { r: R * 1.42, tiltX: 1.25, tiltY: 0.15, ringOp: 0.18 },
+    { r: R * 1.68, tiltX: 0.95, tiltY: -0.5, ringOp: 0.12 },
+    { r: R * 1.95, tiltX: 1.4,  tiltY: 0.6,  ringOp: 0.08 },
   ];
-  const satMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
-  const sats = orbits.map(o => {
+  const rings = orbits.map(o => {
     const ring = new THREE.Group();
     ring.rotation.x = o.tiltX; ring.rotation.y = o.tiltY;
     const c = new THREE.EllipseCurve(0, 0, o.r, o.r, 0, Math.PI * 2);
-    const pts = c.getPoints(140).map(p => new THREE.Vector3(p.x, p.y, 0));
+    const pts = c.getPoints(160).map(p => new THREE.Vector3(p.x, p.y, 0));
     ring.add(new THREE.LineLoop(new THREE.BufferGeometry().setFromPoints(pts), ringMat(o.ringOp)));
-    const sat = new THREE.Mesh(new THREE.SphereGeometry(o.size, 18, 14), satMat);
-    ring.add(sat);
     world.add(ring);
-    return { ...o, sat };
+    return ring;
   });
 
   function resize() {
@@ -80,15 +77,11 @@ if (host) {
   new ResizeObserver(resize).observe(host);
   resize();
 
-  const start = performance.now();
   (function animate() {
     requestAnimationFrame(animate);
-    const t = (performance.now() - start) / 1000;
     globe.rotation.y += 0.004;                 // slow globe spin
-    sats.forEach(o => {
-      const a = o.phase + t * o.speed;
-      o.sat.position.set(Math.cos(a) * o.r, Math.sin(a) * o.r, 0);
-    });
+    rings[0].rotation.z += 0.0016;             // gentle drift on the trails
+    rings[1].rotation.z -= 0.0011;
     renderer.render(scene, camera);
   })();
 }
