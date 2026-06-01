@@ -13,7 +13,7 @@
   <div class="auth-card">
     <aside class="auth-aside">
       <a class="auth-wordmark" href="overview.html">chorus</a>
-      <div class="auth-hero"><img src="logo.png" alt="Chorus" /></div>
+      <div class="auth-hero"><div id="authHero"></div><img class="auth-logo-fallback" src="logo.png" alt="Chorus" /></div>
       <h1>Welcome<br/>back</h1>
       <p>Log in to access<br/>your workspace.</p>
     </aside>
@@ -40,5 +40,12 @@
   </div>
 </div>
 <script src="switcher.js"></script>
+<script type="importmap">
+{ "imports": { "three": "./vendor/three/build/three.module.js", "three/addons/": "./vendor/three/addons/" } }
+</script>
+<script type="module">
+  document.querySelector('.auth-hero')?.classList.add('is-3d');
+  import('./auth-logo.js').catch(() => document.querySelector('.auth-hero')?.classList.remove('is-3d'));
+</script>
 </body>
 </html>

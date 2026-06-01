@@ -125,29 +125,16 @@ img { display: block; }
 .auth-card { width: min(940px, 100%); height: 560px; display: grid; grid-template-columns: 0.85fr 1fr; background: #fff; border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-lg); border: 1px solid var(--line); }
 .auth-aside { background: var(--panel-dark); color: #fff; padding: 30px 34px 34px; display: flex; flex-direction: column; position: relative; }
 .auth-wordmark { font-family: var(--font-head); font-weight: 600; font-size: 18px; letter-spacing: -.01em; color: #fff; }
-.auth-hero { flex: 1; display: grid; place-items: center; margin: 8px -10px 12px; perspective: 900px; }
-.auth-hero img {
-  width: 100%; max-width: 300px; height: auto; opacity: .97;
-  transform-origin: center;
-  animation:
-    auth-logo-in 900ms cubic-bezier(.2,.7,.2,1) both,
-    auth-logo-spin 14s linear 900ms infinite,
-    auth-logo-float 6s ease-in-out 900ms infinite;
-}
-@keyframes auth-logo-in {
-  0%   { opacity: 0; transform: scale(.78) rotateY(-40deg); }
-  100% { opacity: .97; transform: scale(1) rotateY(0deg); }
-}
-@keyframes auth-logo-spin {
-  0%   { transform: rotateY(0deg); }
-  100% { transform: rotateY(360deg); }
-}
-@keyframes auth-logo-float {
-  0%, 100% { translate: 0 0; }
-  50%      { translate: 0 -10px; }
-}
+.auth-hero { flex: 1; display: grid; place-items: center; margin: 8px -10px 12px; }
+/* 3D logo canvas host */
+.auth-hero #authHero { width: 100%; height: 100%; min-height: 240px; }
+.auth-hero #authHero canvas { width: 100% !important; height: 100% !important; display: block; }
+/* static fallback when 3D / motion is off */
+.auth-hero img.auth-logo-fallback { width: 100%; max-width: 280px; height: auto; opacity: .97; }
+.auth-hero.is-3d img.auth-logo-fallback { display: none; }
 @media (prefers-reduced-motion: reduce) {
-  .auth-hero img { animation: auth-logo-in 600ms ease both; }
+  .auth-hero #authHero { display: none; }
+  .auth-hero.is-3d img.auth-logo-fallback { display: block; }
 }
 .auth-aside h1 { font-family: var(--font-head); font-size: 30px; line-height: 1.12; letter-spacing: -.01em; margin: 0 0 12px; font-weight: 600; }
 .auth-aside p { color: #b0b0b0; font-size: 15px; margin: 0; max-width: 240px; }
