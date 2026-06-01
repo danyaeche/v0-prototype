@@ -12,12 +12,13 @@ if (host) {
   const scene = new THREE.Scene();
   // Stripe framing: globe is huge and only partly shown — it emerges from the lower/back of
   // the panel, top curve in the upper area, the rest bleeding off the bottom & sides.
+  // Stripe framing: whole globe visible (full circular rim), large & centered, slight low bias.
   const camera = new THREE.PerspectiveCamera(34, 1, 0.1, 100);
-  camera.position.set(0, 0, 8.2);
-  camera.lookAt(0, -1.9, 0);
+  camera.position.set(0, 0, 13);
+  camera.lookAt(0, -0.5, 0);
 
   const world = new THREE.Group();
-  world.position.set(0, -1.9, 0);
+  world.position.set(0, -0.5, 0);
   world.rotation.z = 0.05;
   scene.add(world);
 
@@ -66,7 +67,7 @@ if (host) {
   const arcs = [];
 
   function build(isLand) {
-    const CAND = 26000;
+    const CAND = 20000;
     const golden = Math.PI * (3 - Math.sqrt(5));
     const dir = [], cArr = [], sArr = [];
     for (let i = 0; i < CAND; i++) {
@@ -165,9 +166,10 @@ if (host) {
         const q = dots.quaternion, arr = geo.getAttribute('alpha').array;
         for (let i = 0; i < COUNT; i++) {
           tmp.copy(base[i]).applyQuaternion(q);
-          // front bright & fully visible; far side dimmed but still present (like the reference)
           const front = (tmp.z + 1) * 0.5;          // 0 back, 1 front
-          arr[i] = 0.45 + 0.55 * front;
+          const rim = 1 - Math.abs(tmp.z);          // 1 at the silhouette edge
+          // Stripe: denser/brighter rim, airy face, faint back
+          arr[i] = (0.22 + 0.78 * Math.pow(rim, 1.5)) * (0.4 + 0.6 * front);
         }
         geo.getAttribute('alpha').needsUpdate = true;
       }
