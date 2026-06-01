@@ -12,14 +12,14 @@ if (host) {
   const scene = new THREE.Scene();
   // Stripe framing: globe is huge and only partly shown — it emerges from the lower/back of
   // the panel, top curve in the upper area, the rest bleeding off the bottom & sides.
-  // Stripe framing: whole globe visible (full circular rim), large & centered, slight low bias.
+  // Stripe framing: large globe, top arc in the upper area, sides & bottom bleeding off the card.
   const camera = new THREE.PerspectiveCamera(34, 1, 0.1, 100);
-  camera.position.set(0, 0, 13);
-  camera.lookAt(0, -0.5, 0);
+  camera.position.set(0, 0, 10.2);
+  camera.lookAt(0, -1.0, 0);
 
   const world = new THREE.Group();
-  world.position.set(0, -0.5, 0);
-  world.rotation.z = 0.05;
+  world.position.set(0, -1.0, 0);
+  world.rotation.z = 0.04;
   scene.add(world);
 
   const R = 3.2;                       // big → overflows / clipped by the card
@@ -67,21 +67,27 @@ if (host) {
   const arcs = [];
 
   function build(isLand) {
-    const CAND = 20000;
-    const golden = Math.PI * (3 - Math.sqrt(5));
+    // Regular lat/long dot matrix (rows follow the curvature, even spacing via cos(lat)),
+    // sampled against the land mask → classic dotted-continents globe.
+    const ROWS = 116;                    // latitude bands
+    const BASE = 150;                    // max dots on the equator row
     const dir = [], cArr = [], sArr = [];
-    for (let i = 0; i < CAND; i++) {
-      const y = 1 - (i / (CAND - 1)) * 2;
-      const rr = Math.sqrt(1 - y * y);
-      const th = golden * i;
-      const v = new THREE.Vector3(Math.cos(th) * rr, y, Math.sin(th) * rr);
-      const u = 0.5 + Math.atan2(v.z, v.x) / (2 * Math.PI);
-      const vv = 0.5 - Math.asin(v.y) / Math.PI;
-      if (!isLand(u, vv)) continue;
-      dir.push(v);
-      const c = grad(u);                 // color by longitude
-      cArr.push(c.r, c.g, c.b);
-      sArr.push(0.5 + Math.random() * 0.7);
+    for (let r = 0; r < ROWS; r++) {
+      const lat = (r / (ROWS - 1) - 0.5) * Math.PI;     // -PI/2 .. PI/2
+      const cosL = Math.cos(lat);
+      const n = Math.max(1, Math.round(BASE * cosL));    // fewer dots near the poles
+      const y = Math.sin(lat), rr = cosL;
+      for (let c = 0; c < n; c++) {
+        const lon = (c / n) * Math.PI * 2;               // 0..2PI
+        const v = new THREE.Vector3(Math.cos(lon) * rr, y, Math.sin(lon) * rr);
+        const u = 0.5 + lon / (2 * Math.PI);
+        const vv = 0.5 - lat / Math.PI;
+        if (!isLand(u % 1, vv)) continue;
+        dir.push(v);
+        const col = grad(u % 1);                          // white→grey by longitude
+        cArr.push(col.r, col.g, col.b);
+        sArr.push(0.62 + Math.random() * 0.5);
+      }
     }
     base = dir; COUNT = dir.length;
     const pos = new Float32Array(COUNT * 3);
@@ -107,12 +113,14 @@ if (host) {
   })();
   function pick() { return base[(Math.random() * COUNT) | 0]; }
   function makeArc() {
-    const o = { t: Math.random(), speed: 0.15 + Math.random() * 0.12 };
+    const o = { t: Math.random(), speed: 0.13 + Math.random() * 0.1 };
     const setup = () => {
       let a = pick(), b = pick(), guard = 0;
-      while (a.distanceTo(b) < 1.3 && guard++ < 40) b = pick();
+      // favour wide spans so the arc sweeps across the globe like the video
+      while (a.distanceTo(b) < 1.7 && guard++ < 60) b = pick();
       o.a = a.clone().multiplyScalar(R); const bEnd = b.clone().multiplyScalar(R);
-      const ctrl = o.a.clone().add(bEnd).multiplyScalar(0.5).setLength(R + R * (0.22 + Math.random() * 0.4));
+      // big lift → arc bulges high above the surface
+      const ctrl = o.a.clone().add(bEnd).multiplyScalar(0.5).setLength(R + R * (0.55 + Math.random() * 0.6));
       o.curve = new THREE.QuadraticBezierCurve3(o.a, ctrl, bEnd);
       o.color = colByLon(a.clone().add(b).multiplyScalar(0.5));
       const g = new THREE.TubeGeometry(o.curve, SEG, 0.011, 6, false);
