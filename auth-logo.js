@@ -22,33 +22,29 @@ if (host) {
   scene.add(world);
 
   const R = 2.05;
-  const lineMat = new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.30 });
+  // see-through wireframe: fine, faint teal-tinted lines, no opaque core
+  const lineMat = new THREE.LineBasicMaterial({ color: 0x9fc4c4, transparent: true, opacity: 0.42 });
 
-  // ---- Wireframe globe ----
+  // ---- Dense lat/long wireframe globe (clean & see-through, like the reference) ----
   const globe = new THREE.Group();
-  // longitudes (meridians)
-  const MERIDIANS = 16;
+  // longitudes (meridians) — denser
+  const MERIDIANS = 36;
   for (let i = 0; i < MERIDIANS; i++) {
     const c = new THREE.EllipseCurve(0, 0, R, R, 0, Math.PI * 2);
-    const pts = c.getPoints(120).map(p => new THREE.Vector3(p.x, p.y, 0));
+    const pts = c.getPoints(160).map(p => new THREE.Vector3(p.x, p.y, 0));
     const l = new THREE.LineLoop(new THREE.BufferGeometry().setFromPoints(pts), lineMat);
     l.rotation.y = (i / MERIDIANS) * Math.PI;
     globe.add(l);
   }
-  // latitudes (parallels)
-  const PARALLELS = 11;
+  // latitudes (parallels) — denser
+  const PARALLELS = 24;
   for (let j = 1; j < PARALLELS; j++) {
     const lat = (j / PARALLELS) * Math.PI - Math.PI / 2;
     const r = Math.cos(lat) * R, y = Math.sin(lat) * R;
     const c = new THREE.EllipseCurve(0, 0, r, r, 0, Math.PI * 2);
-    const pts = c.getPoints(120).map(p => new THREE.Vector3(p.x, y, p.y));
+    const pts = c.getPoints(160).map(p => new THREE.Vector3(p.x, y, p.y));
     globe.add(new THREE.LineLoop(new THREE.BufferGeometry().setFromPoints(pts), lineMat));
   }
-  // faint dark core so front lines read brighter than the back
-  globe.add(new THREE.Mesh(
-    new THREE.SphereGeometry(R * 0.99, 48, 32),
-    new THREE.MeshBasicMaterial({ color: 0x0c0c0c, transparent: true, opacity: 0.78 })
-  ));
   world.add(globe);
 
   // ---- Signal arcs: bright tube trails that emanate from the surface, bulge out, return ----
