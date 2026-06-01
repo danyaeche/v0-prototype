@@ -183,23 +183,43 @@ if (host) {
   }
 
   // ---- colored signal arcs + ring nodes ----
-  const SEG = 96, TAIL = 0.34, IPS = 6 * 6;
+  const SEG = 140, TAIL = 0.6, IPS = 6 * 6;   // longer lit tail, finer tube
   const ringTex = (() => {
     const c = document.createElement('canvas'); c.width = c.height = 64;
     const x = c.getContext('2d'); x.strokeStyle = '#ffffff'; x.lineWidth = 5;
     x.beginPath(); x.arc(32, 32, 20, 0, Math.PI*2); x.stroke();
     return new THREE.CanvasTexture(c);
   })();
+  // ---- part + manufacturer label data (shown on arc nodes, like the video's payment pills) ----
+  const LABELS = [
+    { p: 'Top tube assembly',     m: 'Hsinchu Precision',    ic: 'TT', bg: '#2f6f4f' },
+    { p: 'Seat component',        m: 'Taichung MetalWorks',  ic: 'SC', bg: '#3f6b8a' },
+    { p: 'Wheel interface',       m: 'Kaohsiung CNC',        ic: 'WI', bg: '#8a4dc2' },
+    { p: 'Chain mount',           m: 'Shenzhen RapidTool',   ic: 'CM', bg: '#b7791f' },
+    { p: 'Fork exit',             m: 'Hsinchu Precision',    ic: 'FX', bg: '#1c1c1c' },
+    { p: 'Dropout bracket',       m: 'Taichung MetalWorks',  ic: 'DB', bg: '#2f6f4f' },
+    { p: 'Bottom bracket shell',  m: 'Kaohsiung CNC',        ic: 'BB', bg: '#c0392b' },
+    { p: 'Head tube',             m: 'Shenzhen RapidTool',   ic: 'HT', bg: '#3f6b8a' },
+  ];
+  function makeLabelEl(d) {
+    const el = document.createElement('div');
+    el.className = 'glabel';
+    el.innerHTML = '<span class="ic" style="background:' + d.bg + '">' + d.ic + '</span>' +
+      '<span class="tx"><span class="p">' + d.p + '</span><br/><span class="m">' + d.m + '</span></span>';
+    host.appendChild(el);
+    return el;
+  }
+
   function pick() { return base[(Math.random() * COUNT) | 0]; }
   function makeArc() {
-    const o = { t: Math.random(), speed: 0.13 + Math.random() * 0.1 };
+    const o = { t: Math.random(), speed: 0.075 + Math.random() * 0.05 };   // slower cadence
     const setup = () => {
       let a = pick(), b = pick(), guard = 0;
-      // favour wide spans so the arc sweeps across the globe like the video
-      while (a.distanceTo(b) < 1.7 && guard++ < 60) b = pick();
+      // favour very wide spans so the arc travels a long way across the globe (more curvature)
+      while (a.distanceTo(b) < 2.4 && guard++ < 80) b = pick();
       o.a = a.clone().multiplyScalar(R); const bEnd = b.clone().multiplyScalar(R);
-      // big lift → arc bulges high above the surface
-      const ctrl = o.a.clone().add(bEnd).multiplyScalar(0.5).setLength(R + R * (0.55 + Math.random() * 0.6));
+      // much bigger lift → arc bows high above the surface like the video
+      const ctrl = o.a.clone().add(bEnd).multiplyScalar(0.5).setLength(R + R * (0.9 + Math.random() * 0.7));
       o.curve = new THREE.QuadraticBezierCurve3(o.a, ctrl, bEnd);
       o.color = colByLon(a.clone().add(b).multiplyScalar(0.5));
       const g = new THREE.TubeGeometry(o.curve, SEG, 0.011, 6, false);
@@ -210,6 +230,18 @@ if (host) {
       if (!o.node) { o.node = new THREE.Sprite(new THREE.SpriteMaterial({ map: ringTex,
         transparent: true, depthWrite: false, opacity: 0 })); o.node.scale.setScalar(0.3); world.add(o.node); }
       o.node.material.color = o.color; o.node.position.copy(o.a);
+      // destination ring node (where the trail lands & the label appears)
+      if (!o.endNode) { o.endNode = new THREE.Sprite(new THREE.SpriteMaterial({ map: ringTex,
+        transparent: true, depthWrite: false, opacity: 0 })); o.endNode.scale.setScalar(0.3); world.add(o.endNode); }
+      o.endNode.material.color = o.color; o.endNode.position.copy(bEnd);
+      o.bEnd = bEnd.clone();
+      // assign a fresh part/manufacturer label
+      o.label = LABELS[(Math.random() * LABELS.length) | 0];
+      if (!o.labelEl) o.labelEl = makeLabelEl(o.label);
+      else o.labelEl.querySelector('.ic').style.background = o.label.bg,
+           o.labelEl.querySelector('.ic').textContent = o.label.ic,
+           o.labelEl.querySelector('.p').textContent = o.label.p,
+           o.labelEl.querySelector('.m').textContent = o.label.m;
     };
     setup(); o.respawn = setup;
     return o;
@@ -260,6 +292,7 @@ if (host) {
         }
         geo.getAttribute('alpha').needsUpdate = true;
       }
+      const W = host.clientWidth, H = host.clientHeight;
       arcs.forEach(o => {
         o.t += o.speed * dt;
         if (o.t >= 1 + TAIL) { o.t = 0; o.respawn(); }
@@ -268,7 +301,22 @@ if (host) {
         const count = Math.max(0, Math.round(head * SEG) * IPS - start);
         o.mesh.geometry.setDrawRange(start, count);
         const f = Math.sin(Math.min(1, o.t) * Math.PI);
-        o.mesh.material.opacity = 0.8 * f; o.node.material.opacity = 0.95 * f;
+        o.mesh.material.opacity = 0.8 * f;
+        o.node.material.opacity = 0.95 * f * Math.max(0, 1 - o.t * 1.4);  // source fades as it leaves
+        // destination node + label appear once the trail head arrives
+        const arrived = o.t > 0.82;
+        o.endNode.material.opacity = arrived ? 0.95 * f : 0;
+        if (o.labelEl) {
+          if (arrived && o.bEnd) {
+            tmp.copy(o.bEnd).project(camera);
+            const x = (tmp.x * 0.5 + 0.5) * W, y = (-tmp.y * 0.5 + 0.5) * H;
+            o.labelEl.style.left = (x + 22) + 'px';
+            o.labelEl.style.top = y + 'px';
+            o.labelEl.style.opacity = (tmp.z < 1) ? '1' : '0';
+          } else {
+            o.labelEl.style.opacity = '0';
+          }
+        }
       });
     }
     renderer.render(scene, camera);
