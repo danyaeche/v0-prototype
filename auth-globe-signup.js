@@ -12,10 +12,10 @@ if (host) {
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(34, 1, 0.1, 100);
   camera.position.set(0, 0, 10.5);
-  camera.lookAt(0, 1.7, 0);          // aim up → globe's top sits in the upper-middle
+  camera.lookAt(0, -1.4, 0);         // aim down → globe sits lower, top at upper-middle
 
   const world = new THREE.Group();
-  world.position.y = 1.7;            // lift the globe up the panel
+  world.position.y = -1.4;           // nudge the globe down the panel
   world.rotation.z = 0.06;
   scene.add(world);
 
@@ -64,7 +64,7 @@ if (host) {
   const arcs = [];
 
   function build(isLand) {
-    const CAND = 55000;
+    const CAND = 26000;
     const golden = Math.PI * (3 - Math.sqrt(5));
     const dir = [], cArr = [], sArr = [];
     for (let i = 0; i < CAND; i++) {
