@@ -10,7 +10,7 @@ if (host) {
 
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(34, 1, 0.1, 100);
-  camera.position.set(0, 0, 13.5);
+  camera.position.set(0, 0, 16);
   camera.lookAt(0, 0.5, 0);
 
   scene.add(new THREE.AmbientLight(0xffffff, 0.6));
@@ -51,22 +51,42 @@ if (host) {
   ));
   world.add(globe);
 
-  // ---- Orbit trails only (no satellite spheres) — thin tilted rings ----
-  const ringMat = (o) => new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: o });
-  const orbits = [
-    { r: R * 1.42, tiltX: 1.25, tiltY: 0.15, ringOp: 0.18 },
-    { r: R * 1.68, tiltX: 0.95, tiltY: -0.5, ringOp: 0.12 },
-    { r: R * 1.95, tiltX: 1.4,  tiltY: 0.6,  ringOp: 0.08 },
-  ];
-  const rings = orbits.map(o => {
-    const ring = new THREE.Group();
-    ring.rotation.x = o.tiltX; ring.rotation.y = o.tiltY;
-    const c = new THREE.EllipseCurve(0, 0, o.r, o.r, 0, Math.PI * 2);
-    const pts = c.getPoints(160).map(p => new THREE.Vector3(p.x, p.y, 0));
-    ring.add(new THREE.LineLoop(new THREE.BufferGeometry().setFromPoints(pts), ringMat(o.ringOp)));
-    world.add(ring);
-    return ring;
-  });
+  // ---- Signal arcs: trails that emanate from the globe surface, bulge out, and return ----
+  const SEG = 64;                 // points along each arc
+  const TAIL = 0.32;              // fraction of the arc lit at once (the moving "comet")
+  function randPt() {             // random point on the unit sphere → scaled to R
+    const u = Math.random() * 2 - 1, th = Math.random() * Math.PI * 2;
+    const s = Math.sqrt(1 - u * u);
+    return new THREE.Vector3(Math.cos(th) * s, u, Math.sin(th) * s).multiplyScalar(R);
+  }
+  // quadratic bezier between two surface points, control point pushed outward
+  function arcPoint(a, b, lift, t) {
+    const mid = a.clone().add(b).multiplyScalar(0.5);
+    const ctrl = mid.clone().setLength(R + lift);
+    const it = 1 - t;
+    return a.clone().multiplyScalar(it * it)
+      .add(ctrl.clone().multiplyScalar(2 * it * t))
+      .add(b.clone().multiplyScalar(t * t));
+  }
+  function makeArc() {
+    let a = randPt(), b = randPt();
+    while (a.distanceTo(b) < R) b = randPt();      // ensure a real span
+    const lift = R * (0.5 + Math.random() * 0.7);
+    const path = [];
+    for (let i = 0; i <= SEG; i++) path.push(arcPoint(a, b, lift, i / SEG));
+    const geo = new THREE.BufferGeometry().setFromPoints(path);
+    const mat = new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.5 });
+    const line = new THREE.Line(geo, mat);
+    line.geometry.setDrawRange(0, 0);
+    world.add(line);
+    return { line, path, t: Math.random(), speed: 0.14 + Math.random() * 0.16,
+             respawn() { a = randPt(); b = randPt();
+               while (a.distanceTo(b) < R) b = randPt();
+               const lf = R * (0.5 + Math.random() * 0.7);
+               for (let i = 0; i <= SEG; i++) path[i].copy(arcPoint(a, b, lf, i / SEG));
+               geo.setFromPoints(path); } };
+  }
+  const arcs = Array.from({ length: 5 }, makeArc);
 
   function resize() {
     const w = host.clientWidth, h = host.clientHeight;
@@ -77,11 +97,24 @@ if (host) {
   new ResizeObserver(resize).observe(host);
   resize();
 
+  let last = performance.now();
   (function animate() {
     requestAnimationFrame(animate);
+    const now = performance.now(), dt = Math.min(0.05, (now - last) / 1000); last = now;
     globe.rotation.y += 0.004;                 // slow globe spin
-    rings[0].rotation.z += 0.0016;             // gentle drift on the trails
-    rings[1].rotation.z -= 0.0011;
+
+    arcs.forEach(o => {
+      o.t += o.speed * dt;
+      if (o.t >= 1 + TAIL) { o.t = 0; o.respawn(); }   // returned to surface → new arc
+      // a lit window [head-TAIL, head] sweeps from launch point back down to the surface
+      const head = Math.min(1, o.t);
+      const tail = Math.max(0, o.t - TAIL);
+      const start = Math.round(tail * SEG);
+      const count = Math.max(0, Math.round(head * SEG) - start);
+      o.line.geometry.setDrawRange(start, count);
+      // fade in as it leaves the surface, fade out as it returns
+      o.line.material.opacity = 0.55 * Math.sin(Math.min(1, o.t) * Math.PI);
+    });
     renderer.render(scene, camera);
   })();
 }
