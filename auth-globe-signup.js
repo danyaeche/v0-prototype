@@ -21,13 +21,13 @@ if (host) {
 
   const R = 3.0;                      // large so it overflows the panel
 
-  // Stripe-ish gradient: violet → purple → pink → coral → orange
-  const STOPS = [0x7a6cff, 0xa64dff, 0xe24bd6, 0xff4d8d, 0xff7a4d].map(h => new THREE.Color(h));
+  // monochrome white → grey by latitude (top whiter, lower greyer)
+  const STOPS = [0xffffff, 0xe6eaea, 0xb6bcbd, 0x9aa1a2].map(h => new THREE.Color(h));
   const grad = t => { const x = Math.min(0.9999, Math.max(0, t)) * (STOPS.length - 1);
     const i = Math.floor(x); return STOPS[i].clone().lerp(STOPS[i + 1], x - i); };
 
-  // ---- Particle sphere (Fibonacci) ----
-  const COUNT = 2200;
+  // ---- Particle sphere (Fibonacci), fine & plentiful ----
+  const COUNT = 4200;
   const base = [];
   const golden = Math.PI * (3 - Math.sqrt(5));
   const pos = new Float32Array(COUNT * 3);
@@ -41,11 +41,10 @@ if (host) {
     const v = new THREE.Vector3(Math.cos(th) * rr, y, Math.sin(th) * rr);
     base.push(v);
     pos[i*3] = v.x * R; pos[i*3+1] = v.y * R; pos[i*3+2] = v.z * R;
-    // color by longitude so the gradient wraps around the globe
-    const lon = (Math.atan2(v.z, v.x) + Math.PI) / (2 * Math.PI);
-    const c = grad(lon);
+    // white at top → grey toward the bottom
+    const c = grad((1 - (v.y * 0.5 + 0.5)));
     col[i*3] = c.r; col[i*3+1] = c.g; col[i*3+2] = c.b;
-    sz[i] = 0.55 + Math.random() * 0.9;   // jitter for the scattered feel
+    sz[i] = 0.5 + Math.random() * 0.8;
   }
   const geo = new THREE.BufferGeometry();
   geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
@@ -100,9 +99,8 @@ if (host) {
       o.a = a.clone().multiplyScalar(R); const bEnd = b.clone().multiplyScalar(R);
       const ctrl = o.a.clone().add(bEnd).multiplyScalar(0.5).setLength(R + R * (0.2 + Math.random() * 0.4));
       o.curve = new THREE.QuadraticBezierCurve3(o.a, ctrl, bEnd);
-      const lon = (Math.atan2((a.z + b.z) / 2, (a.x + b.x) / 2) + Math.PI) / (2 * Math.PI);
-      o.color = grad(lon);
-      const g = new THREE.TubeGeometry(o.curve, SEG, 0.014, 6, false);
+      o.color = new THREE.Color(0xe8ecec);
+      const g = new THREE.TubeGeometry(o.curve, SEG, 0.012, 6, false);
       if (o.mesh) { o.mesh.geometry.dispose(); o.mesh.geometry = g; o.mesh.material.color = o.color; }
       else { o.mesh = new THREE.Mesh(g, new THREE.MeshBasicMaterial({ color: o.color,
         transparent: true, opacity: 0.8, depthWrite: false }));
@@ -135,12 +133,14 @@ if (host) {
     const now = performance.now(), dt = Math.min(0.05, (now - last) / 1000); last = now;
     dots.rotation.y += 0.0024;
 
-    if ((frame++ % 3) === 0) {
+    if ((frame++ % 2) === 0) {
       const q = dots.quaternion;
       for (let i = 0; i < COUNT; i++) {
         tmp.copy(base[i]).applyQuaternion(q);
-        const front = (tmp.z + 1) * 0.5;          // far side faint, front bright
-        arr[i] = 0.16 + 0.84 * front * front;
+        const front = tmp.z > -0.15 ? 1 : 0.18;   // hide most of the far side
+        const rim = 1 - Math.abs(tmp.z);          // 1 at the silhouette edge, 0 at view poles
+        // Stripe look: glowing dense rim, sparse see-through face
+        arr[i] = front * (0.12 + 0.88 * Math.pow(rim, 2.4));
       }
       aAttr.needsUpdate = true;
     }
