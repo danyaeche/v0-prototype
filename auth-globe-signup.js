@@ -10,15 +10,15 @@ if (host) {
   host.appendChild(renderer.domElement);
 
   const scene = new THREE.Scene();
-  // Stripe framing: full globe, large, centered horizontally, sitting slightly low so the
-  // top curve shows in the upper third and the bottom bleeds off the panel.
+  // Stripe framing: globe is huge and only partly shown — it emerges from the lower/back of
+  // the panel, top curve in the upper area, the rest bleeding off the bottom & sides.
   const camera = new THREE.PerspectiveCamera(34, 1, 0.1, 100);
-  camera.position.set(0, 0, 12.5);
-  camera.lookAt(0, -0.9, 0);
+  camera.position.set(0, 0, 8.2);
+  camera.lookAt(0, -1.9, 0);
 
   const world = new THREE.Group();
-  world.position.set(0, -0.9, 0);
-  world.rotation.z = 0.06;
+  world.position.set(0, -1.9, 0);
+  world.rotation.z = 0.05;
   scene.add(world);
 
   const R = 3.2;                       // big → overflows / clipped by the card
