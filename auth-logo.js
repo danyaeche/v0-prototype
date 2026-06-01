@@ -86,20 +86,20 @@ if (host) {
   function makeArc() {
     const o = { curve: newCurve(), t: Math.random(), speed: 0.18 + Math.random() * 0.14, mesh: null };
     const rebuild = () => {
-      const geo = new THREE.TubeGeometry(o.curve, SEG, 0.03, RAD, false);
+      const geo = new THREE.TubeGeometry(o.curve, SEG, 0.012, RAD, false);
       if (o.mesh) { o.mesh.geometry.dispose(); o.mesh.geometry = geo; }
       else {
         const mat = new THREE.MeshBasicMaterial({ color: ARC_COLOR, transparent: true,
-          opacity: 0.4, depthWrite: false });
+          opacity: 0.35, depthWrite: false });
         o.mesh = new THREE.Mesh(geo, mat); world.add(o.mesh);
       }
       o.mesh.geometry.setDrawRange(0, 0);
     };
     rebuild();
-    // small soft head dot (no additive glow)
+    // tiny soft head dot
     o.head = new THREE.Sprite(new THREE.SpriteMaterial({ map: dotTex, color: ARC_COLOR,
       transparent: true, depthWrite: false, opacity: 0 }));
-    o.head.scale.setScalar(0.26);
+    o.head.scale.setScalar(0.14);
     world.add(o.head);
     o.respawn = () => { o.curve = newCurve(); rebuild(); };
     return o;
@@ -130,11 +130,11 @@ if (host) {
       const start = Math.round(tail * SEG) * IPS;
       const count = Math.max(0, Math.round(head * SEG) * IPS - start);
       o.mesh.geometry.setDrawRange(start, count);
-      o.mesh.material.opacity = 0.42 * Math.sin(Math.min(1, o.t) * Math.PI);
+      o.mesh.material.opacity = 0.35 * Math.sin(Math.min(1, o.t) * Math.PI);
       // soft head rides the leading tip
       if (head < 1) {
         o.head.position.copy(o.curve.getPoint(head));
-        o.head.material.opacity = 0.5 * Math.sin(head * Math.PI);
+        o.head.material.opacity = 0.3 * Math.sin(head * Math.PI);
       } else {
         o.head.material.opacity = 0;
       }
