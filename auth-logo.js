@@ -51,60 +51,47 @@ if (host) {
   ));
   world.add(globe);
 
-  // ---- Signal arcs: bright tube trails that emanate from the surface, bulge out, return ----
-  const SEG = 90;                 // tubular segments along each arc
-  const RAD = 8;                  // radial segments of the tube
-  const IPS = RAD * 6;            // index entries per tubular segment (for drawRange)
-  const TAIL = 0.34;              // fraction of the arc lit at once (the moving "comet")
-  const ARC_COLOR = 0xcfe0e0;     // soft, dim white-grey (not a bright glow)
+  // ---- Signal arcs: bigger/longer/slower trails that emanate, bow high & return (same as signup) ----
+  const SEG = 140, TAIL = 0.6, RAD = 6, IPS = RAD * 6;
+  const ARC_COLOR = 0xe6ecec;     // soft white-grey
 
+  const ringTex = (() => {
+    const c = document.createElement('canvas'); c.width = c.height = 64;
+    const x = c.getContext('2d'); x.strokeStyle = '#ffffff'; x.lineWidth = 5;
+    x.beginPath(); x.arc(32, 32, 20, 0, Math.PI*2); x.stroke();
+    return new THREE.CanvasTexture(c);
+  })();
   function randPt() {             // random point on the unit sphere → scaled to R
     const u = Math.random() * 2 - 1, th = Math.random() * Math.PI * 2;
     const s = Math.sqrt(1 - u * u);
     return new THREE.Vector3(Math.cos(th) * s, u, Math.sin(th) * s).multiplyScalar(R);
   }
-  function newCurve() {
-    let a = randPt(), b = randPt();
-    while (a.distanceTo(b) < R) b = randPt();            // ensure a real span
-    const mid = a.clone().add(b).multiplyScalar(0.5);
-    const ctrl = mid.setLength(R + R * (0.55 + Math.random() * 0.7));
-    return new THREE.QuadraticBezierCurve3(a, ctrl, b);
-  }
-
-  // glowing round sprite for the comet head
-  const dotTex = (() => {
-    const c = document.createElement('canvas'); c.width = c.height = 64;
-    const x = c.getContext('2d');
-    const g = x.createRadialGradient(32, 32, 0, 32, 32, 32);
-    g.addColorStop(0, 'rgba(230,238,238,0.85)');
-    g.addColorStop(0.4, 'rgba(207,224,224,0.5)');
-    g.addColorStop(1, 'rgba(207,224,224,0)');
-    x.fillStyle = g; x.beginPath(); x.arc(32, 32, 32, 0, Math.PI*2); x.fill();
-    return new THREE.CanvasTexture(c);
-  })();
-
   function makeArc() {
-    const o = { curve: newCurve(), t: Math.random(), speed: 0.18 + Math.random() * 0.14, mesh: null };
-    const rebuild = () => {
-      const geo = new THREE.TubeGeometry(o.curve, SEG, 0.012, RAD, false);
-      if (o.mesh) { o.mesh.geometry.dispose(); o.mesh.geometry = geo; }
-      else {
-        const mat = new THREE.MeshBasicMaterial({ color: ARC_COLOR, transparent: true,
-          opacity: 0.35, depthWrite: false });
-        o.mesh = new THREE.Mesh(geo, mat); world.add(o.mesh);
-      }
+    const o = { t: Math.random(), speed: 0.075 + Math.random() * 0.05 };   // slower cadence
+    const setup = () => {
+      let a = randPt(), b = randPt(), guard = 0;
+      // wide spans so the arc travels far across the globe (more curvature)
+      while (a.distanceTo(b) < R * 1.2 && guard++ < 80) b = randPt();
+      o.a = a.clone(); const bEnd = b.clone();
+      // big lift → arc bows high above the surface
+      const ctrl = o.a.clone().add(bEnd).multiplyScalar(0.5).setLength(R + R * (0.9 + Math.random() * 0.7));
+      o.curve = new THREE.QuadraticBezierCurve3(o.a, ctrl, bEnd);
+      const g = new THREE.TubeGeometry(o.curve, SEG, 0.012, RAD, false);
+      if (o.mesh) { o.mesh.geometry.dispose(); o.mesh.geometry = g; }
+      else { o.mesh = new THREE.Mesh(g, new THREE.MeshBasicMaterial({ color: ARC_COLOR,
+        transparent: true, opacity: 0.5, depthWrite: false })); world.add(o.mesh); }
       o.mesh.geometry.setDrawRange(0, 0);
+      if (!o.node) { o.node = new THREE.Sprite(new THREE.SpriteMaterial({ map: ringTex, color: ARC_COLOR,
+        transparent: true, depthWrite: false, opacity: 0 })); o.node.scale.setScalar(0.16); world.add(o.node); }
+      o.node.position.copy(o.a);
+      if (!o.endNode) { o.endNode = new THREE.Sprite(new THREE.SpriteMaterial({ map: ringTex, color: ARC_COLOR,
+        transparent: true, depthWrite: false, opacity: 0 })); o.endNode.scale.setScalar(0.16); world.add(o.endNode); }
+      o.endNode.position.copy(bEnd);
     };
-    rebuild();
-    // tiny soft head dot
-    o.head = new THREE.Sprite(new THREE.SpriteMaterial({ map: dotTex, color: ARC_COLOR,
-      transparent: true, depthWrite: false, opacity: 0 }));
-    o.head.scale.setScalar(0.14);
-    world.add(o.head);
-    o.respawn = () => { o.curve = newCurve(); rebuild(); };
+    setup(); o.respawn = setup;
     return o;
   }
-  const arcs = Array.from({ length: 14 }, makeArc);
+  const arcs = Array.from({ length: 8 }, makeArc);
 
   function resize() {
     const w = host.clientWidth, h = host.clientHeight;
@@ -124,20 +111,14 @@ if (host) {
     arcs.forEach(o => {
       o.t += o.speed * dt;
       if (o.t >= 1 + TAIL) { o.t = 0; o.respawn(); }   // returned to surface → new arc
-      // a lit window [head-TAIL, head] sweeps from launch point back down to the surface
-      const head = Math.min(1, o.t);
-      const tail = Math.max(0, o.t - TAIL);
+      const head = Math.min(1, o.t), tail = Math.max(0, o.t - TAIL);
       const start = Math.round(tail * SEG) * IPS;
       const count = Math.max(0, Math.round(head * SEG) * IPS - start);
       o.mesh.geometry.setDrawRange(start, count);
-      o.mesh.material.opacity = 0.35 * Math.sin(Math.min(1, o.t) * Math.PI);
-      // soft head rides the leading tip
-      if (head < 1) {
-        o.head.position.copy(o.curve.getPoint(head));
-        o.head.material.opacity = 0.3 * Math.sin(head * Math.PI);
-      } else {
-        o.head.material.opacity = 0;
-      }
+      const f = Math.sin(Math.min(1, o.t) * Math.PI);
+      o.mesh.material.opacity = 0.5 * f;
+      o.node.material.opacity = 0.7 * f * Math.max(0, 1 - o.t * 1.4);   // source fades as it leaves
+      o.endNode.material.opacity = (o.t > 0.82) ? 0.7 * f : 0;          // destination on arrival
     });
     renderer.render(scene, camera);
   })();
