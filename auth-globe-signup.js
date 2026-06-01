@@ -93,7 +93,10 @@ if (host) {
       void main() {
         vA = alpha; vC = pcolor;
         vec4 mv = modelViewMatrix * vec4(position, 1.0);
-        gl_PointSize = uSize * psize * (1.0 / -mv.z) * 10.0;
+        // normal in view space → front-facing (nz>0) points read larger/sharper than receding ones
+        vec3 nrm = normalize(mat3(modelViewMatrix) * normalize(position));
+        float depth = 0.55 + 0.45 * smoothstep(-0.4, 1.0, nrm.z);
+        gl_PointSize = uSize * psize * depth * (1.0 / -mv.z) * 10.0;
         gl_Position = projectionMatrix * mv;
       }`,
     fragmentShader: `
@@ -104,31 +107,59 @@ if (host) {
   let dots, geo, base = [], COUNT = 0;
   const arcs = [];
 
+  let baseA = [];   // per-point base opacity (multiplied by the depth/rim weighting each frame)
+
   function build(isLand) {
-    // Regular lat/long dot matrix (rows follow the curvature, even spacing via cos(lat)),
-    // sampled against the land mask → classic dotted-continents globe.
-    // ZOOM OUT the continents: tile the map MAPX times around the globe so each landmass is
-    // smaller and more continents come into view as it rotates. Denser grid keeps them crisp.
-    const ROWS = 168;                    // latitude bands (denser → smaller features stay clean)
-    const BASE = 220;                    // max dots on the equator row
+    // Organic point cloud: a lat/long grid decides continent membership (so landmasses stay
+    // legible), but each point gets positional jitter, a size from a small-biased distribution,
+    // a subtle base opacity, and occasional dropouts — so the cluster feels alive, not gridded.
+    // ZOOM OUT the continents: tile the map MAPX times around the globe.
+    const ROWS = 190;                    // latitude bands
+    const BASE = 250;                    // max dots on the equator row
     const MAPX = 2.0;                    // horizontal map repeats → continents ~half size
     const MAPY = 1.45;                   // vertical squeeze so they aren't stretched
     const dir = [], cArr = [], sArr = [];
+    baseA = [];
+
+    // small random unit-tangent jitter on the sphere, magnitude ~jit radians
+    const jitter = (v, jit) => {
+      const t1 = new THREE.Vector3(0, 1, 0).cross(v);
+      if (t1.lengthSq() < 1e-6) t1.set(1, 0, 0);
+      t1.normalize();
+      const t2 = v.clone().cross(t1).normalize();
+      const a = Math.random() * Math.PI * 2, m = Math.random() * jit;
+      return v.clone()
+        .addScaledVector(t1, Math.cos(a) * m)
+        .addScaledVector(t2, Math.sin(a) * m)
+        .normalize();
+    };
+
     for (let r = 0; r < ROWS; r++) {
-      const lat = (r / (ROWS - 1) - 0.5) * Math.PI;     // -PI/2 .. PI/2
+      const lat = (r / (ROWS - 1) - 0.5) * Math.PI;
       const cosL = Math.cos(lat);
-      const n = Math.max(1, Math.round(BASE * cosL));    // fewer dots near the poles
+      const n = Math.max(1, Math.round(BASE * cosL));
+      const cellLon = (Math.PI * 2) / n;                 // angular cell width at this row
+      const cellLat = Math.PI / ROWS;
+      const jit = Math.min(cellLon, cellLat) * 0.62;     // jitter ~⅔ of a cell
       const y = Math.sin(lat), rr = cosL;
       for (let c = 0; c < n; c++) {
-        const lon = (c / n) * Math.PI * 2;               // 0..2PI
-        const v = new THREE.Vector3(Math.cos(lon) * rr, y, Math.sin(lon) * rr);
-        const u = ((0.5 + lon / (2 * Math.PI)) * MAPX) % 1;        // zoomed-out longitude
-        const vv = (0.5 + (0.5 - lat / Math.PI - 0.5) * MAPY);     // zoomed-out latitude
+        const lon = (c / n) * Math.PI * 2;
+        // membership decided on the CLEAN grid sample → continent shapes stay crisp
+        const u = ((0.5 + lon / (2 * Math.PI)) * MAPX) % 1;
+        const vv = 0.5 + (0.5 - lat / Math.PI - 0.5) * MAPY;
         if (vv < 0 || vv > 1 || !isLand(u, vv)) continue;
+        // density voids: drop a few points to create organic gaps
+        if (Math.random() < 0.10) continue;
+
+        const v0 = new THREE.Vector3(Math.cos(lon) * rr, y, Math.sin(lon) * rr);
+        const v = jitter(v0, jit);                       // organic off-grid position
         dir.push(v);
-        const col = grad((0.5 + lon / (2 * Math.PI)));   // white→grey by true longitude
+        const col = grad((0.5 + lon / (2 * Math.PI)));
         cArr.push(col.r, col.g, col.b);
-        sArr.push(0.85 + Math.random() * 0.3);            // near-uniform tiny dots
+        // size: small-biased distribution → mostly tiny specks, a few larger points
+        sArr.push(0.45 + Math.pow(Math.random(), 1.9) * 1.7);
+        // subtle per-point base opacity
+        baseA.push(0.62 + Math.random() * 0.38);
       }
     }
     base = dir; COUNT = dir.length;
@@ -218,8 +249,8 @@ if (host) {
           tmp.copy(base[i]).applyQuaternion(q);
           const front = (tmp.z + 1) * 0.5;          // 0 back, 1 front
           const rim = 1 - Math.abs(tmp.z);          // 1 at the silhouette edge
-          // bright, high-contrast land dots; rim a touch brighter, only the far side fades
-          arr[i] = (0.7 + 0.3 * Math.pow(rim, 1.5)) * (0.45 + 0.55 * front);
+          // bright high-contrast land dots; rim brighter, far side fades; × per-point base opacity
+          arr[i] = baseA[i] * (0.7 + 0.3 * Math.pow(rim, 1.5)) * (0.45 + 0.55 * front);
         }
         geo.getAttribute('alpha').needsUpdate = true;
       }
