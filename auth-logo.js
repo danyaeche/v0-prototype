@@ -51,42 +51,60 @@ if (host) {
   ));
   world.add(globe);
 
-  // ---- Signal arcs: trails that emanate from the globe surface, bulge out, and return ----
-  const SEG = 64;                 // points along each arc
-  const TAIL = 0.32;              // fraction of the arc lit at once (the moving "comet")
+  // ---- Signal arcs: bright tube trails that emanate from the surface, bulge out, return ----
+  const SEG = 90;                 // tubular segments along each arc
+  const RAD = 8;                  // radial segments of the tube
+  const IPS = RAD * 6;            // index entries per tubular segment (for drawRange)
+  const TAIL = 0.34;              // fraction of the arc lit at once (the moving "comet")
+  const ARC_COLOR = 0xbfe9ff;     // soft cyan-white so it reads against the dark panel
+
   function randPt() {             // random point on the unit sphere → scaled to R
     const u = Math.random() * 2 - 1, th = Math.random() * Math.PI * 2;
     const s = Math.sqrt(1 - u * u);
     return new THREE.Vector3(Math.cos(th) * s, u, Math.sin(th) * s).multiplyScalar(R);
   }
-  // quadratic bezier between two surface points, control point pushed outward
-  function arcPoint(a, b, lift, t) {
-    const mid = a.clone().add(b).multiplyScalar(0.5);
-    const ctrl = mid.clone().setLength(R + lift);
-    const it = 1 - t;
-    return a.clone().multiplyScalar(it * it)
-      .add(ctrl.clone().multiplyScalar(2 * it * t))
-      .add(b.clone().multiplyScalar(t * t));
-  }
-  function makeArc() {
+  function newCurve() {
     let a = randPt(), b = randPt();
-    while (a.distanceTo(b) < R) b = randPt();      // ensure a real span
-    const lift = R * (0.5 + Math.random() * 0.7);
-    const path = [];
-    for (let i = 0; i <= SEG; i++) path.push(arcPoint(a, b, lift, i / SEG));
-    const geo = new THREE.BufferGeometry().setFromPoints(path);
-    const mat = new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.5 });
-    const line = new THREE.Line(geo, mat);
-    line.geometry.setDrawRange(0, 0);
-    world.add(line);
-    return { line, path, t: Math.random(), speed: 0.14 + Math.random() * 0.16,
-             respawn() { a = randPt(); b = randPt();
-               while (a.distanceTo(b) < R) b = randPt();
-               const lf = R * (0.5 + Math.random() * 0.7);
-               for (let i = 0; i <= SEG; i++) path[i].copy(arcPoint(a, b, lf, i / SEG));
-               geo.setFromPoints(path); } };
+    while (a.distanceTo(b) < R) b = randPt();            // ensure a real span
+    const mid = a.clone().add(b).multiplyScalar(0.5);
+    const ctrl = mid.setLength(R + R * (0.55 + Math.random() * 0.7));
+    return new THREE.QuadraticBezierCurve3(a, ctrl, b);
   }
-  const arcs = Array.from({ length: 5 }, makeArc);
+
+  // glowing round sprite for the comet head
+  const dotTex = (() => {
+    const c = document.createElement('canvas'); c.width = c.height = 64;
+    const x = c.getContext('2d');
+    const g = x.createRadialGradient(32, 32, 0, 32, 32, 32);
+    g.addColorStop(0, 'rgba(255,255,255,1)');
+    g.addColorStop(0.4, 'rgba(210,240,255,0.85)');
+    g.addColorStop(1, 'rgba(190,233,255,0)');
+    x.fillStyle = g; x.beginPath(); x.arc(32, 32, 32, 0, Math.PI*2); x.fill();
+    return new THREE.CanvasTexture(c);
+  })();
+
+  function makeArc() {
+    const o = { curve: newCurve(), t: Math.random(), speed: 0.18 + Math.random() * 0.14, mesh: null };
+    const rebuild = () => {
+      const geo = new THREE.TubeGeometry(o.curve, SEG, 0.045, RAD, false);
+      if (o.mesh) { o.mesh.geometry.dispose(); o.mesh.geometry = geo; }
+      else {
+        const mat = new THREE.MeshBasicMaterial({ color: ARC_COLOR, transparent: true,
+          opacity: 0.95, blending: THREE.AdditiveBlending, depthWrite: false });
+        o.mesh = new THREE.Mesh(geo, mat); world.add(o.mesh);
+      }
+      o.mesh.geometry.setDrawRange(0, 0);
+    };
+    rebuild();
+    // glowing head dot
+    o.head = new THREE.Sprite(new THREE.SpriteMaterial({ map: dotTex, color: ARC_COLOR,
+      transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, opacity: 0 }));
+    o.head.scale.setScalar(0.5);
+    world.add(o.head);
+    o.respawn = () => { o.curve = newCurve(); rebuild(); };
+    return o;
+  }
+  const arcs = Array.from({ length: 6 }, makeArc);
 
   function resize() {
     const w = host.clientWidth, h = host.clientHeight;
@@ -109,11 +127,17 @@ if (host) {
       // a lit window [head-TAIL, head] sweeps from launch point back down to the surface
       const head = Math.min(1, o.t);
       const tail = Math.max(0, o.t - TAIL);
-      const start = Math.round(tail * SEG);
-      const count = Math.max(0, Math.round(head * SEG) - start);
-      o.line.geometry.setDrawRange(start, count);
-      // fade in as it leaves the surface, fade out as it returns
-      o.line.material.opacity = 0.55 * Math.sin(Math.min(1, o.t) * Math.PI);
+      const start = Math.round(tail * SEG) * IPS;
+      const count = Math.max(0, Math.round(head * SEG) * IPS - start);
+      o.mesh.geometry.setDrawRange(start, count);
+      o.mesh.material.opacity = 0.9 * Math.sin(Math.min(1, o.t) * Math.PI);
+      // glowing head rides the leading tip
+      if (head < 1) {
+        o.head.position.copy(o.curve.getPoint(head));
+        o.head.material.opacity = 0.95 * Math.sin(head * Math.PI);
+      } else {
+        o.head.material.opacity = 0;
+      }
     });
     renderer.render(scene, camera);
   })();
