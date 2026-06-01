@@ -25,6 +25,41 @@ if (host) {
 
   const R = 3.2;                       // big → overflows / clipped by the card
 
+  // ---- Silhouette outline: a billboarded great-circle ring, bright at the top, fading down
+  // the sides — delineates the top edge of the globe against the dark panel. ----
+  (() => {
+    const N = 320, pos = new Float32Array(N * 3), col = new Float32Array(N * 3);
+    for (let i = 0; i < N; i++) {
+      const a = (i / N) * Math.PI * 2;
+      const x = Math.cos(a) * R * 1.012, y = Math.sin(a) * R * 1.012;
+      pos[i*3] = x; pos[i*3+1] = y; pos[i*3+2] = 0;
+      const top = Math.max(0, y / R);            // 0 at equator/below, 1 at the very top
+      const b = Math.pow(top, 0.7);              // bright at the top, fade toward the sides
+      col[i*3] = b; col[i*3+1] = b; col[i*3+2] = b;
+    }
+    const g = new THREE.BufferGeometry();
+    g.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+    g.setAttribute('color', new THREE.BufferAttribute(col, 3));
+    const m = new THREE.LineBasicMaterial({ vertexColors: true, transparent: true,
+      opacity: 0.9, blending: THREE.AdditiveBlending, depthWrite: false });
+    world.add(new THREE.LineLoop(g, m));
+    // a soft second ring just outside for a subtle glow/gradient halo at the top
+    const pos2 = new Float32Array(N * 3), col2 = new Float32Array(N * 3);
+    for (let i = 0; i < N; i++) {
+      const a = (i / N) * Math.PI * 2;
+      const x = Math.cos(a) * R * 1.05, y = Math.sin(a) * R * 1.05;
+      pos2[i*3] = x; pos2[i*3+1] = y; pos2[i*3+2] = 0;
+      const top = Math.max(0, y / R);
+      const b = 0.4 * Math.pow(top, 1.4);
+      col2[i*3] = b; col2[i*3+1] = b; col2[i*3+2] = b;
+    }
+    const g2 = new THREE.BufferGeometry();
+    g2.setAttribute('position', new THREE.BufferAttribute(pos2, 3));
+    g2.setAttribute('color', new THREE.BufferAttribute(col2, 3));
+    world.add(new THREE.LineLoop(g2, new THREE.LineBasicMaterial({ vertexColors: true,
+      transparent: true, opacity: 0.6, blending: THREE.AdditiveBlending, depthWrite: false })));
+  })();
+
   // monochrome white → light-grey gradient (by longitude) — kept bright for contrast
   const STOPS = [0xffffff, 0xf2f4f4, 0xd6dcdc, 0xe8ecec, 0xffffff].map(h => new THREE.Color(h));
   const grad = t => { const x = Math.min(0.9999, Math.max(0, t)) * (STOPS.length - 1);
