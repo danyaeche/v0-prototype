@@ -1,12 +1,17 @@
 // Floating screen switcher — prototype navigation helper only.
 (function () {
   var screens = [
-    ["login.html", "5", "Login"],
-    ["signup.html", "6", "Sign up"],
-    ["parts.html", "1", "Parts"],
-    ["part-detail.html", "2", "Part detail"],
-    ["supplier-portal.html", "3", "Supplier"],
-    ["quote-submission.html", "4", "Quote"],
+    ["overview.html", "1", "Overview"],
+    ["parts.html", "2", "Parts"],
+    ["part-detail.html", "3", "Part detail"],
+    ["revision-diff.html", "4", "Revision diff"],
+    ["suppliers.html", "5", "Suppliers"],
+    ["activity.html", "6", "Activity"],
+    ["settings.html", "7", "Settings"],
+    ["supplier-portal.html", "8", "CM portal"],
+    ["quote-submission.html", "9", "Quote"],
+    ["login.html", "L", "Login"],
+    ["signup.html", "S", "Sign up"],
   ];
   var here = location.pathname.split("/").pop() || "login.html";
   var el = document.createElement("div");

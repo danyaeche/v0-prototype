@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Chorus · Settings</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+<style>
+  .set-wrap { max-width: 720px; }
+  .set-section { margin-bottom: 18px; }
+  .member { display:flex; align-items:center; gap:12px; padding:12px 18px; border-bottom:1px solid var(--line-2); }
+  .member:last-child { border-bottom:0; }
+  .member .av { width:32px; height:32px; border-radius:8px; background:var(--green); color:#fff; display:grid; place-items:center; font-size:12px; font-weight:600; flex:none; }
+  .member .grow { flex:1; }
+  .member .nm { font-size:13.5px; font-weight:500; }
+  .member .em { font-size:12px; color:var(--muted); }
+  .member .role { font-size:12px; color:var(--ink-2); background:#eef1f0; padding:3px 9px; border-radius:999px; }
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar" data-active=""></aside>
+  <main class="main">
+    <div class="page-head">
+      <div><h1>Settings</h1><div class="subtitle" style="margin:4px 0 0">ALSO · SimplyOps workspace</div></div>
+    </div>
+
+    <div class="set-wrap">
+      <!-- Notifications / email digest (v0 scope) -->
+      <div class="set-section">
+        <div class="panel">
+          <div class="panel-head"><h2>Notifications</h2></div>
+          <div class="set-row">
+            <div><div class="label">Daily email digest</div><div class="desc">One email each morning summarizing new comments, revisions, and quotes across parts you follow.</div></div>
+            <button class="toggle on" onclick="this.classList.toggle('on')"></button>
+          </div>
+          <div class="set-row">
+            <div><div class="label">New comment on a followed part</div><div class="desc">Notify me as soon as a brand teammate or CM comments.</div></div>
+            <button class="toggle on" onclick="this.classList.toggle('on')"></button>
+          </div>
+          <div class="set-row">
+            <div><div class="label">New revision uploaded</div><div class="desc">Notify me when any part gets a new CAD revision.</div></div>
+            <button class="toggle on" onclick="this.classList.toggle('on')"></button>
+          </div>
+          <div class="set-row">
+            <div><div class="label">Quote submitted by a CM</div><div class="desc">Notify me when a contract manufacturer submits a quote.</div></div>
+            <button class="toggle" onclick="this.classList.toggle('on')"></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Workspace members -->
+      <div class="set-section">
+        <div class="panel">
+          <div class="panel-head"><h2>Members</h2><a href="suppliers.html">Invite CM</a></div>
+          <div class="member"><div class="av">MK</div><div class="grow"><div class="nm">Mathieu Kury</div><div class="em">mkury@also.com</div></div><span class="role">Owner</span></div>
+          <div class="member"><div class="av" style="background:#3f6b8a">BC</div><div class="grow"><div class="nm">Benjamin Chen</div><div class="em">bchen@also.com</div></div><span class="role">ME</span></div>
+          <div class="member"><div class="av" style="background:#8a6d1f">TS</div><div class="grow"><div class="nm">Thomas Sullivan</div><div class="em">tsullivan@also.com</div></div><span class="role">Supply chain</span></div>
+        </div>
+      </div>
+
+      <!-- Workspace -->
+      <div class="set-section">
+        <div class="panel">
+          <div class="panel-head"><h2>Workspace</h2></div>
+          <div class="set-row"><div><div class="label">Workspace name</div><div class="desc">ALSO · SimplyOps</div></div><a class="btn btn--sm" href="#">Rename</a></div>
+          <div class="set-row"><div><div class="label">Active project</div><div class="desc">TM-4 Bike DFM — 5 parts, demo June 12</div></div><a class="btn btn--sm" href="parts.html">View</a></div>
+          <div class="set-row"><div><div class="label">Audit log</div><div class="desc">Full record of every comment, revision, quote, and magic-link open.</div></div><a class="btn btn--sm" href="activity.html">Open log</a></div>
+        </div>
+      </div>
+
+      <!-- Danger / session -->
+      <div class="set-section">
+        <div class="panel">
+          <div class="panel-head"><h2>Account</h2></div>
+          <div class="set-row"><div><div class="label">Sign out</div><div class="desc">End your session on this device.</div></div><a class="btn btn--sm" href="login.html">Sign out</a></div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+<script src="sidebar.js"></script>
+<script src="switcher.js"></script>
+</body>
+</html>

@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Chorus · Overview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+<style>
+  .tbl .thumb { width: 48px; height: 38px; background: #eef0f0; }
+  .thumb-img { width: 100%; height: 100%; object-fit: contain; display: block; }
+  .cols-2-13, .cols-2 { margin-bottom: 16px; }
+  .lrow.clickable { cursor: pointer; }
+  .lrow.clickable:hover { background: var(--green-50); }
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar" data-active="overview"></aside>
+
+  <main class="main">
+    <div class="page-head">
+      <h1>Overview</h1>
+      <div class="page-actions">
+        <a class="btn" href="suppliers.html">Invite CM</a>
+        <a class="btn btn--primary" href="part-detail.html">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg>
+          New part
+        </a>
+      </div>
+    </div>
+    <div class="subtitle">ALSO · SimplyOps — TM-4 Bike DFM cycle</div>
+
+    <div class="stat-grid">
+      <div class="stat">
+        <div class="k">Open parts</div>
+        <div class="v">5</div>
+        <div class="d">Across TM-4 Bike DFM</div>
+      </div>
+      <div class="stat">
+        <div class="k">Awaiting CM</div>
+        <div class="v accent">2</div>
+        <div class="d">Out for quote / pricing</div>
+      </div>
+      <div class="stat">
+        <div class="k">Quotes received</div>
+        <div class="v">3</div>
+        <div class="d">From 4 contract manufacturers</div>
+      </div>
+      <div class="stat">
+        <div class="k">Days to demo</div>
+        <div class="v">12</div>
+        <div class="d">Build review · June 12</div>
+      </div>
+    </div>
+
+    <div class="cols-2-13">
+      <!-- LEFT: parts needing attention -->
+      <div class="panel">
+        <div class="panel-head">
+          <h2>Parts needing attention</h2>
+          <a href="parts.html">All parts</a>
+        </div>
+        <div class="tbl-wrap" style="border:0;box-shadow:none;">
+          <table class="tbl">
+            <thead><tr><th>Part</th><th>Rev.</th><th>Status</th><th style="text-align:right">Updated</th></tr></thead>
+            <tbody>
+              <tr class="clickable" onclick="location.href='part-detail.html'">
+                <td><div class="part-cell"><span class="thumb"><img class="thumb-img" data-model="hub" alt="" /></span><span><span class="pname">Wheel interface - rear</span><br/><span class="pid">TM-4-1003</span></span></div></td>
+                <td>Rev 1</td><td><span class="badge badge--red">Needs quote</span></td><td style="text-align:right" class="muted">May 14</td>
+              </tr>
+              <tr class="clickable" onclick="location.href='part-detail.html'">
+                <td><div class="part-cell"><span class="thumb"><img class="thumb-img" data-model="fork" alt="" /></span><span><span class="pname">Fork exit - deferred end</span><br/><span class="pid">TM-4-1005</span></span></div></td>
+                <td>Rev 2</td><td><span class="badge badge--blue">Pricing</span></td><td style="text-align:right" class="muted">May 12</td>
+              </tr>
+              <tr class="clickable" onclick="location.href='part-detail.html'">
+                <td><div class="part-cell"><span class="thumb"><img class="thumb-img" data-model="tube" alt="" /></span><span><span class="pname">Top tube assembly</span><br/><span class="pid">TM-4-1001</span></span></div></td>
+                <td>Rev 3</td><td><span class="badge badge--green">New revision</span></td><td style="text-align:right" class="muted">May 16</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- RIGHT: recent activity -->
+      <div class="panel">
+        <div class="panel-head">
+          <h3>Recent activity</h3>
+          <a href="activity.html">View all activity</a>
+        </div>
+        <div class="panel-body">
+          <div class="timeline">
+            <div class="tl-item">
+              <div class="tl-ic blue"><svg viewBox="0 0 24 24" fill="none"><path d="M21 15a2 2 0 0 1-2 2H8l-4 4V5a2 2 0 0 1 2-2h13a2 2 0 0 1 2 2z" stroke="currentColor" stroke-width="1.6"/></svg></div>
+              <div class="tl-body">
+                <div class="tl-t"><b>Benjamin Chen</b> commented on <b>Fork exit - deferred end</b></div>
+                <div class="tl-m">"Wall thickness on the dropout still reads 1.8mm — can we hold 2.2mm for the weld?"</div>
+              </div>
+              <div class="tl-time">14m</div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-ic green"><svg viewBox="0 0 24 24" fill="none"><path d="M3 7h13l5 5-5 5H3z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg></div>
+              <div class="tl-body">
+                <div class="tl-t"><b>Hsinchu Precision</b> submitted a quote on <b>Top tube assembly</b></div>
+                <div class="tl-m">$41.20 / unit · 1,000 MOQ · 18-day lead</div>
+              </div>
+              <div class="tl-time">2h</div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-ic"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3 4 7.5v9L12 21l8-4.5v-9L12 3Z" stroke="currentColor" stroke-width="1.6"/><path d="M4 7.5 12 12l8-4.5" stroke="currentColor" stroke-width="1.6"/></svg></div>
+              <div class="tl-body">
+                <div class="tl-t"><b>Mathieu Kury</b> pushed <b>Rev 3</b> of <b>Top tube assembly</b></div>
+                <div class="tl-m">Redline applied · 3 dimensions changed · supersedes Rev 2</div>
+              </div>
+              <div class="tl-time">5h</div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-ic amber"><svg viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="9" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="currentColor" stroke-width="1.6"/></svg></div>
+              <div class="tl-body">
+                <div class="tl-t"><b>Taichung MetalWorks</b> opened the magic-link portal</div>
+                <div class="tl-m">Reviewing 4 parts · invited by Thomas Sullivan</div>
+              </div>
+              <div class="tl-time">Yesterday</div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-ic blue"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12a8 8 0 1 0 8-8" stroke="currentColor" stroke-width="1.6"/><path d="M12 7v5l3 2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+              <div class="tl-body">
+                <div class="tl-t">Daily digest sent to <b>3 contract manufacturers</b></div>
+                <div class="tl-m">2 parts awaiting response · 1 redline pending acknowledgement</div>
+              </div>
+              <div class="tl-time">Yesterday</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cols-2">
+      <!-- Active CMs -->
+      <div class="panel">
+        <div class="panel-head">
+          <h3>Active CMs</h3>
+          <a href="suppliers.html">All suppliers</a>
+        </div>
+        <div class="panel-body">
+          <div class="lrow clickable" onclick="location.href='supplier-portal.html'">
+            <div class="grow">
+              <div class="t">Hsinchu Precision</div>
+              <div class="s">Hsinchu, Taiwan · quoting 2 parts</div>
+            </div>
+            <span class="pill green"><span class="dot"></span>Quote in</span>
+          </div>
+          <div class="lrow clickable" onclick="location.href='supplier-portal.html'">
+            <div class="grow">
+              <div class="t">Taichung MetalWorks</div>
+              <div class="s">Taichung, Taiwan · reviewing 4 parts</div>
+            </div>
+            <span class="pill amber"><span class="dot"></span>In review</span>
+          </div>
+          <div class="lrow clickable" onclick="location.href='supplier-portal.html'">
+            <div class="grow">
+              <div class="t">Kaohsiung CNC</div>
+              <div class="s">Kaohsiung, Taiwan · invited May 16</div>
+            </div>
+            <span class="pill muted"><span class="dot"></span>Awaiting open</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- DFM cycle status -->
+      <div class="panel">
+        <div class="panel-head">
+          <h3>DFM cycle status</h3>
+          <a href="revision-diff.html">Compare Rev 2 ↔ Rev 3</a>
+        </div>
+        <div class="panel-body">
+          <div class="lrow">
+            <div class="grow">
+              <div class="t">Redline round</div>
+              <div class="s">Round 2 of an expected 3 · 5 redlines resolved</div>
+            </div>
+            <span class="tag">Round 2</span>
+          </div>
+          <div class="lrow">
+            <div class="grow">
+              <div class="t">Quotes coverage</div>
+              <div class="s">3 of 5 parts quoted by at least one CM</div>
+            </div>
+            <span class="pill green"><span class="dot"></span>60%</span>
+          </div>
+          <div class="lrow clickable" onclick="location.href='revision-diff.html'">
+            <div class="grow">
+              <div class="t">Open redline — Top tube assembly</div>
+              <div class="s">Rev 2 → Rev 3 · 3 dimension changes awaiting CM ack</div>
+            </div>
+            <span class="pill blue"><span class="dot"></span>Compare</span>
+          </div>
+          <div class="lrow">
+            <div class="grow">
+              <div class="t">Audit log</div>
+              <div class="s">Every redline, quote and portal open recorded</div>
+            </div>
+            <a class="btn btn--sm" href="activity.html">View log</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+<script src="sidebar.js"></script>
+<script src="switcher.js"></script>
+<script type="importmap">
+{ "imports": { "three": "./vendor/three/build/three.module.js", "three/addons/": "./vendor/three/addons/" } }
+</script>
+<script type="module" src="thumbnails.js"></script>
+</body>
+</html>
