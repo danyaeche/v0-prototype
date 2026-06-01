@@ -11,11 +11,11 @@ if (host) {
 
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(34, 1, 0.1, 100);
-  camera.position.set(0, 0, 10.5);
-  camera.lookAt(0, -1.4, 0);         // aim down → globe sits lower, top at upper-middle
+  camera.position.set(0, 0, 17);     // further back → globe ~50-60% of the panel
+  camera.lookAt(0, 0, 0);
 
   const world = new THREE.Group();
-  world.position.y = -1.4;           // nudge the globe down the panel
+  world.position.y = 0;              // centered in the panel
   world.rotation.z = 0.06;
   scene.add(world);
 
