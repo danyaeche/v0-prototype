@@ -1,6 +1,6 @@
-// Signup hero — Stripe-style colorful particle globe on the dark card.
-// A sphere of scattered dots colored violet → pink → coral → orange, slowly rotating,
-// with colored signal arcs sweeping point-to-point. Globe overflows / is clipped by the card.
+// Signup hero — Stripe-style dotted-Earth globe: dots placed only on the continents
+// (sampled from a land/water mask), colored across a violet → pink → orange gradient by
+// longitude, slowly rotating, overflowing the card, with colored signal arcs + ring nodes.
 import * as THREE from 'three';
 
 const host = document.getElementById('authHero');
@@ -11,46 +11,26 @@ if (host) {
 
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(34, 1, 0.1, 100);
-  camera.position.set(0, 0, 11.5);
-  camera.lookAt(0, 0.2, 0);
+  camera.position.set(0, 0, 10.5);
+  camera.lookAt(0, 0.15, 0);
 
   const world = new THREE.Group();
-  world.position.y = 0.2;
-  world.rotation.z = 0.10;
+  world.position.y = 0.15;
+  world.rotation.z = 0.06;
   scene.add(world);
 
-  const R = 3.0;                      // large so it overflows the panel
+  const R = 3.2;                       // big → overflows / clipped by the card
 
-  // monochrome white → grey by latitude (top whiter, lower greyer)
-  const STOPS = [0xffffff, 0xe6eaea, 0xb6bcbd, 0x9aa1a2].map(h => new THREE.Color(h));
+  // Stripe gradient (by longitude): violet → purple → magenta → pink → coral → orange
+  const STOPS = [0x8f86ff, 0xb86bff, 0xe663e6, 0xff6aa3, 0xff7a86, 0xff9d5c].map(h => new THREE.Color(h));
   const grad = t => { const x = Math.min(0.9999, Math.max(0, t)) * (STOPS.length - 1);
     const i = Math.floor(x); return STOPS[i].clone().lerp(STOPS[i + 1], x - i); };
 
-  // ---- Particle sphere (Fibonacci), fine & plentiful ----
-  const COUNT = 4200;
-  const base = [];
-  const golden = Math.PI * (3 - Math.sqrt(5));
-  const pos = new Float32Array(COUNT * 3);
-  const col = new Float32Array(COUNT * 3);
-  const alpha = new Float32Array(COUNT).fill(1);
-  const sz = new Float32Array(COUNT);
-  for (let i = 0; i < COUNT; i++) {
-    const y = 1 - (i / (COUNT - 1)) * 2;
-    const rr = Math.sqrt(1 - y * y);
-    const th = golden * i;
-    const v = new THREE.Vector3(Math.cos(th) * rr, y, Math.sin(th) * rr);
-    base.push(v);
-    pos[i*3] = v.x * R; pos[i*3+1] = v.y * R; pos[i*3+2] = v.z * R;
-    // white at top → grey toward the bottom
-    const c = grad((1 - (v.y * 0.5 + 0.5)));
-    col[i*3] = c.r; col[i*3+1] = c.g; col[i*3+2] = c.b;
-    sz[i] = 0.5 + Math.random() * 0.8;
+  // local color lookup by world-space longitude for arcs (matches the dots)
+  function colByLon(v) {
+    const lon = (Math.atan2(v.z, v.x) + Math.PI) / (2 * Math.PI);
+    return grad(lon);
   }
-  const geo = new THREE.BufferGeometry();
-  geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-  geo.setAttribute('pcolor', new THREE.BufferAttribute(col, 3));
-  geo.setAttribute('psize', new THREE.BufferAttribute(sz, 1));
-  geo.setAttribute('alpha', new THREE.BufferAttribute(alpha, 1));
 
   const dotTex = (() => {
     const c = document.createElement('canvas'); c.width = c.height = 64;
@@ -64,7 +44,7 @@ if (host) {
   })();
 
   const dotMat = new THREE.ShaderMaterial({
-    uniforms: { uTex: { value: dotTex }, uSize: { value: 7.0 * Math.min(devicePixelRatio, 2) } },
+    uniforms: { uTex: { value: dotTex }, uSize: { value: 5.5 * Math.min(devicePixelRatio, 2) } },
     transparent: true, depthWrite: false, blending: THREE.NormalBlending,
     vertexShader: `
       attribute float alpha; attribute float psize; attribute vec3 pcolor;
@@ -79,11 +59,43 @@ if (host) {
       uniform sampler2D uTex; varying float vA; varying vec3 vC;
       void main() { gl_FragColor = vec4(vC, texture2D(uTex, gl_PointCoord).a * vA); }`,
   });
-  const dots = new THREE.Points(geo, dotMat);
-  world.add(dots);
 
-  // ---- Colored signal arcs sweeping point-to-point ----
-  const SEG = 90, TAIL = 0.34, IPS = 6 * 6;
+  let dots, geo, base = [], COUNT = 0;
+  const arcs = [];
+
+  function build(isLand) {
+    const CAND = 55000;
+    const golden = Math.PI * (3 - Math.sqrt(5));
+    const dir = [], cArr = [], sArr = [];
+    for (let i = 0; i < CAND; i++) {
+      const y = 1 - (i / (CAND - 1)) * 2;
+      const rr = Math.sqrt(1 - y * y);
+      const th = golden * i;
+      const v = new THREE.Vector3(Math.cos(th) * rr, y, Math.sin(th) * rr);
+      const u = 0.5 + Math.atan2(v.z, v.x) / (2 * Math.PI);
+      const vv = 0.5 - Math.asin(v.y) / Math.PI;
+      if (!isLand(u, vv)) continue;
+      dir.push(v);
+      const c = grad(u);                 // color by longitude
+      cArr.push(c.r, c.g, c.b);
+      sArr.push(0.5 + Math.random() * 0.7);
+    }
+    base = dir; COUNT = dir.length;
+    const pos = new Float32Array(COUNT * 3);
+    const alpha = new Float32Array(COUNT).fill(1);
+    for (let i = 0; i < COUNT; i++) { pos[i*3]=dir[i].x*R; pos[i*3+1]=dir[i].y*R; pos[i*3+2]=dir[i].z*R; }
+    geo = new THREE.BufferGeometry();
+    geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+    geo.setAttribute('pcolor', new THREE.BufferAttribute(new Float32Array(cArr), 3));
+    geo.setAttribute('psize', new THREE.BufferAttribute(new Float32Array(sArr), 1));
+    geo.setAttribute('alpha', new THREE.BufferAttribute(alpha, 1));
+    dots = new THREE.Points(geo, dotMat);
+    world.add(dots);
+    for (let i = 0; i < 6; i++) arcs.push(makeArc());
+  }
+
+  // ---- colored signal arcs + ring nodes ----
+  const SEG = 96, TAIL = 0.34, IPS = 6 * 6;
   const ringTex = (() => {
     const c = document.createElement('canvas'); c.width = c.height = 64;
     const x = c.getContext('2d'); x.strokeStyle = '#ffffff'; x.lineWidth = 5;
@@ -92,29 +104,44 @@ if (host) {
   })();
   function pick() { return base[(Math.random() * COUNT) | 0]; }
   function makeArc() {
-    const o = { t: Math.random(), speed: 0.16 + Math.random() * 0.13 };
+    const o = { t: Math.random(), speed: 0.15 + Math.random() * 0.12 };
     const setup = () => {
       let a = pick(), b = pick(), guard = 0;
       while (a.distanceTo(b) < 1.3 && guard++ < 40) b = pick();
       o.a = a.clone().multiplyScalar(R); const bEnd = b.clone().multiplyScalar(R);
-      const ctrl = o.a.clone().add(bEnd).multiplyScalar(0.5).setLength(R + R * (0.2 + Math.random() * 0.4));
+      const ctrl = o.a.clone().add(bEnd).multiplyScalar(0.5).setLength(R + R * (0.22 + Math.random() * 0.4));
       o.curve = new THREE.QuadraticBezierCurve3(o.a, ctrl, bEnd);
-      o.color = new THREE.Color(0xe8ecec);
-      const g = new THREE.TubeGeometry(o.curve, SEG, 0.012, 6, false);
+      o.color = colByLon(a.clone().add(b).multiplyScalar(0.5));
+      const g = new THREE.TubeGeometry(o.curve, SEG, 0.011, 6, false);
       if (o.mesh) { o.mesh.geometry.dispose(); o.mesh.geometry = g; o.mesh.material.color = o.color; }
       else { o.mesh = new THREE.Mesh(g, new THREE.MeshBasicMaterial({ color: o.color,
-        transparent: true, opacity: 0.8, depthWrite: false }));
-        world.add(o.mesh); }
+        transparent: true, opacity: 0.85, depthWrite: false })); world.add(o.mesh); }
       o.mesh.geometry.setDrawRange(0, 0);
       if (!o.node) { o.node = new THREE.Sprite(new THREE.SpriteMaterial({ map: ringTex,
-        transparent: true, depthWrite: false, opacity: 0 }));
-        o.node.scale.setScalar(0.32); world.add(o.node); }
+        transparent: true, depthWrite: false, opacity: 0 })); o.node.scale.setScalar(0.3); world.add(o.node); }
       o.node.material.color = o.color; o.node.position.copy(o.a);
     };
     setup(); o.respawn = setup;
     return o;
   }
-  const arcs = Array.from({ length: 7 }, makeArc);
+
+  // ---- load land mask, then build ----
+  const img = new Image(); img.crossOrigin = 'anonymous';
+  img.onload = () => {
+    const cw = 1024, ch = 512;
+    const cv = document.createElement('canvas'); cv.width = cw; cv.height = ch;
+    const cx = cv.getContext('2d'); cx.drawImage(img, 0, 0, cw, ch);
+    const data = cx.getImageData(0, 0, cw, ch).data;
+    const isLand = (u, v) => {            // earth-water.png: land = dark
+      const px = Math.min(cw - 1, Math.max(0, (u * cw) | 0));
+      const py = Math.min(ch - 1, Math.max(0, (v * ch) | 0));
+      const idx = (py * cw + px) * 4;
+      return (data[idx] + data[idx+1] + data[idx+2]) / 3 < 110;
+    };
+    build(isLand);
+  };
+  img.onerror = () => build(() => true);
+  img.src = 'assets/earth-water.png';
 
   function resize() {
     const w = host.clientWidth, h = host.clientHeight;
@@ -125,37 +152,34 @@ if (host) {
   new ResizeObserver(resize).observe(host);
   resize();
 
-  const aAttr = geo.getAttribute('alpha'), arr = aAttr.array;
   const tmp = new THREE.Vector3();
   let last = performance.now(), frame = 0;
   (function animate() {
     requestAnimationFrame(animate);
     const now = performance.now(), dt = Math.min(0.05, (now - last) / 1000); last = now;
-    dots.rotation.y += 0.0024;
-
-    if ((frame++ % 2) === 0) {
-      const q = dots.quaternion;
-      for (let i = 0; i < COUNT; i++) {
-        tmp.copy(base[i]).applyQuaternion(q);
-        const front = tmp.z > -0.15 ? 1 : 0.18;   // hide most of the far side
-        const rim = 1 - Math.abs(tmp.z);          // 1 at the silhouette edge, 0 at view poles
-        // Stripe look: glowing dense rim, sparse see-through face
-        arr[i] = front * (0.12 + 0.88 * Math.pow(rim, 2.4));
+    if (dots) {
+      dots.rotation.y += 0.0022;
+      if ((frame++ % 2) === 0) {
+        const q = dots.quaternion, arr = geo.getAttribute('alpha').array;
+        for (let i = 0; i < COUNT; i++) {
+          tmp.copy(base[i]).applyQuaternion(q);
+          // front bright & fully visible; far side dimmed but still present (like the reference)
+          const front = (tmp.z + 1) * 0.5;          // 0 back, 1 front
+          arr[i] = 0.45 + 0.55 * front;
+        }
+        geo.getAttribute('alpha').needsUpdate = true;
       }
-      aAttr.needsUpdate = true;
+      arcs.forEach(o => {
+        o.t += o.speed * dt;
+        if (o.t >= 1 + TAIL) { o.t = 0; o.respawn(); }
+        const head = Math.min(1, o.t), tail = Math.max(0, o.t - TAIL);
+        const start = Math.round(tail * SEG) * IPS;
+        const count = Math.max(0, Math.round(head * SEG) * IPS - start);
+        o.mesh.geometry.setDrawRange(start, count);
+        const f = Math.sin(Math.min(1, o.t) * Math.PI);
+        o.mesh.material.opacity = 0.8 * f; o.node.material.opacity = 0.95 * f;
+      });
     }
-
-    arcs.forEach(o => {
-      o.t += o.speed * dt;
-      if (o.t >= 1 + TAIL) { o.t = 0; o.respawn(); }
-      const head = Math.min(1, o.t), tail = Math.max(0, o.t - TAIL);
-      const start = Math.round(tail * SEG) * IPS;
-      const count = Math.max(0, Math.round(head * SEG) * IPS - start);
-      o.mesh.geometry.setDrawRange(start, count);
-      const f = Math.sin(Math.min(1, o.t) * Math.PI);
-      o.mesh.material.opacity = 0.75 * f;
-      o.node.material.opacity = 0.9 * f;
-    });
     renderer.render(scene, camera);
   })();
 }
