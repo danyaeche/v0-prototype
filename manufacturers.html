@@ -8,12 +8,39 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="styles.css" />
 <style>
-  .sup-card .sup-actions { display: flex; gap: 8px; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--line); }
-  .sup-card .sup-actions .btn { flex: 1; justify-content: center; }
-  .sup-status { margin: 10px 0 12px; }
+  .mfg { max-width: 1000px; }
+  .section-label { font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); font-weight: 600; margin: 26px 0 12px; }
+
+  /* manufacturer card */
+  .mfg-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .mcard { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; display: flex; flex-direction: column; }
+  .mcard-top { display: flex; align-items: center; gap: 12px; padding: 16px 18px 0; }
+  .mcard-logo { width: 44px; height: 44px; border-radius: 11px; background: var(--ink); color: #fff; display: grid; place-items: center; font-weight: 600; font-family: var(--font-head); font-size: 15px; flex: none; }
+  .mcard-id { flex: 1; min-width: 0; }
+  .mcard-name { font-size: 15px; font-weight: 600; letter-spacing: -.01em; }
+  .mcard-loc { font-size: 12.5px; color: var(--muted); display: flex; align-items: center; gap: 5px; margin-top: 1px; }
+  .mcard-loc svg { flex: none; }
+
+  .mcard-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; margin: 16px 0 0; border-top: 1px solid var(--line-2); }
+  .mcard-stats > div { padding: 12px 18px; border-right: 1px solid var(--line-2); }
+  .mcard-stats > div:last-child { border-right: 0; }
+  .mcard-stats .k { font-size: 10.5px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
+  .mcard-stats .v { font-size: 18px; font-weight: 600; font-family: var(--font-head); margin-top: 3px; }
+  .mcard-stats .v.accent { color: var(--green); }
+
+  /* quote progress bar */
+  .mcard-prog { padding: 12px 18px; border-top: 1px solid var(--line-2); }
+  .mcard-prog .prow { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); margin-bottom: 6px; }
+  .bar { height: 6px; border-radius: 999px; background: #ededed; overflow: hidden; }
+  .bar > span { display: block; height: 100%; background: var(--green); border-radius: 999px; }
+
+  .mcard-actions { display: flex; gap: 8px; padding: 14px 18px; border-top: 1px solid var(--line-2); margin-top: auto; }
+  .mcard-actions .btn { flex: 1; justify-content: center; }
+
   .magic-note { display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 13px; }
   .magic-note svg { flex: none; }
   .tbl .mono { font-family: "Space Grotesk", monospace; font-size: 12.5px; }
+  .tbl-wrap.flush { border: 0; box-shadow: none; }
 </style>
 </head>
 <body>
@@ -21,151 +48,169 @@
   <aside class="sidebar" data-active="manufacturers"></aside>
 
   <main class="main">
-    <div class="page-head">
-      <h1>Manufacturers</h1>
-      <div class="page-actions">
-        <a class="btn btn--primary" href="#">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg>
-          Invite manufacturer
-        </a>
+    <div class="mfg">
+      <div class="page-head">
+        <div><h1>Manufacturers</h1><div class="subtitle" style="margin:4px 0 0">Contract manufacturers fabricating parts in the TM-4 Bike DFM cycle</div></div>
+        <div class="page-actions">
+          <a class="btn btn--primary" href="#">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg>
+            Invite manufacturer
+          </a>
+        </div>
       </div>
-    </div>
-    <p class="subtitle">Contract manufacturers fabricating parts in the TM-4 Bike DFM cycle · magic-link access, no account required</p>
 
-    <div class="sup-grid">
+      <!-- Summary strip -->
+      <div class="stat-grid">
+        <div class="stat"><div class="k">Manufacturers</div><div class="v">4</div><div class="d">3 active · 1 invited</div></div>
+        <div class="stat"><div class="k">Parts shared</div><div class="v">5</div><div class="d">Across the cycle</div></div>
+        <div class="stat"><div class="k">Quotes received</div><div class="v accent">6</div><div class="d">From 3 manufacturers</div></div>
+        <div class="stat"><div class="k">Avg. response</div><div class="v">1.4d</div><div class="d">Magic-link → quote</div></div>
+      </div>
 
-      <div class="sup-card">
-        <div class="sup-top">
-          <div class="sup-logo">HP</div>
-          <div>
-            <div class="sup-name">Hsinchu Precision</div>
-            <div class="sup-loc">Hsinchu, Taiwan</div>
+      <!-- Directory -->
+      <div class="section-label">Directory</div>
+      <div class="mfg-grid">
+
+        <!-- Hsinchu Precision -->
+        <div class="mcard">
+          <div class="mcard-top">
+            <div class="mcard-logo">HP</div>
+            <div class="mcard-id">
+              <div class="mcard-name">Hsinchu Precision</div>
+              <div class="mcard-loc"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M12 21s7-5.4 7-11a7 7 0 1 0-14 0c0 5.6 7 11 7 11Z" stroke="#9aa1a8" stroke-width="1.6"/><circle cx="12" cy="10" r="2.3" stroke="#9aa1a8" stroke-width="1.6"/></svg>Hsinchu, Taiwan · CNC + anodizing</div>
+            </div>
+            <span class="pill green"><span class="dot"></span>Active</span>
+          </div>
+          <div class="mcard-stats">
+            <div><div class="k">Parts</div><div class="v">4</div></div>
+            <div><div class="k">Quotes</div><div class="v accent">3</div></div>
+            <div><div class="k">Last active</div><div class="v" style="font-size:13px">2h ago</div></div>
+          </div>
+          <div class="mcard-prog">
+            <div class="prow"><span>Quote coverage</span><span>3 of 4 parts</span></div>
+            <div class="bar"><span style="width:75%"></span></div>
+          </div>
+          <div class="mcard-actions">
+            <a class="btn btn--primary btn--sm" href="supplier-portal.html">Open portal</a>
+            <a class="btn btn--sm" href="#">Copy magic link</a>
           </div>
         </div>
-        <div class="sup-status"><span class="pill green"><span class="dot"></span>Active</span></div>
-        <div class="sup-meta">
-          <div><span class="k">Parts shared</span><span class="v">4</span></div>
-          <div><span class="k">Quotes</span><span class="v">3</span></div>
-          <div><span class="k">Last active</span><span class="v">2h ago</span></div>
-        </div>
-        <div class="sup-actions">
-          <a class="btn btn--primary btn--sm" href="supplier-portal.html">Open portal</a>
-          <a class="btn btn--sm" href="#">Copy magic link</a>
-        </div>
-      </div>
 
-      <div class="sup-card">
-        <div class="sup-top">
-          <div class="sup-logo">TM</div>
-          <div>
-            <div class="sup-name">Taichung MetalWorks</div>
-            <div class="sup-loc">Taichung, Taiwan</div>
+        <!-- Taichung MetalWorks -->
+        <div class="mcard">
+          <div class="mcard-top">
+            <div class="mcard-logo">TM</div>
+            <div class="mcard-id">
+              <div class="mcard-name">Taichung MetalWorks</div>
+              <div class="mcard-loc"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M12 21s7-5.4 7-11a7 7 0 1 0-14 0c0 5.6 7 11 7 11Z" stroke="#9aa1a8" stroke-width="1.6"/><circle cx="12" cy="10" r="2.3" stroke="#9aa1a8" stroke-width="1.6"/></svg>Taichung, Taiwan · sheet + weld</div>
+            </div>
+            <span class="pill green"><span class="dot"></span>Quote submitted</span>
+          </div>
+          <div class="mcard-stats">
+            <div><div class="k">Parts</div><div class="v">3</div></div>
+            <div><div class="k">Quotes</div><div class="v accent">2</div></div>
+            <div><div class="k">Last active</div><div class="v" style="font-size:13px">Yesterday</div></div>
+          </div>
+          <div class="mcard-prog">
+            <div class="prow"><span>Quote coverage</span><span>2 of 3 parts</span></div>
+            <div class="bar"><span style="width:67%"></span></div>
+          </div>
+          <div class="mcard-actions">
+            <a class="btn btn--primary btn--sm" href="supplier-portal.html">Open portal</a>
+            <a class="btn btn--sm" href="#">Copy magic link</a>
           </div>
         </div>
-        <div class="sup-status"><span class="pill green"><span class="dot"></span>Quote submitted</span></div>
-        <div class="sup-meta">
-          <div><span class="k">Parts shared</span><span class="v">3</span></div>
-          <div><span class="k">Quotes</span><span class="v">2</span></div>
-          <div><span class="k">Last active</span><span class="v">Yesterday</span></div>
-        </div>
-        <div class="sup-actions">
-          <a class="btn btn--primary btn--sm" href="supplier-portal.html">Open portal</a>
-          <a class="btn btn--sm" href="#">Copy magic link</a>
-        </div>
-      </div>
 
-      <div class="sup-card">
-        <div class="sup-top">
-          <div class="sup-logo">KC</div>
-          <div>
-            <div class="sup-name">Kaohsiung CNC</div>
-            <div class="sup-loc">Kaohsiung, Taiwan</div>
+        <!-- Kaohsiung CNC -->
+        <div class="mcard">
+          <div class="mcard-top">
+            <div class="mcard-logo">KC</div>
+            <div class="mcard-id">
+              <div class="mcard-name">Kaohsiung CNC</div>
+              <div class="mcard-loc"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M12 21s7-5.4 7-11a7 7 0 1 0-14 0c0 5.6 7 11 7 11Z" stroke="#9aa1a8" stroke-width="1.6"/><circle cx="12" cy="10" r="2.3" stroke="#9aa1a8" stroke-width="1.6"/></svg>Kaohsiung, Taiwan · 5-axis CNC</div>
+            </div>
+            <span class="pill green"><span class="dot"></span>Active</span>
+          </div>
+          <div class="mcard-stats">
+            <div><div class="k">Parts</div><div class="v">2</div></div>
+            <div><div class="k">Quotes</div><div class="v accent">1</div></div>
+            <div><div class="k">Last active</div><div class="v" style="font-size:13px">3d ago</div></div>
+          </div>
+          <div class="mcard-prog">
+            <div class="prow"><span>Quote coverage</span><span>1 of 2 parts</span></div>
+            <div class="bar"><span style="width:50%"></span></div>
+          </div>
+          <div class="mcard-actions">
+            <a class="btn btn--primary btn--sm" href="supplier-portal.html">Open portal</a>
+            <a class="btn btn--sm" href="#">Copy magic link</a>
           </div>
         </div>
-        <div class="sup-status"><span class="pill green"><span class="dot"></span>Active</span></div>
-        <div class="sup-meta">
-          <div><span class="k">Parts shared</span><span class="v">2</span></div>
-          <div><span class="k">Quotes</span><span class="v">1</span></div>
-          <div><span class="k">Last active</span><span class="v">3d ago</span></div>
-        </div>
-        <div class="sup-actions">
-          <a class="btn btn--primary btn--sm" href="supplier-portal.html">Open portal</a>
-          <a class="btn btn--sm" href="#">Copy magic link</a>
-        </div>
-      </div>
 
-      <div class="sup-card">
-        <div class="sup-top">
-          <div class="sup-logo">SR</div>
-          <div>
-            <div class="sup-name">Shenzhen RapidTool</div>
-            <div class="sup-loc">Shenzhen, China</div>
+        <!-- Shenzhen RapidTool -->
+        <div class="mcard">
+          <div class="mcard-top">
+            <div class="mcard-logo">SR</div>
+            <div class="mcard-id">
+              <div class="mcard-name">Shenzhen RapidTool</div>
+              <div class="mcard-loc"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M12 21s7-5.4 7-11a7 7 0 1 0-14 0c0 5.6 7 11 7 11Z" stroke="#9aa1a8" stroke-width="1.6"/><circle cx="12" cy="10" r="2.3" stroke="#9aa1a8" stroke-width="1.6"/></svg>Shenzhen, China · rapid tooling</div>
+            </div>
+            <span class="pill amber"><span class="dot"></span>Invited</span>
+          </div>
+          <div class="mcard-stats">
+            <div><div class="k">Parts</div><div class="v">1</div></div>
+            <div><div class="k">Quotes</div><div class="v">0</div></div>
+            <div><div class="k">Last active</div><div class="v" style="font-size:13px">Pending</div></div>
+          </div>
+          <div class="mcard-prog">
+            <div class="prow"><span>Quote coverage</span><span>Awaiting first open</span></div>
+            <div class="bar"><span style="width:0%"></span></div>
+          </div>
+          <div class="mcard-actions">
+            <a class="btn btn--primary btn--sm" href="supplier-portal.html">Open portal</a>
+            <a class="btn btn--sm" href="#">Resend magic link</a>
           </div>
         </div>
-        <div class="sup-status"><span class="pill amber"><span class="dot"></span>Invited</span></div>
-        <div class="sup-meta">
-          <div><span class="k">Parts shared</span><span class="v">1</span></div>
-          <div><span class="k">Quotes</span><span class="v">0</span></div>
-          <div><span class="k">Last active</span><span class="v">Pending</span></div>
-        </div>
-        <div class="sup-actions">
-          <a class="btn btn--primary btn--sm" href="supplier-portal.html">Open portal</a>
-          <a class="btn btn--sm" href="#">Copy magic link</a>
-        </div>
+
       </div>
 
-    </div>
-
-    <div class="panel" style="margin-top:22px">
-      <div class="panel-head">
-        <h2>Magic-link access log</h2>
-        <span class="magic-note">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M10 14a4 4 0 0 0 5.66 0l3-3a4 4 0 1 0-5.66-5.66l-1.5 1.5M14 10a4 4 0 0 0-5.66 0l-3 3a4 4 0 1 0 5.66 5.66l1.5-1.5" stroke="#7a7a7a" stroke-width="1.6" stroke-linecap="round"/></svg>
-          CMs access shared parts via single-use magic link — no account required.
-        </span>
-      </div>
-      <div class="panel-body">
-        <div class="tbl-wrap">
-          <table class="tbl">
-            <thead><tr><th>CM</th><th>Link sent</th><th>Last opened</th><th>Parts</th><th>Status</th></tr></thead>
-            <tbody>
-              <tr class="clickable" onclick="location.href='supplier-portal.html'">
-                <td>Hsinchu Precision</td>
-                <td class="muted">May 14</td>
-                <td class="muted">2h ago</td>
-                <td><span class="mono">TM-4-1001, 1004 +2</span></td>
-                <td><span class="badge badge--green">Opened</span></td>
-              </tr>
-              <tr class="clickable" onclick="location.href='supplier-portal.html'">
-                <td>Taichung MetalWorks</td>
-                <td class="muted">May 13</td>
-                <td class="muted">Yesterday</td>
-                <td><span class="mono">TM-4-1003, 1005 +1</span></td>
-                <td><span class="badge badge--green">Quote submitted</span></td>
-              </tr>
-              <tr class="clickable" onclick="location.href='supplier-portal.html'">
-                <td>Kaohsiung CNC</td>
-                <td class="muted">May 12</td>
-                <td class="muted">3d ago</td>
-                <td><span class="mono">TM-4-1002, 1004</span></td>
-                <td><span class="badge badge--green">Opened</span></td>
-              </tr>
-              <tr class="clickable" onclick="location.href='supplier-portal.html'">
-                <td>Shenzhen RapidTool</td>
-                <td class="muted">May 16</td>
-                <td class="muted">—</td>
-                <td><span class="mono">TM-4-1005</span></td>
-                <td><span class="badge badge--soft">Sent · not opened</span></td>
-              </tr>
-              <tr class="clickable" onclick="location.href='supplier-portal.html'">
-                <td>Hsinchu Precision</td>
-                <td class="muted">May 9</td>
-                <td class="muted">May 10</td>
-                <td><span class="mono">TM-4-1001</span></td>
-                <td><span class="badge badge--red">Expired</span></td>
-              </tr>
-            </tbody>
-          </table>
+      <!-- Access log -->
+      <div class="section-label">Magic-link access</div>
+      <div class="panel">
+        <div class="panel-head">
+          <h2>Access log</h2>
+          <span class="magic-note">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M10 14a4 4 0 0 0 5.66 0l3-3a4 4 0 1 0-5.66-5.66l-1.5 1.5M14 10a4 4 0 0 0-5.66 0l-3 3a4 4 0 1 0 5.66 5.66l1.5-1.5" stroke="#7a7a7a" stroke-width="1.6" stroke-linecap="round"/></svg>
+            Manufacturers open shared parts via single-use magic link — no account required.
+          </span>
+        </div>
+        <div class="panel-body">
+          <div class="tbl-wrap flush">
+            <table class="tbl">
+              <thead><tr><th>Manufacturer</th><th>Link sent</th><th>Last opened</th><th>Parts</th><th>Status</th></tr></thead>
+              <tbody>
+                <tr class="clickable" onclick="location.href='supplier-portal.html'">
+                  <td>Hsinchu Precision</td><td class="muted">May 14</td><td class="muted">2h ago</td>
+                  <td><span class="mono">TM-4-1001, 1004 +2</span></td><td><span class="badge badge--green">Opened</span></td>
+                </tr>
+                <tr class="clickable" onclick="location.href='supplier-portal.html'">
+                  <td>Taichung MetalWorks</td><td class="muted">May 13</td><td class="muted">Yesterday</td>
+                  <td><span class="mono">TM-4-1003, 1005 +1</span></td><td><span class="badge badge--green">Quote submitted</span></td>
+                </tr>
+                <tr class="clickable" onclick="location.href='supplier-portal.html'">
+                  <td>Kaohsiung CNC</td><td class="muted">May 12</td><td class="muted">3d ago</td>
+                  <td><span class="mono">TM-4-1002, 1004</span></td><td><span class="badge badge--green">Opened</span></td>
+                </tr>
+                <tr class="clickable" onclick="location.href='supplier-portal.html'">
+                  <td>Shenzhen RapidTool</td><td class="muted">May 16</td><td class="muted">—</td>
+                  <td><span class="mono">TM-4-1005</span></td><td><span class="badge badge--soft">Sent · not opened</span></td>
+                </tr>
+                <tr class="clickable" onclick="location.href='supplier-portal.html'">
+                  <td>Hsinchu Precision</td><td class="muted">May 9</td><td class="muted">May 10</td>
+                  <td><span class="mono">TM-4-1001</span></td><td><span class="badge badge--red">Expired</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>

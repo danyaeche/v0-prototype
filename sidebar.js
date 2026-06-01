@@ -23,7 +23,7 @@
     '<a class="brand brand--light" href="overview.html">' +
       '<img src="logo.png" class="mark" alt="Chorus" /> chorus</a>' +
     '<div class="ws-label">Workspace</div>' +
-    '<div class="ws-switch">ALSO · SimplyOps <span class="chev"></span></div>' +
+    '<div class="ws-switch">ALSO <span class="chev"></span></div>' +
     '<nav class="nav">' + navHtml + '</nav>' +
     '<div class="spacer"></div>' +
     '<a class="nav-settings" href="settings.html"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.6"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>Settings</a>' +

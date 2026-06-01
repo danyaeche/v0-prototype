@@ -9,7 +9,7 @@
     ["suppliers.html", "6", "Suppliers"],
     ["activity.html", "7", "Activity"],
     ["settings.html", "8", "Settings"],
-    ["supplier-portal.html", "9", "CM portal"],
+    ["supplier-portal.html", "9", "Manufacturer portal"],
     ["quote-submission.html", "10", "Quote"],
     ["login.html", "L", "Login"],
     ["signup.html", "S", "Sign up"],
