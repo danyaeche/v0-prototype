@@ -9,6 +9,7 @@
   var nav = [
     ['overview',      'overview.html',      'Overview',      '<path d="M4 13h7V4H4zM13 20h7v-9h-7zM13 4v5h7V4zM4 20h7v-5H4z" stroke="currentColor" stroke-width="1.6"/>'],
     ['parts',         'parts.html',         'Parts',         '<path d="M12 3 4 7.5v9L12 21l8-4.5v-9L12 3Z" stroke="currentColor" stroke-width="1.6"/><path d="M4 7.5 12 12l8-4.5M12 12v9" stroke="currentColor" stroke-width="1.6"/>'],
+    ['approvals',     'approval-workflow.html', 'Approvals', '<circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.6"/><path d="M8.5 12l2.4 2.4 4.6-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>'],
     ['manufacturers', 'manufacturers.html', 'Manufacturers', '<path d="M3 21V10l6 4V10l6 4V6l6 3v12z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>'],
     ['suppliers',     'suppliers.html',     'Suppliers',     '<path d="M3.5 8 12 3l8.5 5v8L12 21l-8.5-5z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M3.5 8 12 13l8.5-5M12 13v8" stroke="currentColor" stroke-width="1.6"/>'],
     ['activity',      'activity.html',      'Activity',      '<path d="M4 12a8 8 0 1 0 8-8" stroke="currentColor" stroke-width="1.6"/><path d="M12 7v5l3 2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>'],

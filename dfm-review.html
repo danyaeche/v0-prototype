@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Chorus · DFM Review</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+<style>
+  .detail { padding: 22px 26px; max-width: 1120px; margin: 0 auto; }
+  .crumbs { display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 13px; margin-bottom: 16px; }
+  .crumbs a:hover { color: var(--ink); }
+  .crumbs .sep { color: var(--muted-2); }
+  .detail-head { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 18px; }
+  .detail-head h1 { font-size: 22px; margin: 0 0 4px; display: flex; align-items: center; gap: 10px; }
+  .detail-head .sub { color: var(--muted); font-size: 13px; }
+  .score { display: flex; align-items: center; gap: 12px; }
+  .ring { width: 56px; height: 56px; border-radius: 999px; display: grid; place-items: center; background: conic-gradient(var(--green) 0 92%, var(--line-2) 92% 100%); }
+  .ring span { width: 44px; height: 44px; border-radius: 999px; background: #fff; display: grid; place-items: center; font-family: var(--font-head); font-weight: 600; font-size: 17px; }
+  .score .k { font-size: 11px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
+  .score .lbl { font-size: 13px; font-weight: 500; }
+
+  .dfm-grid { display: grid; grid-template-columns: 1.25fr 1fr; gap: 16px; align-items: start; }
+  .dfm-view { aspect-ratio: 4/3; background: radial-gradient(120% 120% at 50% 18%, #fbfcfc 0%, #eef1f1 55%, #e2e6e6 100%); border: 1px solid var(--line); border-radius: var(--radius); position: relative; overflow: hidden; box-shadow: var(--shadow); }
+  .dfm-view .vlbl { position: absolute; top: 12px; left: 14px; font-size: 11px; color: var(--muted); background: rgba(255,255,255,.65); padding: 3px 8px; border-radius: 999px; }
+  .silh { position: absolute; inset: 0; display: grid; place-items: center; opacity: .5; }
+  .silh svg { width: 64%; height: 64%; }
+  .pin { position: absolute; width: 24px; height: 24px; border-radius: 999px; display: grid; place-items: center; font-size: 12px; font-weight: 700; color: #fff; box-shadow: 0 2px 6px rgba(0,0,0,.2); transform: translate(-50%,-50%); }
+  .pin.ok { background: var(--green); } .pin.warn { background: var(--amber-600); } .pin.crit { background: var(--red-600); }
+
+  .checks { padding: 4px 0; }
+  .chk { display: flex; gap: 12px; padding: 12px 16px; border-bottom: 1px solid var(--line-2); align-items: flex-start; }
+  .chk:last-child { border-bottom: 0; }
+  .chk .num { width: 22px; height: 22px; border-radius: 999px; display: grid; place-items: center; font-size: 11px; font-weight: 700; color: #fff; flex: none; margin-top: 1px; }
+  .chk .num.ok { background: var(--green); } .chk .num.warn { background: var(--amber-600); } .chk .num.crit { background: var(--red-600); }
+  .chk .grow { flex: 1; min-width: 0; }
+  .chk .t { font-size: 13.5px; font-weight: 500; }
+  .chk .m { font-size: 12.5px; color: var(--muted); margin-top: 2px; }
+  .di-badge { font-size: 10.5px; font-weight: 600; padding: 2px 7px; border-radius: 4px; flex: none; margin-top: 2px; white-space: nowrap; }
+  .di-badge.ok { background: var(--green-50); color: var(--green-600t); }
+  .di-badge.warn { background: #f5ecd4; color: var(--amber-600); }
+
+  .dfm-summary { display: flex; align-items: center; gap: 24px; margin-top: 16px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 18px; box-shadow: var(--shadow); }
+  .dfm-summary .k { font-size: 11px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
+  .dfm-summary .v { font-size: 18px; font-weight: 600; font-family: var(--font-head); margin-top: 2px; }
+</style>
+</head>
+<body>
+<div class="main" style="padding:0">
+  <div class="detail">
+    <div class="crumbs">
+      <a href="parts.html">Parts</a><span class="sep">/</span>
+      <a href="part-detail.html">Top tube assembly</a><span class="sep">/</span>
+      <span style="color:var(--ink);font-weight:500">DFM Review</span>
+      <span style="margin-left:auto;display:flex;gap:10px">
+        <a class="btn btn--sm" href="revision-diff.html">Compare revisions</a>
+        <a class="btn btn--sm" href="comment-thread.html">Comments</a>
+      </span>
+    </div>
+
+    <div class="detail-head">
+      <div>
+        <h1>DFM Review <span class="badge badge--green">0 blockers</span></h1>
+        <div class="sub">Top tube assembly · TM-4-1001 · Rev 3 · 6061-T6 Aluminum</div>
+      </div>
+      <div class="score">
+        <div class="ring"><span>92</span></div>
+        <div><div class="k">DFM score</div><div class="lbl">Manufacturable</div></div>
+      </div>
+    </div>
+
+    <div class="dfm-grid">
+      <!-- annotated viewer -->
+      <div class="dfm-view">
+        <div class="vlbl">top-tube-assembly.stl · Rev 3 · 4 callouts</div>
+        <div class="silh">
+          <svg viewBox="0 0 200 150" fill="none">
+            <path d="M28 96 L150 96 L172 60 L150 60 L40 60 Z" stroke="#9aa3a1" stroke-width="3" stroke-linejoin="round"/>
+            <circle cx="28" cy="96" r="14" stroke="#9aa3a1" stroke-width="3"/>
+            <circle cx="150" cy="96" r="14" stroke="#9aa3a1" stroke-width="3"/>
+            <path d="M150 60 L165 30" stroke="#9aa3a1" stroke-width="3" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="pin ok"  style="left:24%;top:64%">1</div>
+        <div class="pin warn" style="left:62%;top:40%">2</div>
+        <div class="pin ok"  style="left:78%;top:64%">3</div>
+        <div class="pin warn" style="left:46%;top:62%">4</div>
+      </div>
+
+      <!-- checks -->
+      <div class="col-card">
+        <h3 style="font-size:13px;font-weight:600;padding:14px 16px;margin:0;border-bottom:1px solid var(--line-2)">Manufacturability checks</h3>
+        <div class="checks">
+          <div class="chk">
+            <span class="num ok">1</span>
+            <div class="grow"><div class="t">Wall thickness</div><div class="m">2.2 mm minimum held at the dropout weld (was 1.8 mm in Rev 2)</div></div>
+            <span class="di-badge ok">Resolved</span>
+          </div>
+          <div class="chk">
+            <span class="num warn">2</span>
+            <div class="grow"><div class="t">Weld access at gusset</div><div class="m">Add 3 mm fillet for torch clearance — flagged for the manufacturer</div></div>
+            <span class="di-badge warn">Note</span>
+          </div>
+          <div class="chk">
+            <span class="num ok">3</span>
+            <div class="grow"><div class="t">Draft &amp; tool reach</div><div class="m">All machined faces reachable in 3 setups</div></div>
+            <span class="di-badge ok">Pass</span>
+          </div>
+          <div class="chk">
+            <span class="num warn">4</span>
+            <div class="grow"><div class="t">Surface finish callout</div><div class="m">Ra 1.6 missing on the head-tube bore — confirm before quoting</div></div>
+            <span class="di-badge warn">Note</span>
+          </div>
+          <div class="chk">
+            <span class="num ok">5</span>
+            <div class="grow"><div class="t">Tolerance stack-up</div><div class="m">±0.1 mm achievable on standard CNC</div></div>
+            <span class="di-badge ok">Pass</span>
+          </div>
+          <div class="chk">
+            <span class="num ok">6</span>
+            <div class="grow"><div class="t">Material availability</div><div class="m">6061-T6 billet in stock at 2 of 4 manufacturers</div></div>
+            <span class="di-badge ok">Pass</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- summary -->
+    <div class="dfm-summary">
+      <div><div class="k">Blockers</div><div class="v" style="color:var(--green)">0</div></div>
+      <div><div class="k">Notes</div><div class="v">2</div></div>
+      <div><div class="k">Checks passed</div><div class="v">6 / 6</div></div>
+      <div><div class="k">Reviewer</div><div class="v" style="font-size:14px">Benjamin Chen</div></div>
+      <span style="flex:1"></span>
+      <a class="btn" href="comment-thread.html">Send redline</a>
+      <a class="btn btn--primary" href="approval-workflow.html">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="#fff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Mark DFM passed
+      </a>
+    </div>
+  </div>
+</div>
+<script src="switcher.js"></script>
+</body>
+</html>

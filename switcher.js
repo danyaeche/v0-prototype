@@ -11,6 +11,10 @@
     ["settings.html", "8", "Settings"],
     ["supplier-portal.html", "9", "Manufacturer portal"],
     ["quote-submission.html", "10", "Quote"],
+    ["approval-workflow.html", "11", "Approvals"],
+    ["dfm-review.html", "12", "DFM review"],
+    ["comment-thread.html", "13", "Comments"],
+    ["quote-review.html", "14", "Quote review"],
     ["login.html", "L", "Login"],
     ["signup.html", "S", "Sign up"],
   ];

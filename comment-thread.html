@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Chorus · Comments</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+<style>
+  .detail { padding: 22px 26px; max-width: 800px; margin: 0 auto; }
+  .crumbs { display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 13px; margin-bottom: 16px; }
+  .crumbs a:hover { color: var(--ink); }
+  .crumbs .sep { color: var(--muted-2); }
+  .detail-head { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 16px; }
+  .detail-head h1 { font-size: 22px; margin: 0 0 4px; display: flex; align-items: center; gap: 10px; }
+  .detail-head .sub { color: var(--muted); font-size: 13px; }
+  .faces { display: flex; }
+  .faces .av { width: 28px; height: 28px; border-radius: 999px; display: grid; place-items: center; font-size: 10.5px; font-weight: 600; color: #fff; border: 2px solid #fff; margin-left: -7px; }
+
+  .msg { display: flex; gap: 12px; padding: 16px 18px; border-bottom: 1px solid var(--line-2); }
+  .msg:last-child { border-bottom: 0; }
+  .msg.reply { padding-left: 54px; background: #fbfcfc; }
+  .msg .av { width: 32px; height: 32px; border-radius: 8px; display: grid; place-items: center; font-size: 11.5px; font-weight: 600; color: #fff; flex: none; }
+  .msg .grow { flex: 1; min-width: 0; }
+  .msg .head { display: flex; align-items: center; gap: 8px; }
+  .msg .nm { font-size: 13px; font-weight: 600; }
+  .role { font-size: 10.5px; font-weight: 500; padding: 1px 7px; border-radius: 999px; background: #ededed; color: var(--ink-2); }
+  .msg .tm { font-size: 11.5px; color: var(--muted-2); margin-left: auto; }
+  .msg .body { font-size: 13.5px; color: var(--ink-2); margin-top: 5px; }
+  .chip { display: inline-flex; align-items: center; gap: 6px; font-size: 11.5px; font-weight: 500; color: var(--blue-600); background: var(--blue-50); padding: 3px 9px; border-radius: 6px; margin-top: 8px; }
+  .chip svg { width: 13px; height: 13px; }
+  .react { display: flex; gap: 8px; margin-top: 9px; }
+  .react .r { font-size: 12px; color: var(--muted); display: inline-flex; align-items: center; gap: 5px; border: 1px solid var(--line); border-radius: 999px; padding: 2px 9px; }
+  .react .r:hover { background: #f6f6f6; }
+
+  .av-mk { background: var(--green); } .av-bc { background: #3f6b8a; } .av-ts { background: #8a6d1f; }
+
+  .composer { display: flex; gap: 12px; padding: 16px 18px; border-top: 1px solid var(--line); }
+  .composer .av { width: 32px; height: 32px; border-radius: 8px; display: grid; place-items: center; font-size: 11.5px; font-weight: 600; color: #fff; flex: none; }
+  .composer .grow { flex: 1; }
+  .composer .row { display: flex; align-items: center; justify-content: space-between; margin-top: 10px; }
+  .composer .tools { display: flex; gap: 4px; }
+  .composer .tools button { width: 32px; height: 32px; border: 1px solid var(--line); background: #fff; border-radius: 6px; display: grid; place-items: center; }
+  .composer .tools button:hover { background: #f6f6f6; }
+</style>
+</head>
+<body>
+<div class="main" style="padding:0">
+  <div class="detail">
+    <div class="crumbs">
+      <a href="parts.html">Parts</a><span class="sep">/</span>
+      <a href="part-detail.html">Top tube assembly</a><span class="sep">/</span>
+      <span style="color:var(--ink);font-weight:500">Comments</span>
+      <span style="margin-left:auto;display:flex;gap:10px">
+        <a class="btn btn--sm" href="dfm-review.html">DFM review</a>
+        <a class="btn btn--sm" href="revision-diff.html">Compare revisions</a>
+      </span>
+    </div>
+
+    <div class="detail-head">
+      <div>
+        <h1>Redline thread <span class="badge badge--green">Resolved</span></h1>
+        <div class="sub">Top tube assembly · TM-4-1001 · Rev 2 → Rev 3 · 5 comments</div>
+      </div>
+      <div class="faces">
+        <span class="av av-mk">MK</span><span class="av av-bc">BC</span><span class="av av-ts">TS</span>
+      </div>
+    </div>
+
+    <div class="panel">
+      <!-- root -->
+      <div class="msg">
+        <span class="av av-mk">MK</span>
+        <div class="grow">
+          <div class="head"><span class="nm">Mathieu Kury</span><span class="role">Design</span><span class="tm">May 13, 9:02 AM</span></div>
+          <div class="body">Pushed Rev 3 — applied the 2.2 mm wall on the rear dropout per Benjamin's redline, and tightened the head-tube bore to ±0.1.</div>
+          <span class="chip">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M4 7h13l4 5-4 5H4z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+            Redline · Rev 2 → Rev 3 · 3 dimension changes
+          </span>
+        </div>
+      </div>
+
+      <!-- reply -->
+      <div class="msg reply">
+        <span class="av av-bc">BC</span>
+        <div class="grow">
+          <div class="head"><span class="nm">Benjamin Chen</span><span class="role">Hsinchu Precision</span><span class="tm">May 13, 2:41 PM</span></div>
+          <div class="body">Wall thickness reads 2.2 mm now — good for the weld. One more: add a 3 mm fillet at the gusset so the torch can reach the joint.</div>
+          <div class="react"><span class="r">👍 2</span><span class="r">Reply</span></div>
+        </div>
+      </div>
+
+      <!-- reply -->
+      <div class="msg reply">
+        <span class="av av-mk">MK</span>
+        <div class="grow">
+          <div class="head"><span class="nm">Mathieu Kury</span><span class="role">Design</span><span class="tm">May 15, 10:22 AM</span></div>
+          <div class="body">Done — fillet added in Rev 3. Updated for tolerances too.</div>
+        </div>
+      </div>
+
+      <!-- root 2 -->
+      <div class="msg">
+        <span class="av av-ts">TS</span>
+        <div class="grow">
+          <div class="head"><span class="nm">Thomas Sullivan</span><span class="role">Sourcing</span><span class="tm">May 15, 9:15 AM</span></div>
+          <div class="body">Surface-finish callout (Ra 1.6) is still missing on the bore — can we add it before I send Rev 3 out for new quotes?</div>
+        </div>
+      </div>
+
+      <!-- reply -->
+      <div class="msg reply">
+        <span class="av av-bc">BC</span>
+        <div class="grow">
+          <div class="head"><span class="nm">Benjamin Chen</span><span class="role">Hsinchu Precision</span><span class="tm">May 15, 4:09 PM</span></div>
+          <div class="body">Rev 3 looks good on our end — sent to the floor for re-quote. No blockers.</div>
+          <div class="react"><span class="r">🎉 1</span><span class="r">Reply</span></div>
+        </div>
+      </div>
+
+      <!-- composer -->
+      <div class="composer">
+        <span class="av av-mk">MK</span>
+        <div class="grow">
+          <textarea class="textarea" rows="2" placeholder="Reply to the thread…  @mention a manufacturer to notify them"></textarea>
+          <div class="row">
+            <div class="tools">
+              <button title="Attach"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M8 12V7a4 4 0 1 1 8 0v9a6 6 0 0 1-12 0V9" stroke="#7a7a7a" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+              <button title="Attach redline"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 7h13l4 5-4 5H4z" stroke="#7a7a7a" stroke-width="1.6" stroke-linejoin="round"/></svg></button>
+            </div>
+            <a class="btn btn--primary btn--sm" href="#">Comment</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="switcher.js"></script>
+</body>
+</html>
