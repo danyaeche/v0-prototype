@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Chorus · New project</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+<style>
+  .form { display: flex; flex-direction: column; gap: 16px; padding: 20px; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+  .field label { display: block; font-size: 12.5px; font-weight: 500; color: var(--ink-2); margin-bottom: 6px; }
+  .field label .req { color: var(--red-600); }
+  .field .hint { font-size: 11.5px; color: var(--muted); font-weight: 400; }
+  .input, .select { width: 100%; height: 40px; border: 1px solid var(--line); border-radius: 9px; padding: 0 12px; font-size: 13.5px; font-family: inherit; color: var(--ink); background: #fff; outline: none; box-sizing: border-box; }
+  .input:focus, .select:focus { border-color: var(--green); box-shadow: 0 0 0 3px rgba(0,149,113,.12); }
+  .select-wrap { position: relative; }
+  .select-wrap::after { content: ""; position: absolute; right: 13px; top: 16px; width: 7px; height: 7px; border-right: 1.6px solid var(--muted); border-bottom: 1.6px solid var(--muted); transform: rotate(45deg); pointer-events: none; }
+  .select { appearance: none; -webkit-appearance: none; }
+  .two-col { display: grid; grid-template-columns: 1fr 320px; gap: 16px; align-items: start; }
+  .aside-card { background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 18px 20px; }
+  .aside-card h3 { font-size: 13px; font-weight: 600; margin: 0 0 10px; }
+  .aside-card p { font-size: 12.5px; color: var(--muted); line-height: 1.55; margin: 0 0 10px; }
+  .mini-step { display: flex; gap: 10px; font-size: 12.5px; color: var(--ink-2); padding: 7px 0; }
+  .mini-step .mn { width: 20px; height: 20px; border-radius: 6px; background: #f1f3f2; color: var(--muted); display: grid; place-items: center; font-size: 11px; font-weight: 600; flex: none; }
+  .mini-step.on .mn { background: var(--green); color: #fff; }
+  .nda-row { display: flex; gap: 10px; flex-wrap: wrap; }
+  .nda-opt { display: flex; align-items: center; gap: 8px; border: 1px solid var(--line); border-radius: 9px; padding: 9px 13px; font-size: 13px; cursor: pointer; }
+  .nda-opt input { accent-color: var(--green); }
+  .nda-opt.on { border-color: var(--green); background: rgba(0,149,113,.05); }
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar" data-active="overview"></aside>
+  <main class="main">
+    <div class="breadcrumb" style="margin-bottom:14px"><a href="overview.html">Overview</a> <span>/</span> <b id="crumbMode">New project</b></div>
+    <div class="page-head">
+      <div><h1 id="pgTitle">New project</h1><div class="subtitle" style="margin:4px 0 0">One project per program, scoped to a single manufacturing partner.</div></div>
+      <div class="page-actions">
+        <a class="btn btn--sm" href="overview.html">Cancel</a>
+        <button class="btn btn--primary btn--sm" onclick="createProject()" id="topCreate">Create project</button>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div>
+        <div class="panel">
+          <div class="panel-head"><h2>Project details</h2></div>
+          <div class="form">
+            <div class="field"><label>Project name <span class="req">*</span></label><input class="input" id="pjName" placeholder="e.g. TM-4 Bike Program" /></div>
+            <div class="grid2">
+              <div class="field"><label>Product name</label><input class="input" id="pjProduct" placeholder="e.g. TM-4 urban e-bike" /></div>
+              <div class="field"><label>Status</label><div class="select-wrap"><select class="select" id="pjStatus"><option>Planning</option><option selected>Active · DFM in progress</option><option>On hold</option><option>DFM complete</option></select></div></div>
+            </div>
+            <div class="grid3">
+              <div class="field"><label>Brand owner</label><input class="input" id="pjBrand" placeholder="Mathieu Kury" value="Mathieu Kury" /></div>
+              <div class="field"><label>Engineering owner</label><input class="input" id="pjEng" placeholder="Engineering lead" /></div>
+              <div class="field"><label>Supply chain owner</label><input class="input" id="pjSc" placeholder="Supply chain lead" /></div>
+            </div>
+            <div class="grid2">
+              <div class="field"><label>Start date</label><input class="input" id="pjStart" type="date" /></div>
+              <div class="field"><label>Target DFM completion <span class="hint">· when the part is manufacturable</span></label><input class="input" id="pjTarget" type="date" /></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel" style="margin-top:16px">
+          <div class="panel-head"><h2>Manufacturing partner</h2><span class="muted fs-12">scoped to this project</span></div>
+          <div class="form">
+            <div class="grid2">
+              <div class="field"><label>Partner / reviewer name</label><input class="input" id="pjPartner" placeholder="Hsinchu Precision" /></div>
+              <div class="field"><label>Reviewer email <span class="hint">· gets the magic link</span></label><input class="input" id="pjReviewer" placeholder="benjamin.chen@hsinchu-precision.com" /></div>
+            </div>
+            <div class="field">
+              <label>Confidentiality</label>
+              <div class="nda-row" id="ndaRow">
+                <label class="nda-opt on"><input type="radio" name="nda" value="Standard" checked />Standard</label>
+                <label class="nda-opt"><input type="radio" name="nda" value="NDA in place" />NDA in place</label>
+                <label class="nda-opt"><input type="radio" name="nda" value="Confidential — no download" />Confidential · no download</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="aside-card">
+          <h3>What happens next</h3>
+          <p>Creating the project sets up its issue ledger. Then you'll add parts and upload the first revision.</p>
+          <div class="mini-step on"><span class="mn">1</span><span>Create project</span></div>
+          <div class="mini-step"><span class="mn">2</span><span>Add parts</span></div>
+          <div class="mini-step"><span class="mn">3</span><span>Upload Rev A (STEP · PDF · Render)</span></div>
+          <div class="mini-step"><span class="mn">4</span><span>Invite the partner via magic link</span></div>
+        </div>
+        <div class="aside-card" style="margin-top:16px">
+          <h3>Scope</h3>
+          <p>One manufacturing partner per project. The reviewer sees only this project's parts — never your other programs.</p>
+        </div>
+        <button class="btn btn--primary" style="width:100%;margin-top:16px;height:42px" onclick="createProject()">Create project</button>
+      </div>
+    </div>
+  </main>
+</div>
+<script src="store.js"></script>
+<script src="flows.js"></script>
+<script src="sidebar.js"></script>
+<script src="switcher.js"></script>
+<script>
+  // NDA radio active state
+  document.getElementById('ndaRow').addEventListener('change', function(){
+    Array.prototype.forEach.call(this.querySelectorAll('.nda-opt'), function(o){ o.classList.toggle('on', o.querySelector('input').checked); });
+  });
+
+  // Edit mode: prefill from ?edit=<name>
+  (function(){
+    var q = new URLSearchParams(location.search);
+    var editName = q.get('edit');
+    if (editName) {
+      document.getElementById('pgTitle').textContent = 'Edit project';
+      document.getElementById('crumbMode').textContent = 'Edit project';
+      document.getElementById('topCreate').textContent = 'Save changes';
+      document.getElementById('pjName').value = editName;
+      var match = (window.ChorusStore.projects()||[]).filter(function(p){return p.name===editName;})[0];
+      if (match) {
+        if(match.product) document.getElementById('pjProduct').value = match.product;
+        if(match.partner) document.getElementById('pjPartner').value = match.partner;
+        if(match.reviewer) document.getElementById('pjReviewer').value = match.reviewer;
+      }
+    }
+  })();
+
+  function nav(href){ var a=document.createElement('a'); a.href=href; document.body.appendChild(a); a.click(); }
+  function createProject(){
+    var name = document.getElementById('pjName').value.trim();
+    if (!name){ var n=document.getElementById('pjName'); n.focus(); n.style.borderColor='var(--red-600)'; return; }
+    var nda = (document.querySelector('input[name=nda]:checked')||{}).value || 'Standard';
+    window.ChorusStore.addProject({
+      id: 'pj' + Date.now(),
+      name: name,
+      product: document.getElementById('pjProduct').value.trim(),
+      status: document.getElementById('pjStatus').value,
+      brandOwner: document.getElementById('pjBrand').value.trim(),
+      engOwner: document.getElementById('pjEng').value.trim(),
+      scOwner: document.getElementById('pjSc').value.trim(),
+      start: document.getElementById('pjStart').value,
+      target: document.getElementById('pjTarget').value,
+      partner: document.getElementById('pjPartner').value.trim(),
+      reviewer: document.getElementById('pjReviewer').value.trim(),
+      nda: nda,
+      created: true
+    });
+    nav('project-detail.html?p=' + encodeURIComponent(name));
+  }
+</script>
+</body>
+</html>

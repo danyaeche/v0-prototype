@@ -21,10 +21,10 @@
 </head>
 <body>
 <div class="app">
-  <aside class="sidebar" data-active="projects"></aside>
+  <aside class="sidebar" data-active="overview"></aside>
   <main class="main">
     <div class="crumbs">
-      <a href="projects.html">Projects</a><span class="sep">/</span>
+      <a href="overview.html">Projects</a><span class="sep">/</span>
       <span id="pdCrumb" style="color:var(--ink);font-weight:500">TM-4 Bike Program</span>
     </div>
 
@@ -53,9 +53,9 @@
     </div>
 
     <div class="panel" id="pdMain" style="margin-bottom:16px">
-      <div class="panel-head"><h2>Parts</h2><a href="parts-list.html">Full parts list →</a></div>
+      <div class="panel-head"><h2>Parts</h2><span class="muted fs-12">all parts in this project</span></div>
       <table class="tbl">
-        <thead><tr><th>Part</th><th>Revision</th><th>Status</th><th>Open comments</th><th style="text-align:right">Quote</th></tr></thead>
+        <thead><tr><th>Part</th><th>Revision</th><th>Status</th><th>Open issues</th><th style="text-align:right">Quote</th></tr></thead>
         <tbody id="partsBody">
           <tr class="clickable" onclick="location.href='part-detail.html'">
             <td><div class="part-cell"><span class="thumb"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3 4 7.5v9L12 21l8-4.5v-9L12 3Z" stroke="#9aa3a1" stroke-width="1.4"/><path d="M4 7.5 12 12l8-4.5M12 12v9" stroke="#9aa3a1" stroke-width="1.4"/></svg></span><span><span class="pname">Top tube assembly</span><br/><span class="pid">TM-4-1001</span></span></div></td>
@@ -83,7 +83,7 @@
           </tr>
         </tbody>
       </table>
-      <div class="tbl-foot"><span class="muted fs-13">6 of 18 parts</span><a class="btn btn--sm" href="parts-list.html">View all parts</a></div>
+      <div class="tbl-foot"><span class="muted fs-13">6 of 18 parts</span><button class="btn btn--sm" onclick="(window.Flows&&Flows.newPart())">+ Add part</button></div>
     </div>
 
     <div class="panel">

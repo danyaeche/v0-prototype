@@ -86,13 +86,30 @@
   .mini-tl .e { display: flex; gap: 10px; padding: 7px 16px; font-size: 12px; }
   .mini-tl .e .dot2 { width: 8px; height: 8px; border-radius: 999px; margin-top: 4px; flex: none; }
   .mini-tl .e .em { color: var(--muted); }
+
+  /* priority + spec change + impact */
+  .pri { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 999px; }
+  .pri.must { background: #fbe9e7; color: var(--red-600); }
+  .pri.should { background: #f5ecd4; color: var(--amber-600); }
+  .pri.nice { background: #ededed; color: var(--ink-2); }
+  .spec { display: flex; align-items: center; gap: 12px; margin-top: 11px; }
+  .spec .sp { background: #fff; border: 1px solid var(--line-2); border-radius: 8px; padding: 6px 14px; text-align: center; }
+  .spec .spk { display: block; font-size: 10px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted-2); }
+  .spec .spv { display: block; font-size: 16px; font-weight: 700; font-family: var(--font-head); color: var(--ink); margin-top: 2px; }
+  .spec .spv.hl { color: var(--green-600t); }
+  .spec .sparr { color: var(--muted-2); font-size: 17px; }
+  .impacts { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+  .imp { font-size: 11.5px; font-weight: 600; padding: 4px 10px; border-radius: 999px; }
+  .imp.up { background: var(--green-50); color: var(--green-600t); }
+  .imp.neu { background: #eef1f0; color: var(--ink-2); }
+  .imp.down { background: var(--red-50); color: var(--red-600); }
 </style>
 </head>
 <body>
 <div class="main" style="padding:0">
   <div class="detail">
     <div class="crumbs">
-      <a href="projects.html">Projects</a><span class="sep">/</span>
+      <a href="overview.html">Projects</a><span class="sep">/</span>
       <a href="project-detail.html?p=TM-4%20Bike%20Program">TM-4 Bike Program</a><span class="sep">/</span>
       <a href="part-detail.html">Top tube assembly</a><span class="sep">/</span>
       <span style="color:var(--ink);font-weight:500">Issue #12</span>
@@ -108,6 +125,7 @@
         <span class="st-big amber"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="1.8"/><path d="M12 8v4l3 2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>Awaiting validation</span>
         <span class="sev med">Medium</span>
         <span class="cat">Geometry</span>
+        <span class="pri must">⚑ Must fix</span>
         <span class="muted fs-12">opened by Benjamin Chen · Hsinchu Precision · on Rev 1</span>
       </div>
     </div>
@@ -128,15 +146,18 @@
         <div class="ibody">
           <div class="who"><span class="av av-bc">BC</span><span class="nm">Benjamin Chen</span><span class="role">Hsinchu Precision</span><span class="tm">Apr 9, 4:09 PM</span></div>
           <div class="txt">The 1.0 mm wall at the dropout is too thin — it'll likely cause sink and yield issues at the weld. This is a manufacturability risk on the current geometry.</div>
-          <div class="reco"><b>Recommendation ·</b> Increase the wall to 1.5 mm at the dropout.</div>
+          <div class="reco"><b>Recommendation ·</b> Increase the wall to 1.5 mm at the dropout and add a reinforcing rib.
+            <div class="spec"><div class="sp"><span class="spk">Current</span><span class="spv">1.0 mm</span></div><span class="sparr">→</span><div class="sp"><span class="spk">Proposed</span><span class="spv hl">1.5 mm</span></div></div>
+          </div>
+          <div class="impacts"><span class="imp neu">Impact · Manufacturability</span><span class="imp up">Yield ↑ improves</span><span class="imp neu">Cost ~ neutral</span><span class="imp neu">Lead time — none</span></div>
         </div>
         <div class="revlink"><span class="chip">Rev 1</span><span class="arr">— introduced</span><span class="arr">→</span><span class="chip">Rev 3</span><span class="arr">candidate fix</span><a href="revision-diff.html">View diff →</a></div>
 
         <div class="cmt">
           <span class="av av-mk">MK</span>
           <div class="grow">
-            <div class="top"><span class="nm">Mathieu Kury</span><span class="badge2 acc">✓ Accepted</span><span class="tm">Apr 9, 6:30 PM</span></div>
-            <div class="body">Accepted — we'll increase the wall to 1.5 mm in the next revision.</div>
+            <div class="top"><span class="nm">Mathieu Kury</span><span class="badge2 acc">✓ Accepted with modification</span><span class="tm">Apr 9, 6:30 PM</span></div>
+            <div class="body">Accepted the 1.5 mm wall — but skipping the extra rib; the gusset fillet covers the load path and holds our weight target. Applying in the next revision.</div>
           </div>
         </div>
         <div class="cmt">
@@ -167,9 +188,13 @@
       <div style="display:flex;flex-direction:column;gap:16px">
         <div class="panel side">
           <div class="mrow"><div class="k">Status</div><div class="v" style="color:var(--amber-600)">Awaiting validation</div></div>
-          <div class="mrow"><div class="k">Brand decision</div><div class="v" style="color:var(--green-600t)">✓ Accepted · Apr 9</div></div>
+          <div class="mrow"><div class="k">Brand decision</div><div class="v" style="color:var(--green-600t)">✓ Accepted with modification · Apr 9</div></div>
           <div class="mrow"><div class="k">Severity</div><div class="v">Medium</div></div>
+          <div class="mrow"><div class="k">Priority</div><div class="v" style="color:var(--red-600)">Must fix</div></div>
           <div class="mrow"><div class="k">Category</div><div class="v">Geometry</div></div>
+          <div class="mrow"><div class="k">Impact type</div><div class="v">Manufacturability · Yield</div></div>
+          <div class="mrow"><div class="k">Expected impact</div><div class="v">Yield ↑ · Cost ~ · Lead —</div></div>
+          <div class="mrow"><div class="k">Spec change</div><div class="v">1.0 mm → 1.5 mm</div></div>
           <div class="mrow"><div class="k">Introduced / fix</div><div class="v">Rev 1 → Rev 3</div></div>
           <div class="mrow"><div class="k">Reporter</div><div class="v person"><span class="av av-bc">BC</span>Benjamin Chen · Hsinchu</div></div>
           <div class="mrow"><div class="k">Owner</div><div class="v person"><span class="av av-mk">MK</span>Mathieu Kury · ALSO</div></div>

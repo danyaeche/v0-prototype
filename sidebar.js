@@ -44,8 +44,6 @@
 
   var nav = [
     ['overview', 'overview.html', 'Overview', '<rect x="3.5" y="3.5" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.6"/><rect x="13.5" y="3.5" width="7" height="4" rx="1.5" stroke="currentColor" stroke-width="1.6"/><rect x="13.5" y="10.5" width="7" height="10" rx="1.5" stroke="currentColor" stroke-width="1.6"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.6"/>'],
-    ['projects', 'projects.html', 'Projects', '<path d="M4 8a2 2 0 0 1 2-2h3l2 2h7a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>'],
-    ['parts', 'parts-list.html', 'Parts', '<path d="M12 3 4 7.5v9L12 21l8-4.5v-9L12 3Z" stroke="currentColor" stroke-width="1.6"/><path d="M4 7.5 12 12l8-4.5M12 12v9" stroke="currentColor" stroke-width="1.6"/>'],
     ['issues', 'issues-list.html', 'Issues', '<circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="12" r="3.2" stroke="currentColor" stroke-width="1.6"/>'],
     ['activity', 'activity.html', 'Activity', '<path d="M4 12a8 8 0 1 0 8-8" stroke="currentColor" stroke-width="1.6"/><path d="M12 7v5l3 2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>'],
   ];
@@ -93,7 +91,7 @@
     Array.prototype.forEach.call(aside.querySelectorAll('.ws-item[data-ws]'), function (it) {
       it.addEventListener('click', function (e) {
         e.stopPropagation();
-        if (S) { S.setWorkspace(it.getAttribute('data-ws')); location.href = 'projects.html'; }
+        if (S) { S.setWorkspace(it.getAttribute('data-ws')); location.href = 'overview.html'; }
       });
     });
     var nw = document.getElementById('wsNew');
@@ -121,7 +119,7 @@
         var name = document.getElementById('wsInName').value.trim();
         if (!name) { document.getElementById('wsInName').focus(); return; }
         if (S) S.addWorkspace({ name: name, sub: document.getElementById('wsInSub').value.trim() });
-        location.href = 'projects.html';
+        location.href = 'overview.html';
       });
     }
     if (sw) sw.classList.remove('open');
