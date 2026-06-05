@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Chorus · User Flow</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+<style>
+  body { margin: 0; background: var(--bg); }
+  .board { position: relative; width: 1280px; height: 1120px; margin: 0 auto; background: var(--bg); }
+
+  /* header */
+  .head { position: absolute; left: 40px; top: 30px; }
+  .head h1 { font-family: var(--font-head); font-size: 24px; margin: 0; color: var(--ink); display: flex; align-items: center; gap: 10px; }
+  .head .flag { font-size: 10.5px; font-weight: 700; letter-spacing: .04em; color: #fff; background: var(--green); padding: 2px 8px; border-radius: 999px; }
+  .head .sub { font-size: 13px; color: var(--muted); margin-top: 7px; }
+
+  /* legend */
+  .legend { position: absolute; right: 40px; top: 30px; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 11px 14px; box-shadow: var(--shadow); }
+  .legend .li { display: flex; align-items: center; gap: 9px; font-size: 12px; color: var(--ink-2); margin: 5px 0; }
+  .legend .sw { flex: none; }
+  .sw-hp { width: 22px; height: 14px; border: 1px solid var(--line); border-radius: 4px; box-shadow: inset 3px 0 0 var(--green); }
+  .sw-br { width: 22px; height: 14px; border: 1px solid var(--line); border-radius: 4px; }
+  .sw-loop { width: 22px; height: 0; border-top: 2px dashed #9aa0a0; }
+  .sw-gap { width: 22px; height: 14px; border: 1px dashed var(--muted); border-radius: 4px; background: #fbfbfb; }
+
+  /* entry points */
+  .entry { position: absolute; top: 78px; left: 0; width: 1280px; text-align: center; }
+  .entry-lbl { font-size: 10.5px; letter-spacing: .08em; color: var(--muted); font-weight: 600; margin-bottom: 9px; }
+  .chips { display: flex; gap: 8px; justify-content: center; }
+  .chip { font-size: 12px; color: var(--ink-2); background: var(--card); border: 1px solid var(--line); border-radius: 999px; padding: 5px 13px; box-shadow: var(--shadow); }
+
+  /* nodes */
+  .node { position: absolute; width: 220px; box-sizing: border-box; background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 11px 14px; box-shadow: var(--shadow); text-decoration: none; display: block; z-index: 2; transition: transform .08s ease, box-shadow .08s ease; }
+  a.node:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(0,0,0,.10); }
+  .node .t { font-family: var(--font-head); font-weight: 600; font-size: 14px; color: var(--ink); line-height: 1.2; }
+  .node .f { font-size: 11.5px; color: var(--muted); margin-top: 3px; font-family: ui-monospace, "SF Mono", Menlo, monospace; }
+  .node.hp { box-shadow: inset 3px 0 0 var(--green), var(--shadow); }
+  a.node.hp:hover { box-shadow: inset 3px 0 0 var(--green), 0 6px 18px rgba(0,0,0,.10); }
+  .node.gap { border-style: dashed; background: #fbfbfb; box-shadow: none; }
+  .node .tag { position: absolute; top: -10px; right: 10px; font-size: 10px; font-weight: 600; padding: 1px 8px; border-radius: 999px; background: #f1efea; color: var(--muted); border: 1px solid var(--line); }
+
+  /* arrow labels */
+  .albl { position: absolute; transform: translate(-50%, -50%); font-size: 10.5px; color: var(--muted); background: var(--bg); padding: 1px 7px; border-radius: 999px; z-index: 2; white-space: nowrap; }
+  .albl.k { color: var(--green-600t); font-weight: 600; }
+
+  /* connectors */
+  .wires { position: absolute; inset: 0; width: 1280px; height: 1120px; z-index: 1; pointer-events: none; }
+  .ar { fill: none; stroke: var(--green); stroke-width: 2; }
+  .br { fill: none; stroke: #9aa0a0; stroke-width: 1.6; stroke-dasharray: 5 4; }
+
+  .foot { position: absolute; left: 40px; top: 1088px; font-size: 11.5px; color: var(--muted); display: flex; align-items: center; gap: 8px; }
+  .foot .d { width: 10px; height: 10px; border-radius: 999px; background: var(--green); flex: none; }
+</style>
+</head>
+<body>
+<div class="board">
+
+  <!-- header -->
+  <div class="head">
+    <h1>User Flow <span class="flag">SOURCE A PART</span></h1>
+    <div class="sub">Chorus · brand-side sourcing journey · maps to the screens in this file</div>
+  </div>
+
+  <!-- legend -->
+  <div class="legend">
+    <div class="li"><span class="sw sw-hp"></span> Happy path</div>
+    <div class="li"><span class="sw sw-br"></span> Branch screen</div>
+    <div class="li"><span class="sw sw-loop"></span> Loops back</div>
+  </div>
+
+  <!-- entry points -->
+  <div class="entry">
+    <div class="entry-lbl">ENTRY POINTS</div>
+    <div class="chips">
+      <span class="chip">Dashboard alert</span>
+      <span class="chip">Email / Slack link</span>
+      <span class="chip">Parts list</span>
+      <span class="chip">Vendor submits quote</span>
+    </div>
+  </div>
+
+  <!-- connectors -->
+  <svg class="wires" viewBox="0 0 1280 1120">
+    <defs>
+      <marker id="ah-green" markerWidth="9" markerHeight="9" refX="6.5" refY="3" orient="auto" markerUnits="userSpaceOnUse">
+        <path d="M0 0 L7 3 L0 6 Z" fill="#009571" />
+      </marker>
+      <marker id="ah-mute" markerWidth="9" markerHeight="9" refX="6.5" refY="3" orient="auto" markerUnits="userSpaceOnUse">
+        <path d="M0 0 L7 3 L0 6 Z" fill="#9aa0a0" />
+      </marker>
+    </defs>
+
+    <!-- happy path -->
+    <path class="ar" marker-end="url(#ah-green)" d="M560 150 L560 176" />
+    <path class="ar" marker-end="url(#ah-green)" d="M560 244 L560 306" />
+    <path class="ar" marker-end="url(#ah-green)" d="M560 374 L560 436" />
+    <path class="ar" marker-end="url(#ah-green)" d="M520 502 C 498 540, 466 558, 444 580" />
+    <path class="ar" marker-end="url(#ah-green)" d="M600 502 C 662 540, 742 558, 798 580" />
+    <path class="ar" marker-end="url(#ah-green)" d="M430 648 C 458 692, 502 712, 532 726" />
+    <path class="ar" marker-end="url(#ah-green)" d="M810 648 C 762 692, 648 712, 602 726" />
+    <path class="ar" marker-end="url(#ah-green)" d="M560 794 L560 856" />
+    <path class="ar" marker-end="url(#ah-green)" d="M560 924 L560 986" />
+
+    <!-- branches & loops -->
+    <path class="br" marker-end="url(#ah-mute)" d="M320 616 L286 616" />
+    <path class="br" marker-end="url(#ah-mute)" d="M170 648 L170 716" />
+    <path class="br" marker-end="url(#ah-mute)" d="M170 720 C 116 596, 250 470, 446 471" />
+    <path class="br" marker-end="url(#ah-mute)" d="M672 761 L974 761" />
+    <path class="br" marker-end="url(#ah-mute)" d="M1090 728 C 1090 678, 852 676, 664 722" />
+    <path class="br" marker-end="url(#ah-mute)" d="M450 891 C 360 880, 360 792, 448 779" />
+  </svg>
+
+  <!-- arrow labels -->
+  <span class="albl k" style="left:478px;top:690px">pass</span>
+  <span class="albl k" style="left:700px;top:690px">bids in</span>
+  <span class="albl k" style="left:610px;top:825px">accept</span>
+  <span class="albl k" style="left:610px;top:955px">approve</span>
+  <span class="albl" style="left:300px;top:596px">blocker</span>
+  <span class="albl" style="left:252px;top:556px">new rev</span>
+  <span class="albl" style="left:823px;top:747px">over budget</span>
+  <span class="albl" style="left:876px;top:688px">re-quote</span>
+  <span class="albl" style="left:372px;top:836px">changes</span>
+
+  <!-- nodes: happy-path spine -->
+  <a class="node hp" style="left:450px;top:180px" href="overview.html">
+    <div class="t">Dashboard</div><div class="f">overview.html</div>
+  </a>
+  <a class="node hp" style="left:450px;top:310px" href="parts.html">
+    <div class="t">Parts List</div><div class="f">parts.html</div>
+  </a>
+  <a class="node hp" style="left:450px;top:440px" href="part-detail.html">
+    <div class="t">Part Detail</div><div class="f">part-detail.html · Rev 3</div>
+  </a>
+
+  <!-- fork -->
+  <a class="node hp" style="left:320px;top:585px" href="dfm-review.html">
+    <div class="t">DFM Review</div><div class="f">dfm-review.html · 92</div>
+  </a>
+  <a class="node hp" style="left:700px;top:585px" href="rfq.html">
+    <div class="t">RFQ → Vendors</div><div class="f">rfq.html</div>
+  </a>
+
+  <!-- converge -->
+  <a class="node hp" style="left:450px;top:730px" href="quote-review.html">
+    <div class="t">Quote Review</div><div class="f">quote-review.html · 3 bids</div>
+  </a>
+  <a class="node hp" style="left:450px;top:860px" href="approval-workflow.html">
+    <div class="t">Approval</div><div class="f">approval-workflow.html</div>
+  </a>
+  <a class="node hp" style="left:450px;top:990px" href="production-release.html">
+    <div class="t">Production Release</div><div class="f">production-release.html</div>
+  </a>
+
+  <!-- DFM blocker loop (far left) -->
+  <a class="node" style="left:60px;top:585px" href="comment-thread.html">
+    <div class="t">Redline / Comments</div><div class="f">comment-thread.html</div>
+  </a>
+  <a class="node" style="left:60px;top:720px" href="revision-diff.html">
+    <div class="t">Revision Diff</div><div class="f">revision-diff.html</div>
+  </a>
+
+  <!-- quote negotiate branch (far right) -->
+  <a class="node" style="left:980px;top:730px" href="quote-submission.html">
+    <div class="t">Counter / Negotiate</div><div class="f">via quote-submission</div>
+  </a>
+
+  <!-- footer note -->
+  <div class="foot">
+    <span class="d"></span>
+    Every node links to a built screen — the journey now runs end to end with zero dead ends.
+  </div>
+
+</div>
+<script src="switcher.js"></script>
+</body>
+</html>

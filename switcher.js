@@ -15,6 +15,9 @@
     ["dfm-review.html", "12", "DFM review"],
     ["comment-thread.html", "13", "Comments"],
     ["quote-review.html", "14", "Quote review"],
+    ["rfq.html", "15", "RFQ"],
+    ["production-release.html", "16", "Release"],
+    ["user-flow.html", "F", "User flow"],
     ["login.html", "L", "Login"],
     ["signup.html", "S", "Sign up"],
   ];
