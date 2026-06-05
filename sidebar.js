@@ -38,20 +38,34 @@
       '.cmodal{width:min(420px,92%);background:#fff;border-radius:14px;box-shadow:0 14px 36px rgba(20,20,20,.28);overflow:hidden}' +
       '.cmodal-head{padding:16px 18px;font-weight:600;font-size:15px;border-bottom:1px solid #e6e8e8}' +
       '.cmodal-body{padding:16px 18px;display:flex;flex-direction:column;gap:12px}' +
-      '.cmodal-foot{padding:14px 18px;display:flex;gap:10px;justify-content:flex-end;border-top:1px solid #e6e8e8}';
+      '.cmodal-foot{padding:14px 18px;display:flex;gap:10px;justify-content:flex-end;border-top:1px solid #e6e8e8}' +
+      '.nav-sep{height:1px;background:rgba(255,255,255,.08);margin:10px 14px 8px}' +
+      '.nav--admin{margin-bottom:6px}';
     document.head.appendChild(st);
   }
 
   var nav = [
-    ['overview', 'overview.html', 'Overview', '<rect x="3.5" y="3.5" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.6"/><rect x="13.5" y="3.5" width="7" height="4" rx="1.5" stroke="currentColor" stroke-width="1.6"/><rect x="13.5" y="10.5" width="7" height="10" rx="1.5" stroke="currentColor" stroke-width="1.6"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.6"/>'],
+    ['overview', 'overview.html', 'Dashboard', '<rect x="3.5" y="3.5" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.6"/><rect x="13.5" y="3.5" width="7" height="4" rx="1.5" stroke="currentColor" stroke-width="1.6"/><rect x="13.5" y="10.5" width="7" height="10" rx="1.5" stroke="currentColor" stroke-width="1.6"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.6"/>'],
+    ['projects', 'projects.html', 'Projects', '<path d="M4 8a2 2 0 0 1 2-2h3l2 2h7a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>'],
+    ['parts', 'parts-list.html', 'Parts', '<path d="M12 3 4 7.5v9L12 21l8-4.5v-9L12 3Z" stroke="currentColor" stroke-width="1.6"/><path d="M4 7.5 12 12l8-4.5M12 12v9" stroke="currentColor" stroke-width="1.6"/>'],
     ['issues', 'issues-list.html', 'Issues', '<circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="12" r="3.2" stroke="currentColor" stroke-width="1.6"/>'],
     ['activity', 'activity.html', 'Activity', '<path d="M4 12a8 8 0 1 0 8-8" stroke="currentColor" stroke-width="1.6"/><path d="M12 7v5l3 2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>'],
+    ['notifications', 'notifications.html', 'Notifications', '<path d="M6 9a6 6 0 0 1 12 0c0 5 2 6 2 6H4s2-1 2-6Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M10 19a2 2 0 0 0 4 0" stroke="currentColor" stroke-width="1.6"/>'],
+  ];
+  var admin = [
+    ['team', 'team.html', 'Team', '<circle cx="9" cy="8" r="3" stroke="currentColor" stroke-width="1.6"/><path d="M3.5 19a5.5 5.5 0 0 1 11 0" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M16 6.5a3 3 0 0 1 0 5.8M17.5 19a5.5 5.5 0 0 0-2-4.3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>'],
+    ['magiclinks', 'magic-links.html', 'Magic links', '<path d="M9 12a4 4 0 0 1 4-4h3a4 4 0 0 1 0 8h-1M15 12a4 4 0 0 1-4 4H8a4 4 0 0 1 0-8h1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>'],
+    ['settings', 'settings.html', 'Settings', '<circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.6"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>'],
   ];
 
-  var navHtml = nav.map(function (n) {
-    return '<a href="' + n[1] + '"' + (n[0] === active ? ' class="active"' : '') +
-      '><svg viewBox="0 0 24 24" fill="none">' + n[3] + '</svg>' + n[2] + '</a>';
-  }).join('');
+  function renderNav(items) {
+    return items.map(function (n) {
+      return '<a href="' + n[1] + '"' + (n[0] === active ? ' class="active"' : '') +
+        '><svg viewBox="0 0 24 24" fill="none">' + n[3] + '</svg>' + n[2] + '</a>';
+    }).join('');
+  }
+  var navHtml = renderNav(nav);
+  var adminHtml = renderNav(admin);
 
   var wsItems = allWs.map(function (w) {
     return '<a class="ws-item' + (w.id === ws.id ? ' on' : '') + '" data-ws="' + w.id + '">' +
@@ -73,7 +87,8 @@
     '</div>' +
     '<nav class="nav">' + navHtml + '</nav>' +
     '<div class="spacer"></div>' +
-    '<a class="nav-settings" href="settings.html"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.6"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>Settings</a>' +
+    '<div class="nav-sep"></div>' +
+    '<nav class="nav nav--admin">' + adminHtml + '</nav>' +
     '<div class="user">' +
       '<div class="avatar">MK</div>' +
       '<div class="meta"><div class="n">Mathieu Kury</div><div class="e">mkury@simplyops.com</div></div>' +

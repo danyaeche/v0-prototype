@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Chorus · Projects</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+<style>
+  .metrics4 { grid-template-columns: repeat(4, 1fr); }
+  .cbar { display: flex; align-items: center; gap: 9px; }
+  .cbar .track { width: 90px; height: 7px; background: #eef1f0; border-radius: 999px; overflow: hidden; }
+  .cbar .fill { height: 100%; background: var(--green); border-radius: 999px; }
+  .cbar .pct { font-size: 12.5px; font-weight: 600; font-family: var(--font-head); }
+  .proj-cell .pn { font-size: 13.5px; font-weight: 600; }
+  .proj-cell .pp { font-size: 12px; color: var(--muted); }
+  .oi { display: inline-flex; align-items: center; gap: 6px; font-weight: 600; }
+  .oi .d { width: 7px; height: 7px; border-radius: 999px; background: var(--amber-600); }
+  .oi.zero .d { background: var(--green); }
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar" data-active="projects"></aside>
+  <main class="main">
+    <div class="page-head">
+      <div><h1>Projects</h1><div class="subtitle" style="margin:4px 0 0">Every DFM program · one manufacturing partner per project</div></div>
+      <div class="page-actions">
+        <button class="btn btn--sm">Status ▾</button>
+        <a class="btn btn--primary btn--sm" href="create-project.html">+ New project</a>
+      </div>
+    </div>
+
+    <div class="stat-grid metrics4">
+      <div class="stat"><div class="k">Active projects</div><div class="v">2</div><div class="d">in this workspace</div></div>
+      <div class="stat"><div class="k">Parts in review</div><div class="v">27</div><div class="d">across all projects</div></div>
+      <div class="stat"><div class="k">Open issues</div><div class="v" style="color:var(--amber-600)">36</div><div class="d">need a decision or fix</div></div>
+      <div class="stat"><div class="k">Avg DFM completion</div><div class="v accent">90%</div><div class="d">across projects</div></div>
+    </div>
+
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead><tr><th>Project</th><th>Partner</th><th>Parts</th><th>Open issues</th><th>DFM completion</th><th>Latest rev</th><th>Status</th></tr></thead>
+        <tbody id="projBody">
+          <tr class="clickable" onclick="location.href='project-detail.html?p=TM-4%20Bike%20Program'">
+            <td><div class="proj-cell"><div class="pn">TM-4 Bike Program</div><div class="pp">TM-4 urban e-bike</div></div></td>
+            <td>Hsinchu Precision</td>
+            <td>18</td>
+            <td><span class="oi"><span class="d"></span>34</span></td>
+            <td><div class="cbar"><span class="track"><span class="fill" style="width:84%"></span></span><span class="pct">84%</span></div></td>
+            <td>Rev D</td>
+            <td><span class="badge badge--blue">Active</span></td>
+          </tr>
+          <tr class="clickable" onclick="location.href='project-detail.html?p=Cargo%20eBike'">
+            <td><div class="proj-cell"><div class="pn">Cargo eBike</div><div class="pp">Cargo platform</div></div></td>
+            <td>Taichung MetalWorks</td>
+            <td>9</td>
+            <td><span class="oi"><span class="d"></span>2</span></td>
+            <td><div class="cbar"><span class="track"><span class="fill" style="width:96%"></span></span><span class="pct">96%</span></div></td>
+            <td>Rev B</td>
+            <td><span class="badge badge--blue">Active</span></td>
+          </tr>
+          <tr class="clickable" onclick="location.href='project-detail.html?p=Helmet%20HUD'">
+            <td><div class="proj-cell"><div class="pn">Helmet HUD</div><div class="pp">Smart-helmet display housing</div></div></td>
+            <td>Shenzhen Optics</td>
+            <td>6</td>
+            <td><span class="oi zero"><span class="d"></span>0</span></td>
+            <td><div class="cbar"><span class="track"><span class="fill" style="width:100%"></span></span><span class="pct">100%</span></div></td>
+            <td>Rev C</td>
+            <td><span class="badge badge--green">DFM complete</span></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="tbl-foot"><span class="muted fs-13">3 projects</span><a class="btn btn--sm" href="create-project.html">+ New project</a></div>
+    </div>
+  </main>
+</div>
+<script src="store.js"></script>
+<script src="flows.js"></script>
+<script>
+  // Prepend any projects created via the Create Project page.
+  (function(){
+    var S = window.ChorusStore; if (!S) return;
+    var created = (S.projectsForCurrentWs ? S.projectsForCurrentWs() : S.projects()).filter(function(p){ return p.created; });
+    var body = document.getElementById('projBody');
+    created.reverse().forEach(function(p){
+      var tr = document.createElement('tr'); tr.className = 'clickable';
+      tr.onclick = function(){ location.href = 'project-detail.html?p=' + encodeURIComponent(p.name); };
+      tr.innerHTML = '<td><div class="proj-cell"><div class="pn">' + (p.name||'Untitled') + '</div><div class="pp">' + (p.product||'New project') + '</div></div></td>'
+        + '<td>' + (p.partner || '—') + '</td><td>0</td>'
+        + '<td><span class="oi zero"><span class="d"></span>0</span></td>'
+        + '<td><div class="cbar"><span class="track"><span class="fill" style="width:0%"></span></span><span class="pct">0%</span></div></td>'
+        + '<td>Rev A</td><td><span class="badge badge--soft">New</span></td>';
+      body.insertBefore(tr, body.firstChild);
+    });
+  })();
+</script>
+<script src="sidebar.js"></script>
+<script src="switcher.js"></script>
+</body>
+</html>

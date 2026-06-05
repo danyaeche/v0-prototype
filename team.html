@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Chorus · Team</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+<style>
+  .mcell { display: flex; align-items: center; gap: 11px; }
+  .mav { width: 34px; height: 34px; border-radius: 8px; display: grid; place-items: center; font-size: 12px; font-weight: 600; color: #fff; flex: none; }
+  .mcell .mn { font-size: 13.5px; font-weight: 500; }
+  .mcell .me { font-size: 12px; color: var(--muted); }
+  .role-badge { display: inline-block; font-size: 11.5px; font-weight: 600; padding: 2px 10px; border-radius: 999px; }
+  .role-badge.admin { background: rgba(0,149,113,.12); color: var(--green-600t); }
+  .role-badge.eng { background: var(--blue-50); color: var(--blue-600); }
+  .role-badge.sc { background: #efe9fb; color: #7c5cd6; }
+  .role-badge.viewer { background: #ededed; color: var(--ink-2); }
+  .role-badge.cm { background: #fdeede; color: #b7791f; }
+  .row-act { color: var(--muted); font-size: 12.5px; cursor: pointer; }
+  .row-act:hover { color: var(--ink); }
+  .section-gap { margin-top: 16px; }
+
+  .modal-bg { position: fixed; inset: 0; background: rgba(20,20,20,.45); display: none; place-items: center; z-index: 60; }
+  .modal-bg.open { display: grid; }
+  .modal { width: min(460px, 92%); background: #fff; border-radius: 14px; box-shadow: var(--shadow-lg); overflow: hidden; }
+  .modal-head { display: flex; align-items: center; justify-content: space-between; padding: 18px 20px; border-bottom: 1px solid var(--line-2); }
+  .modal-head h3 { margin: 0; font-size: 15px; font-weight: 600; font-family: var(--font-head); }
+  .modal-head .x { width: 28px; height: 28px; border-radius: 6px; border: 0; background: transparent; color: var(--muted); font-size: 18px; cursor: pointer; }
+  .modal-body { padding: 18px 20px; display: flex; flex-direction: column; gap: 13px; }
+  .modal-foot { display: flex; align-items: center; gap: 10px; padding: 16px 20px; border-top: 1px solid var(--line-2); justify-content: flex-end; }
+  .field label { display:block; font-size:12.5px; font-weight:500; color:var(--ink-2); margin-bottom:6px; }
+  .input, .select { width:100%; height:40px; border:1px solid var(--line); border-radius:9px; padding:0 12px; font-size:13.5px; font-family:inherit; box-sizing:border-box; }
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar" data-active="team"></aside>
+  <main class="main">
+    <div class="page-head">
+      <div><h1>Team</h1><div class="subtitle" style="margin:4px 0 0">Internal members and the external partners they collaborate with</div></div>
+      <div class="page-actions">
+        <a class="btn btn--sm" href="magic-links.html">Magic links</a>
+        <button class="btn btn--primary btn--sm" onclick="openInvite()">Invite member</button>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-head"><h2>Internal team</h2><span class="muted fs-12">ALSO · 4 members</span></div>
+      <table class="tbl">
+        <thead><tr><th>Member</th><th>Role</th><th>Projects</th><th>Status</th><th>Last active</th><th></th></tr></thead>
+        <tbody>
+          <tr>
+            <td><div class="mcell"><span class="mav" style="background:var(--green)">MK</span><span><span class="mn">Mathieu Kury <span class="muted fs-12">· you</span></span><br/><span class="me">mkury@simplyops.com</span></span></div></td>
+            <td><span class="role-badge admin">Admin</span></td><td>All projects</td><td><span class="badge badge--green">Active</span></td><td class="muted">now</td><td><span class="row-act">···</span></td>
+          </tr>
+          <tr>
+            <td><div class="mcell"><span class="mav" style="background:#3f6b8a">AR</span><span><span class="mn">Aisha Rahman</span><br/><span class="me">aisha@also.com</span></span></div></td>
+            <td><span class="role-badge eng">Engineering owner</span></td><td>TM-4 · Cargo eBike</td><td><span class="badge badge--green">Active</span></td><td class="muted">2h</td><td><span class="row-act">···</span></td>
+          </tr>
+          <tr>
+            <td><div class="mcell"><span class="mav" style="background:#7c5cd6">DO</span><span><span class="mn">David Okafor</span><br/><span class="me">david@also.com</span></span></div></td>
+            <td><span class="role-badge sc">Supply chain owner</span></td><td>All projects</td><td><span class="badge badge--green">Active</span></td><td class="muted">1d</td><td><span class="row-act">···</span></td>
+          </tr>
+          <tr>
+            <td><div class="mcell"><span class="mav" style="background:#9a9a9a">LF</span><span><span class="mn">Lena Fischer</span><br/><span class="me">lena@also.com</span></span></div></td>
+            <td><span class="role-badge viewer">Viewer</span></td><td>TM-4 Bike Program</td><td><span class="badge badge--soft">Invited</span></td><td class="muted">pending</td><td><span class="row-act">···</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="panel section-gap">
+      <div class="panel-head"><h2>External reviewers</h2><span class="muted fs-12">scoped via magic link · no account</span></div>
+      <table class="tbl">
+        <thead><tr><th>Reviewer</th><th>Company</th><th>Type</th><th>Scope</th><th>Access</th><th>Last active</th></tr></thead>
+        <tbody>
+          <tr class="clickable" onclick="location.href='magic-links.html'">
+            <td><div class="mcell"><span class="mav" style="background:#3f6b8a">BC</span><span><span class="mn">Benjamin Chen</span><br/><span class="me">benjamin.chen@hsinchu-precision.com</span></span></div></td>
+            <td>Hsinchu Precision</td><td><span class="role-badge cm">CM</span></td><td>TM-4 Bike Program</td><td><span class="badge badge--green">Link active</span></td><td class="muted">2h</td>
+          </tr>
+          <tr class="clickable" onclick="location.href='magic-links.html'">
+            <td><div class="mcell"><span class="mav" style="background:#2f73c4">WL</span><span><span class="mn">Wei Lin</span><br/><span class="me">wei.lin@taichung-mw.com</span></span></div></td>
+            <td>Taichung MetalWorks</td><td><span class="role-badge cm">Fabricator</span></td><td>Cargo eBike</td><td><span class="badge badge--green">Link active</span></td><td class="muted">1d</td>
+          </tr>
+          <tr class="clickable" onclick="location.href='magic-links.html'">
+            <td><div class="mcell"><span class="mav" style="background:#9a9a9a">ST</span><span><span class="mn">Sora Tanaka</span><br/><span class="me">sora@shenzhen-optics.com</span></span></div></td>
+            <td>Shenzhen Optics</td><td><span class="role-badge cm">Supplier</span></td><td>Helmet HUD</td><td><span class="badge badge--soft">Expired</span></td><td class="muted">—</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+</div>
+
+<div class="modal-bg" id="inviteBg">
+  <div class="modal">
+    <div class="modal-head"><h3>Invite member</h3><button class="x" onclick="closeInvite()">×</button></div>
+    <div class="modal-body">
+      <div class="field"><label>Email</label><input class="input" placeholder="name@also.com" /></div>
+      <div class="field"><label>Role</label><select class="select"><option>Admin</option><option selected>Engineering owner</option><option>Supply chain owner</option><option>Viewer</option></select></div>
+      <div class="field"><label>Projects</label><select class="select"><option>All projects</option><option>TM-4 Bike Program</option><option>Cargo eBike</option><option>Helmet HUD</option></select></div>
+    </div>
+    <div class="modal-foot"><button class="btn" onclick="closeInvite()">Cancel</button><button class="btn btn--primary" onclick="closeInvite()">Send invite</button></div>
+  </div>
+</div>
+
+<script>
+  function openInvite(){ document.getElementById('inviteBg').classList.add('open'); }
+  function closeInvite(){ document.getElementById('inviteBg').classList.remove('open'); }
+  document.getElementById('inviteBg').addEventListener('click', function(e){ if (e.target === this) closeInvite(); });
+</script>
+<script src="store.js"></script>
+<script src="sidebar.js"></script>
+<script src="switcher.js"></script>
+</body>
+</html>

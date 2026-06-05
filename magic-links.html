@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Chorus · Magic links</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+<style>
+  .metrics3 { grid-template-columns: repeat(3, 1fr); }
+  .lk-cell .ln { font-size: 13.5px; font-weight: 500; }
+  .lk-cell .le { font-size: 12px; color: var(--muted); }
+  .perm-sum { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; color: var(--ink-2); }
+  .perm-sum .pdot { display: inline-flex; gap: 3px; }
+  .perm-sum .pdot i { width: 6px; height: 6px; border-radius: 999px; background: var(--green); display: inline-block; }
+  .exp { display: flex; align-items: center; gap: 8px; font-size: 12.5px; }
+  .exp .track { width: 70px; height: 6px; background: #eef1f0; border-radius: 999px; overflow: hidden; }
+  .exp .fill { height: 100%; border-radius: 999px; }
+  .lstatus { display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; font-weight: 500; }
+  .lstatus .d { width: 7px; height: 7px; border-radius: 999px; }
+  .lstatus.active { color: var(--green-600t); } .lstatus.active .d { background: var(--green); }
+  .lstatus.soon { color: var(--amber-600); } .lstatus.soon .d { background: var(--amber-600); }
+  .lstatus.expired { color: var(--muted); } .lstatus.expired .d { background: var(--muted-2); }
+  .lstatus.revoked { color: var(--red-600); } .lstatus.revoked .d { background: var(--red-600); }
+  .lk-act { display: flex; gap: 6px; justify-content: flex-end; }
+  .lk-act .mini { font-size: 11.5px; font-weight: 600; padding: 4px 9px; border-radius: 7px; border: 1px solid var(--line); background: #fff; color: var(--ink-2); cursor: pointer; }
+  .lk-act .mini.danger { color: var(--red-600); border-color: #f0d9d6; }
+  .lk-act .mini:hover { background: #f6f6f6; }
+
+  .modal-bg { position: fixed; inset: 0; background: rgba(20,20,20,.45); display: none; place-items: center; z-index: 60; }
+  .modal-bg.open { display: grid; }
+  .modal { width: min(480px, 92%); background: #fff; border-radius: 14px; box-shadow: var(--shadow-lg); overflow: hidden; }
+  .modal-head { display: flex; align-items: center; justify-content: space-between; padding: 18px 20px; border-bottom: 1px solid var(--line-2); }
+  .modal-head h3 { margin: 0; font-size: 15px; font-weight: 600; font-family: var(--font-head); }
+  .modal-head .x { width: 28px; height: 28px; border-radius: 6px; border: 0; background: transparent; color: var(--muted); font-size: 18px; cursor: pointer; }
+  .modal-body { padding: 18px 20px; display: flex; flex-direction: column; gap: 13px; }
+  .modal-foot { display: flex; align-items: center; gap: 10px; padding: 16px 20px; border-top: 1px solid var(--line-2); justify-content: flex-end; }
+  .field label { display:block; font-size:12.5px; font-weight:500; color:var(--ink-2); margin-bottom:6px; }
+  .input, .select { width:100%; height:40px; border:1px solid var(--line); border-radius:9px; padding:0 12px; font-size:13.5px; font-family:inherit; box-sizing:border-box; }
+  .perm-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .perm-opt { display: flex; align-items: center; gap: 8px; font-size: 13px; border: 1px solid var(--line); border-radius: 9px; padding: 9px 11px; cursor: pointer; }
+  .perm-opt input { accent-color: var(--green); }
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar" data-active="magiclinks"></aside>
+  <main class="main">
+    <div class="page-head">
+      <div><h1>Magic links</h1><div class="subtitle" style="margin:4px 0 0">Time-bounded, scoped access for external reviewers — no accounts</div></div>
+      <div class="page-actions">
+        <a class="btn btn--sm" href="team.html">Team</a>
+        <button class="btn btn--primary btn--sm" onclick="openNew()">+ New magic link</button>
+      </div>
+    </div>
+
+    <div class="stat-grid metrics3">
+      <div class="stat"><div class="k">Active links</div><div class="v">2</div><div class="d">currently shared</div></div>
+      <div class="stat"><div class="k">Expiring soon</div><div class="v" style="color:var(--amber-600)">1</div><div class="d">within 7 days</div></div>
+      <div class="stat"><div class="k">Revoked / expired</div><div class="v">2</div><div class="d">no longer valid</div></div>
+    </div>
+
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead><tr><th>Reviewer</th><th>Scope</th><th>Permissions</th><th>Expires</th><th>Last opened</th><th>Status</th><th></th></tr></thead>
+        <tbody>
+          <tr>
+            <td><div class="lk-cell"><div class="ln">Benjamin Chen</div><div class="le">benjamin.chen@hsinchu-precision.com</div></div></td>
+            <td>TM-4 Bike Program<br/><span class="muted fs-12">4 of 18 parts</span></td>
+            <td><span class="perm-sum"><span class="pdot"><i></i><i></i><i></i><i></i></span> View · Comment · Issues · Validate</span></td>
+            <td><div class="exp"><span class="track"><span class="fill" style="width:66%;background:var(--green)"></span></span>14d</div></td>
+            <td class="muted">2h ago</td>
+            <td><span class="lstatus active"><span class="d"></span>Active</span></td>
+            <td><div class="lk-act"><button class="mini">Copy</button><button class="mini danger">Revoke</button></div></td>
+          </tr>
+          <tr>
+            <td><div class="lk-cell"><div class="ln">Wei Lin</div><div class="le">wei.lin@taichung-mw.com</div></div></td>
+            <td>Cargo eBike<br/><span class="muted fs-12">9 of 9 parts</span></td>
+            <td><span class="perm-sum"><span class="pdot"><i></i><i></i><i></i><i></i></span> View · Comment · Issues · Validate</span></td>
+            <td><div class="exp"><span class="track"><span class="fill" style="width:34%;background:var(--amber-600)"></span></span>5d</div></td>
+            <td class="muted">1d ago</td>
+            <td><span class="lstatus soon"><span class="d"></span>Expiring soon</span></td>
+            <td><div class="lk-act"><button class="mini">Extend</button><button class="mini danger">Revoke</button></div></td>
+          </tr>
+          <tr style="opacity:.72">
+            <td><div class="lk-cell"><div class="ln">Sora Tanaka</div><div class="le">sora@shenzhen-optics.com</div></div></td>
+            <td>Helmet HUD<br/><span class="muted fs-12">6 of 6 parts</span></td>
+            <td><span class="perm-sum"><span class="pdot"><i></i><i></i><i></i></span> View · Comment · Issues</span></td>
+            <td class="muted">May 1</td>
+            <td class="muted">May 1</td>
+            <td><span class="lstatus expired"><span class="d"></span>Expired</span></td>
+            <td><div class="lk-act"><button class="mini">Renew</button></div></td>
+          </tr>
+          <tr style="opacity:.72">
+            <td><div class="lk-cell"><div class="ln">Marco Belli</div><div class="le">marco@belli-tooling.it</div></div></td>
+            <td>TM-4 Bike Program<br/><span class="muted fs-12">2 of 18 parts</span></td>
+            <td><span class="perm-sum"><span class="pdot"><i></i></span> View only</span></td>
+            <td class="muted">—</td>
+            <td class="muted">never</td>
+            <td><span class="lstatus revoked"><span class="d"></span>Revoked</span></td>
+            <td><div class="lk-act"><button class="mini">Re-issue</button></div></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="tbl-foot"><span class="muted fs-13">4 links · all access logged</span><button class="btn btn--sm" onclick="openNew()">+ New magic link</button></div>
+    </div>
+  </main>
+</div>
+
+<div class="modal-bg" id="newBg">
+  <div class="modal">
+    <div class="modal-head"><h3>New magic link</h3><button class="x" onclick="closeNew()">×</button></div>
+    <div class="modal-body">
+      <div class="field"><label>Reviewer email</label><input class="input" placeholder="benjamin.chen@hsinchu-precision.com" /></div>
+      <div class="field"><label>Project scope</label><select class="select"><option>TM-4 Bike Program</option><option>Cargo eBike</option><option>Helmet HUD</option></select></div>
+      <div class="field"><label>Permissions</label>
+        <div class="perm-grid">
+          <label class="perm-opt"><input type="checkbox" checked />View files</label>
+          <label class="perm-opt"><input type="checkbox" checked />Download</label>
+          <label class="perm-opt"><input type="checkbox" checked />Comment</label>
+          <label class="perm-opt"><input type="checkbox" checked />Create issues</label>
+          <label class="perm-opt"><input type="checkbox" checked />Validate fixes</label>
+          <label class="perm-opt"><input type="checkbox" />Internal notes</label>
+        </div>
+      </div>
+      <div class="field"><label>Expires in</label><select class="select"><option>7 days</option><option selected>14 days</option><option>30 days</option></select></div>
+    </div>
+    <div class="modal-foot"><button class="btn" onclick="closeNew()">Cancel</button><button class="btn btn--primary" onclick="closeNew()">Generate link</button></div>
+  </div>
+</div>
+
+<script>
+  function openNew(){ document.getElementById('newBg').classList.add('open'); }
+  function closeNew(){ document.getElementById('newBg').classList.remove('open'); }
+  document.getElementById('newBg').addEventListener('click', function(e){ if (e.target === this) closeNew(); });
+</script>
+<script src="store.js"></script>
+<script src="sidebar.js"></script>
+<script src="switcher.js"></script>
+</body>
+</html>

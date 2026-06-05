@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Chorus · Revision history</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+<style>
+  .detail { padding: 22px 26px; max-width: 1000px; margin: 0 auto; }
+  .crumbs { display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 13px; margin-bottom: 16px; }
+  .crumbs a:hover { color: var(--ink); }
+  .crumbs .sep { color: var(--line); }
+  .detail-head { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 18px; }
+  .detail-head h1 { font-size: 22px; margin: 0 0 4px; }
+  .detail-head .sub { color: var(--muted); font-size: 13px; }
+
+  .rtl { position: relative; padding-left: 8px; }
+  .rev { display: grid; grid-template-columns: 56px 1fr; gap: 0; }
+  .rev-rail { position: relative; display: flex; justify-content: center; }
+  .rev-rail::before { content: ""; position: absolute; top: 0; bottom: -0px; width: 2px; background: var(--line-2); }
+  .rev:last-child .rev-rail::before { bottom: auto; height: 26px; }
+  .rev-node { position: relative; z-index: 1; width: 30px; height: 30px; border-radius: 999px; background: #fff; border: 2px solid var(--line); display: grid; place-items: center; font-size: 12px; font-weight: 700; font-family: var(--font-head); color: var(--muted); margin-top: 14px; }
+  .rev-node.current { background: var(--green); border-color: var(--green); color: #fff; }
+  .rev-body { margin: 0 0 16px; }
+  .rev-head { display: flex; align-items: center; gap: 10px; padding: 14px 18px; border-bottom: 1px solid var(--line-2); flex-wrap: wrap; }
+  .rev-name { font-size: 15px; font-weight: 600; font-family: var(--font-head); }
+  .rev-meta { font-size: 12.5px; color: var(--muted); }
+  .rev-head .right { margin-left: auto; display: flex; gap: 8px; }
+  .rev-sum { padding: 13px 18px 6px; font-size: 13.5px; color: var(--ink-2); line-height: 1.5; }
+  .rev-issues { display: flex; flex-wrap: wrap; gap: 8px; padding: 6px 18px 14px; }
+  .ichip { display: inline-flex; align-items: center; gap: 6px; font-size: 11.5px; font-weight: 600; padding: 3px 10px; border-radius: 999px; }
+  .ichip.fixed { background: var(--green-50); color: var(--green-600t); }
+  .ichip.new { background: var(--red-50); color: var(--red-600); }
+  .ichip.await { background: #f5ecd4; color: var(--amber-600); }
+  .ichip.none { background: #eef1f0; color: var(--ink-2); }
+  .files { display: flex; gap: 8px; padding: 0 18px 14px; flex-wrap: wrap; }
+  .file-chip { display: inline-flex; align-items: center; gap: 6px; font-size: 11.5px; color: var(--ink-2); background: #f1f3f3; border-radius: 6px; padding: 4px 9px; }
+</style>
+</head>
+<body>
+<div class="main" style="padding:0">
+  <div class="detail">
+    <div class="crumbs">
+      <a href="projects.html">Projects</a><span class="sep">/</span>
+      <a href="project-detail.html?p=TM-4%20Bike%20Program">TM-4 Bike Program</a><span class="sep">/</span>
+      <a href="part-detail.html">Top tube assembly</a><span class="sep">/</span>
+      <span style="color:var(--ink);font-weight:500">Revision history</span>
+      <span style="margin-left:auto;display:flex;gap:10px">
+        <a class="btn btn--sm" href="revision-diff.html">Compare revisions</a>
+        <a class="btn btn--primary btn--sm" href="part-detail.html">Upload revision</a>
+      </span>
+    </div>
+
+    <div class="detail-head">
+      <div>
+        <h1>Revision history</h1>
+        <div class="sub">Top tube assembly · TM-4-1001 · 3 revisions · every change tracked against its issues</div>
+      </div>
+    </div>
+
+    <div class="rtl">
+      <div class="rev">
+        <div class="rev-rail"><div class="rev-node current">3</div></div>
+        <div class="rev-body panel">
+          <div class="rev-head"><span class="rev-name">Rev 3</span><span class="badge badge--green" style="height:18px;font-size:11px">Current</span><span class="rev-meta">Mathieu Kury · ALSO · May 16, 9:42 AM</span><span class="right"><a class="btn btn--sm" href="revision-diff.html">Compare ↔ Rev 2</a><a class="btn btn--sm" href="part-detail.html">Open</a></span></div>
+          <div class="rev-sum">Wall increased to <b>1.5 mm</b> at the dropout, gusset fillet added, bore tolerance tightened to ±0.1. Candidate fix for the wall-thickness issue.</div>
+          <div class="rev-issues"><span class="ichip fixed">✓ 1 implemented · #12</span><span class="ichip await">◷ 1 awaiting validation · #12</span><span class="ichip new">+ 2 new · #13 #14</span></div>
+          <div class="files"><span class="file-chip">📐 top-tube-assembly.step</span><span class="file-chip">🧊 top-tube-assembly.stl</span><span class="file-chip">📄 TM-4-1001_Rev3.pdf</span><span class="file-chip">🖼 render.png</span></div>
+        </div>
+      </div>
+
+      <div class="rev">
+        <div class="rev-rail"><div class="rev-node">2</div></div>
+        <div class="rev-body panel">
+          <div class="rev-head"><span class="rev-name">Rev 2</span><span class="rev-meta">Mathieu Kury · ALSO · May 13, 9:10 AM</span><span class="right"><a class="btn btn--sm" href="revision-diff.html">Compare ↔ Rev 1</a><a class="btn btn--sm" href="part-detail.html">Open</a></span></div>
+          <div class="rev-sum">Addressed the rear-dropout wall and head-tube bore finish. Re-quoted at $4.12.</div>
+          <div class="rev-issues"><span class="ichip fixed">✓ 2 validated · #5 #7</span><span class="ichip none">0 new</span></div>
+          <div class="files"><span class="file-chip">📐 top-tube-assembly.step</span><span class="file-chip">📄 TM-4-1001_Rev2.pdf</span></div>
+        </div>
+      </div>
+
+      <div class="rev">
+        <div class="rev-rail"><div class="rev-node">1</div></div>
+        <div class="rev-body panel">
+          <div class="rev-head"><span class="rev-name">Rev 1</span><span class="badge badge--soft" style="height:18px;font-size:11px">Initial</span><span class="rev-meta">Mathieu Kury · ALSO · Apr 8, 4:30 PM</span><span class="right"><a class="btn btn--sm" href="part-detail.html">Open</a></span></div>
+          <div class="rev-sum">Initial release — ready for manufacturing review. First magic link sent to Hsinchu Precision.</div>
+          <div class="rev-issues"><span class="ichip new">+ 3 issues raised on review</span></div>
+          <div class="files"><span class="file-chip">📐 top-tube-assembly.step</span><span class="file-chip">📄 TM-4-1001_Rev1.pdf</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="switcher.js"></script>
+</body>
+</html>
