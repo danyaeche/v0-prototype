@@ -3,174 +3,226 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Chorus · User Flow</title>
+<title>Chorus · DFM Workflow</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;600&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="styles.css" />
 <style>
-  body { margin: 0; background: var(--bg); }
-  .board { position: relative; width: 1280px; height: 1120px; margin: 0 auto; background: var(--bg); }
+  body { background: var(--bg); }
+  .wrap { max-width: 1040px; margin: 0 auto; padding: 0 28px 80px; }
+  .topbar { display: flex; align-items: center; justify-content: space-between; padding: 18px 0; }
+  .topbar .brand { display: flex; align-items: center; gap: 9px; font-family: var(--font-head); font-weight: 700; font-size: 18px; color: var(--ink); text-decoration: none; }
+  .topbar .brand img { width: 26px; height: 26px; border-radius: 6px; }
 
-  /* header */
-  .head { position: absolute; left: 40px; top: 30px; }
-  .head h1 { font-family: var(--font-head); font-size: 24px; margin: 0; color: var(--ink); display: flex; align-items: center; gap: 10px; }
-  .head .flag { font-size: 10.5px; font-weight: 700; letter-spacing: .04em; color: #fff; background: var(--green); padding: 2px 8px; border-radius: 999px; }
-  .head .sub { font-size: 13px; color: var(--muted); margin-top: 7px; }
+  .hero { background: linear-gradient(155deg, #1f1f1f, #2b2b2b); color: #fff; border-radius: 18px; padding: 38px 40px; margin-bottom: 14px; }
+  .hero .eyebrow { font-size: 12px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--green); margin-bottom: 14px; }
+  .hero h1 { font-family: var(--font-head); font-size: 34px; line-height: 1.12; font-weight: 700; margin: 0 0 12px; letter-spacing: -.01em; }
+  .hero p { font-size: 15.5px; line-height: 1.6; color: #c9c9c9; max-width: 660px; margin: 0; }
+  .hero .pipe { display: inline-flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; }
+  .hero .pipe span { font-size: 13px; font-weight: 500; padding: 6px 13px; border-radius: 999px; background: rgba(255,255,255,.08); color: #ededed; }
+  .hero .pipe i { color: var(--green); font-style: normal; align-self: center; }
 
-  /* legend */
-  .legend { position: absolute; right: 40px; top: 30px; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 11px 14px; box-shadow: var(--shadow); }
-  .legend .li { display: flex; align-items: center; gap: 9px; font-size: 12px; color: var(--ink-2); margin: 5px 0; }
-  .legend .sw { flex: none; }
-  .sw-hp { width: 22px; height: 14px; border: 1px solid var(--line); border-radius: 4px; box-shadow: inset 3px 0 0 var(--green); }
-  .sw-br { width: 22px; height: 14px; border: 1px solid var(--line); border-radius: 4px; }
-  .sw-loop { width: 22px; height: 0; border-top: 2px dashed #9aa0a0; }
-  .sw-gap { width: 22px; height: 14px; border: 1px dashed var(--muted); border-radius: 4px; background: #fbfbfb; }
+  .section { margin-top: 36px; }
+  .section > h2 { font-family: var(--font-head); font-size: 13px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin: 0 0 16px; display: flex; align-items: center; gap: 10px; }
+  .section > h2 .n { width: 22px; height: 22px; border-radius: 6px; background: var(--ink); color: #fff; display: grid; place-items: center; font-size: 12px; font-family: var(--font-head); }
 
-  /* entry points */
-  .entry { position: absolute; top: 78px; left: 0; width: 1280px; text-align: center; }
-  .entry-lbl { font-size: 10.5px; letter-spacing: .08em; color: var(--muted); font-weight: 600; margin-bottom: 9px; }
-  .chips { display: flex; gap: 8px; justify-content: center; }
-  .chip { font-size: 12px; color: var(--ink-2); background: var(--card); border: 1px solid var(--line); border-radius: 999px; padding: 5px 13px; box-shadow: var(--shadow); }
+  .card { background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 24px 26px; }
+  .lead { font-size: 18px; line-height: 1.55; color: var(--ink); font-weight: 450; margin: 0; }
+  .lead b { font-weight: 600; }
+  .lead .hl { background: rgba(0,149,113,.12); color: var(--green-600t); padding: 0 6px; border-radius: 5px; font-weight: 600; }
 
-  /* nodes */
-  .node { position: absolute; width: 220px; box-sizing: border-box; background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 11px 14px; box-shadow: var(--shadow); text-decoration: none; display: block; z-index: 2; transition: transform .08s ease, box-shadow .08s ease; }
-  a.node:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(0,0,0,.10); }
-  .node .t { font-family: var(--font-head); font-weight: 600; font-size: 14px; color: var(--ink); line-height: 1.2; }
-  .node .f { font-size: 11.5px; color: var(--muted); margin-top: 3px; font-family: ui-monospace, "SF Mono", Menlo, monospace; }
-  .node.hp { box-shadow: inset 3px 0 0 var(--green), var(--shadow); }
-  a.node.hp:hover { box-shadow: inset 3px 0 0 var(--green), 0 6px 18px rgba(0,0,0,.10); }
-  .node.gap { border-style: dashed; background: #fbfbfb; box-shadow: none; }
-  .node .tag { position: absolute; top: -10px; right: 10px; font-size: 10px; font-weight: 600; padding: 1px 8px; border-radius: 999px; background: #f1efea; color: var(--muted); border: 1px solid var(--line); }
+  /* anatomy fields */
+  .fields { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 20px; }
+  .fld { border: 1px solid var(--line-2); border-radius: 10px; padding: 12px 14px; }
+  .fld .fk { font-size: 11px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--muted-2); }
+  .fld .fv { font-size: 13px; color: var(--ink-2); margin-top: 4px; }
 
-  /* arrow labels */
-  .albl { position: absolute; transform: translate(-50%, -50%); font-size: 10.5px; color: var(--muted); background: var(--bg); padding: 1px 7px; border-radius: 999px; z-index: 2; white-space: nowrap; }
-  .albl.k { color: var(--green-600t); font-weight: 600; }
+  /* monospace tree */
+  .tree { background: #1f1f1f; border-radius: 14px; padding: 26px 28px; overflow-x: auto; }
+  .tree pre { font-family: 'JetBrains Mono', ui-monospace, Menlo, monospace; font-size: 13.5px; line-height: 1.95; color: #d4d4d4; margin: 0; white-space: pre; }
+  .tree .t-ws { color: #fff; font-weight: 500; }
+  .tree .t-pr { color: #7fd1b9; }
+  .tree .t-br { color: #8a8a8a; }
+  .tree .t-node { color: #ededed; }
+  .tree .t-atom { color: #46c79f; font-weight: 500; }
+  .tree .t-note { color: #6f6f6f; }
+  .tree .t-mut { color: #9a9a9a; }
 
-  /* connectors */
-  .wires { position: absolute; inset: 0; width: 1280px; height: 1120px; z-index: 1; pointer-events: none; }
-  .ar { fill: none; stroke: var(--green); stroke-width: 2; }
-  .br { fill: none; stroke: #9aa0a0; stroke-width: 1.6; stroke-dasharray: 5 4; }
+  /* state machine */
+  .sm { background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 26px; }
+  .sm-path { display: flex; flex-wrap: wrap; align-items: center; gap: 9px; }
+  .pill { display: inline-flex; align-items: center; gap: 7px; font-size: 13px; font-weight: 600; padding: 7px 14px; border-radius: 999px; white-space: nowrap; }
+  .pill .dot { width: 8px; height: 8px; border-radius: 999px; }
+  .pill.open { background: var(--red-50); color: var(--red-600); } .pill.open .dot { background: var(--red-600); }
+  .pill.accepted { background: var(--blue-50); color: var(--blue-600); } .pill.accepted .dot { background: var(--blue-600); }
+  .pill.impl { background: var(--blue-50); color: var(--blue-600); } .pill.impl .dot { background: var(--blue-600); }
+  .pill.valreq { background: #f5ecd4; color: var(--amber-600); } .pill.valreq .dot { background: var(--amber-600); }
+  .pill.validated { background: var(--green-50); color: var(--green-600t); } .pill.validated .dot { background: var(--green-600t); }
+  .pill.closed { background: var(--ink); color: #fff; } .pill.closed .dot { background: #fff; }
+  .pill.rejected { background: #efe0df; color: var(--red-600); } .pill.rejected .dot { background: var(--red-600); }
+  .pill.clarify { background: #f5ecd4; color: var(--amber-600); } .pill.clarify .dot { background: var(--amber-600); }
+  .pill.failed { background: var(--red-50); color: var(--red-600); } .pill.failed .dot { background: var(--red-600); }
+  .arr { color: var(--muted-2); font-size: 15px; }
+  .sm-alt { margin-top: 22px; border-top: 1px dashed var(--line); padding-top: 18px; display: flex; flex-direction: column; gap: 13px; }
+  .alt { display: flex; align-items: center; gap: 9px; flex-wrap: wrap; }
+  .alt .lbl { font-size: 11px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--muted-2); width: 120px; flex: none; }
 
-  .foot { position: absolute; left: 40px; top: 1088px; font-size: 11.5px; color: var(--muted); display: flex; align-items: center; gap: 8px; }
-  .foot .d { width: 10px; height: 10px; border-radius: 999px; background: var(--green); flex: none; }
+  /* 12 steps */
+  .steps { display: flex; flex-direction: column; gap: 0; }
+  .step { display: flex; gap: 18px; padding: 16px 0; border-bottom: 1px solid var(--line-2); }
+  .step:last-child { border-bottom: 0; }
+  .step .sn { width: 30px; height: 30px; border-radius: 8px; background: #fff; border: 1.5px solid var(--line); color: var(--ink); display: grid; place-items: center; font-family: var(--font-head); font-weight: 700; font-size: 13px; flex: none; }
+  .step.loop .sn { border-style: dashed; }
+  .step.done .sn { background: var(--ink); color: #fff; border-color: var(--ink); }
+  .step .sbody { flex: 1; }
+  .step .st { font-size: 15px; font-weight: 600; color: var(--ink); }
+  .step .sm2 { font-size: 13px; color: var(--muted); margin-top: 3px; line-height: 1.5; }
+  .actor { display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: .03em; padding: 2px 9px; border-radius: 6px; margin-left: 10px; vertical-align: 2px; }
+  .actor.brand { background: rgba(0,149,113,.12); color: var(--green-600t); }
+  .actor.partner { background: var(--blue-50); color: var(--blue-600); }
+  .actor.system { background: #ededed; color: var(--ink-2); }
+
+  /* actors */
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .who { background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 22px 24px; }
+  .who .wh { display: flex; align-items: center; gap: 11px; margin-bottom: 14px; }
+  .who .wav { width: 40px; height: 40px; border-radius: 10px; display: grid; place-items: center; font-family: var(--font-head); font-weight: 700; font-size: 15px; color: #fff; }
+  .who.brand .wav { background: var(--green); } .who.partner .wav { background: var(--blue-600); }
+  .who .wn { font-size: 16px; font-weight: 600; }
+  .who .wr { font-size: 12.5px; color: var(--muted); }
+  .who ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 9px; }
+  .who li { font-size: 13.5px; color: var(--ink-2); line-height: 1.5; padding-left: 22px; position: relative; }
+  .who li::before { content: ""; position: absolute; left: 4px; top: 7px; width: 6px; height: 6px; border-radius: 999px; background: var(--green); }
+  .who.partner li::before { background: var(--blue-600); }
+  .who li.no::before { content: "✕"; background: none; color: var(--red-600); left: 2px; top: 0; font-size: 12px; font-weight: 700; }
 </style>
 </head>
 <body>
-<div class="board">
-
-  <!-- header -->
-  <div class="head">
-    <h1>User Flow <span class="flag">SOURCE A PART</span></h1>
-    <div class="sub">Chorus · brand-side sourcing journey · maps to the screens in this file</div>
+<div class="wrap">
+  <div class="topbar">
+    <a class="brand" href="overview.html"><img src="logo.png" alt="" />chorus</a>
+    <a class="btn btn--sm" href="overview.html">← Back to app</a>
   </div>
 
-  <!-- legend -->
-  <div class="legend">
-    <div class="li"><span class="sw sw-hp"></span> Happy path</div>
-    <div class="li"><span class="sw sw-br"></span> Branch screen</div>
-    <div class="li"><span class="sw sw-loop"></span> Loops back</div>
+  <div class="hero">
+    <div class="eyebrow">The DFM Workflow</div>
+    <h1>The DFM Issue is the<br/>atomic unit of work.</h1>
+    <p>Chorus replaces the CAD → PowerPoint → email loop with a GitHub-Issues workflow for manufacturability. Every manufacturing risk becomes a tracked, stateful issue — raised on a revision, decided by the brand, implemented in a new revision, validated by the partner, and closed. A part is done when its open-issue count hits zero.</p>
+    <div class="pipe"><span>CAD</span><i>→</i><span>Issues</span><i>→</i><span>Resolution</span><i>→</i><span>Validation</span><i>→</i><span>Closure</span></div>
   </div>
 
-  <!-- entry points -->
-  <div class="entry">
-    <div class="entry-lbl">ENTRY POINTS</div>
-    <div class="chips">
-      <span class="chip">Dashboard alert</span>
-      <span class="chip">Email / Slack link</span>
-      <span class="chip">Parts list</span>
-      <span class="chip">Vendor submits quote</span>
+  <!-- 1 · atomic unit -->
+  <div class="section">
+    <h2><span class="n">1</span> The atomic unit</h2>
+    <div class="card">
+      <p class="lead">Not the document. Not the RFQ. Not the quote. The unit of work is a single <span class="hl">DFM Issue</span> — one manufacturability concern, raised against one revision of one part, carried through a defined lifecycle until it is <b>validated and closed</b>.</p>
+      <div class="fields">
+        <div class="fld"><div class="fk">Title</div><div class="fv">Wall thickness too thin</div></div>
+        <div class="fld"><div class="fk">Description</div><div class="fv">The risk, in the partner's words</div></div>
+        <div class="fld"><div class="fk">Recommendation</div><div class="fv">Increase to 1.5 mm (supplier)</div></div>
+        <div class="fld"><div class="fk">Severity</div><div class="fv">Critical · Medium · Low</div></div>
+        <div class="fld"><div class="fk">Category</div><div class="fv">Tolerance · Material · Tooling · Geometry · Process</div></div>
+        <div class="fld"><div class="fk">Brand decision</div><div class="fv">Accepted · Rejected · Needs clarification</div></div>
+        <div class="fld"><div class="fk">Implementation</div><div class="fv">Not started · Implemented in Rev B</div></div>
+        <div class="fld"><div class="fk">Validation</div><div class="fv">Pending · Validated · Failed</div></div>
+        <div class="fld"><div class="fk">Created / Resolved on</div><div class="fv">Rev A → Rev B</div></div>
+      </div>
     </div>
   </div>
 
-  <!-- connectors -->
-  <svg class="wires" viewBox="0 0 1280 1120">
-    <defs>
-      <marker id="ah-green" markerWidth="9" markerHeight="9" refX="6.5" refY="3" orient="auto" markerUnits="userSpaceOnUse">
-        <path d="M0 0 L7 3 L0 6 Z" fill="#009571" />
-      </marker>
-      <marker id="ah-mute" markerWidth="9" markerHeight="9" refX="6.5" refY="3" orient="auto" markerUnits="userSpaceOnUse">
-        <path d="M0 0 L7 3 L0 6 Z" fill="#9aa0a0" />
-      </marker>
-    </defs>
+  <!-- 2 · hierarchy tree -->
+  <div class="section">
+    <h2><span class="n">2</span> Object hierarchy</h2>
+    <div class="tree">
+<pre><span class="t-ws">Workspace</span>  <span class="t-note">(SimplyOps)</span>
+<span class="t-br">│</span>
+<span class="t-br">└──</span> <span class="t-pr">Project</span>  <span class="t-note">(TM-4 Bike Program · one manufacturing partner)</span>
+    <span class="t-br">│</span>
+    <span class="t-br">├──</span> <span class="t-node">Parts</span>
+    <span class="t-br">│   └──</span> <span class="t-node">Part</span>  <span class="t-note">(Top tube assembly)</span>
+    <span class="t-br">│       └──</span> <span class="t-node">Revision</span>  <span class="t-mut">Rev A → Rev B → Rev C …</span>
+    <span class="t-br">│           └──</span> <span class="t-node">Files</span>  <span class="t-mut">STEP · PDF · Render</span>
+    <span class="t-br">│</span>
+    <span class="t-br">├──</span> <span class="t-atom">DFM Issues</span>  <span class="t-note">◀── the atomic unit of work</span>
+    <span class="t-br">│   └──</span> <span class="t-atom">Issue</span>  <span class="t-note">(#12 Wall thickness too thin)</span>
+    <span class="t-br">│       ├──</span> <span class="t-node">Decision</span>        <span class="t-mut">Accept · Reject · Needs clarification</span>
+    <span class="t-br">│       ├──</span> <span class="t-node">Implementation</span>  <span class="t-mut">Rev B — engineering fix</span>
+    <span class="t-br">│       ├──</span> <span class="t-node">Validation</span>      <span class="t-mut">compare Rev A vs Rev B</span>
+    <span class="t-br">│       └──</span> <span class="t-node">Closure</span>         <span class="t-mut">Open Issues − 1</span>
+    <span class="t-br">│</span>
+    <span class="t-br">└──</span> <span class="t-node">Activity</span>  <span class="t-mut">issue lifecycle feed — created · decided · validated · closed</span></pre>
+    </div>
+  </div>
 
-    <!-- happy path -->
-    <path class="ar" marker-end="url(#ah-green)" d="M560 150 L560 176" />
-    <path class="ar" marker-end="url(#ah-green)" d="M560 244 L560 306" />
-    <path class="ar" marker-end="url(#ah-green)" d="M560 374 L560 436" />
-    <path class="ar" marker-end="url(#ah-green)" d="M520 502 C 498 540, 466 558, 444 580" />
-    <path class="ar" marker-end="url(#ah-green)" d="M600 502 C 662 540, 742 558, 798 580" />
-    <path class="ar" marker-end="url(#ah-green)" d="M430 648 C 458 692, 502 712, 532 726" />
-    <path class="ar" marker-end="url(#ah-green)" d="M810 648 C 762 692, 648 712, 602 726" />
-    <path class="ar" marker-end="url(#ah-green)" d="M560 794 L560 856" />
-    <path class="ar" marker-end="url(#ah-green)" d="M560 924 L560 986" />
+  <!-- 3 · state machine -->
+  <div class="section">
+    <h2><span class="n">3</span> Issue lifecycle · state machine</h2>
+    <div class="sm">
+      <div class="sm-path">
+        <span class="pill open"><span class="dot"></span>Open</span>
+        <span class="arr">→</span>
+        <span class="pill accepted"><span class="dot"></span>Accepted</span>
+        <span class="arr">→</span>
+        <span class="pill impl"><span class="dot"></span>Implemented</span>
+        <span class="arr">→</span>
+        <span class="pill valreq"><span class="dot"></span>Validation requested</span>
+        <span class="arr">→</span>
+        <span class="pill validated"><span class="dot"></span>Validated</span>
+        <span class="arr">→</span>
+        <span class="pill closed"><span class="dot"></span>Closed</span>
+      </div>
+      <div class="sm-alt">
+        <div class="alt"><span class="lbl">Reject path</span><span class="pill open"><span class="dot"></span>Open</span><span class="arr">→</span><span class="pill rejected"><span class="dot"></span>Rejected</span><span class="t-mut" style="color:var(--muted);font-size:12.5px">— terminal · brand declines the change</span></div>
+        <div class="alt"><span class="lbl">Clarify loop</span><span class="pill open"><span class="dot"></span>Open</span><span class="arr">→</span><span class="pill clarify"><span class="dot"></span>Needs clarification</span><span class="arr">→</span><span class="pill open"><span class="dot"></span>Open</span><span class="t-mut" style="color:var(--muted);font-size:12.5px">— partner answers, issue re-opens</span></div>
+        <div class="alt"><span class="lbl">Failed validation</span><span class="pill valreq"><span class="dot"></span>Validation requested</span><span class="arr">→</span><span class="pill failed"><span class="dot"></span>Validation failed</span><span class="arr">→</span><span class="pill open"><span class="dot"></span>Open</span><span class="t-mut" style="color:var(--muted);font-size:12.5px">— fix didn't hold, back to the brand</span></div>
+      </div>
+    </div>
+  </div>
 
-    <!-- branches & loops -->
-    <path class="br" marker-end="url(#ah-mute)" d="M320 616 L286 616" />
-    <path class="br" marker-end="url(#ah-mute)" d="M170 648 L170 716" />
-    <path class="br" marker-end="url(#ah-mute)" d="M170 720 C 116 596, 250 470, 446 471" />
-    <path class="br" marker-end="url(#ah-mute)" d="M672 761 L974 761" />
-    <path class="br" marker-end="url(#ah-mute)" d="M1090 728 C 1090 678, 852 676, 664 722" />
-    <path class="br" marker-end="url(#ah-mute)" d="M450 891 C 360 880, 360 792, 448 779" />
-  </svg>
+  <!-- 4 · 12 steps -->
+  <div class="section">
+    <h2><span class="n">4</span> The workflow · 12 steps</h2>
+    <div class="card">
+      <div class="steps">
+        <div class="step done"><span class="sn">1</span><div class="sbody"><div class="st">Create Project<span class="actor brand">Brand</span></div><div class="sm2">One project per program, scoped to a single manufacturing partner.</div></div></div>
+        <div class="step done"><span class="sn">2</span><div class="sbody"><div class="st">Add Parts<span class="actor brand">Brand</span></div><div class="sm2">Each part will carry its own revisions and its own issue ledger.</div></div></div>
+        <div class="step done"><span class="sn">3</span><div class="sbody"><div class="st">Upload Initial Revision — Rev A<span class="actor brand">Brand</span></div><div class="sm2">Attach STEP · PDF · Render. Mark the revision <b>Ready for review</b>.</div></div></div>
+        <div class="step done"><span class="sn">4</span><div class="sbody"><div class="st">Invite Manufacturing Partner<span class="actor brand">Brand</span></div><div class="sm2">Magic link — no account needed, scoped to this project only.</div></div></div>
+        <div class="step"><span class="sn">5</span><div class="sbody"><div class="st">Manufacturing Review<span class="actor partner">Partner</span></div><div class="sm2">Partner opens the CAD + drawings and inspects for manufacturability.</div></div></div>
+        <div class="step"><span class="sn">6</span><div class="sbody"><div class="st">DFM Issue Creation<span class="actor partner">Partner</span></div><div class="sm2">Each risk becomes an issue — severity, category, recommendation.</div></div></div>
+        <div class="step"><span class="sn">7</span><div class="sbody"><div class="st">Brand Decision<span class="actor brand">Brand</span></div><div class="sm2">Accept · Reject · Needs clarification — recorded on the issue.</div></div></div>
+        <div class="step"><span class="sn">8</span><div class="sbody"><div class="st">Engineering Implementation — Rev B<span class="actor brand">Brand</span></div><div class="sm2">Accepted issues are fixed and uploaded as the next revision.</div></div></div>
+        <div class="step"><span class="sn">9</span><div class="sbody"><div class="st">Manufacturing Validation<span class="actor partner">Partner</span></div><div class="sm2">Partner compares Rev A vs Rev B and confirms the fix holds.</div></div></div>
+        <div class="step"><span class="sn">10</span><div class="sbody"><div class="st">Issue Closure<span class="actor system">System</span></div><div class="sm2">Validated issue closes; the part's open-issue count drops.</div></div></div>
+        <div class="step loop"><span class="sn">↻</span><div class="sbody"><div class="st">Repeat until Open Issues = 0<span class="actor system">Loop</span></div><div class="sm2">New revisions can surface new issues — the cycle continues.</div></div></div>
+        <div class="step"><span class="sn">12</span><div class="sbody"><div class="st">DFM Complete<span class="actor system">System</span></div><div class="sm2">Zero open issues → part is manufacturable and released.</div></div></div>
+      </div>
+    </div>
+  </div>
 
-  <!-- arrow labels -->
-  <span class="albl k" style="left:478px;top:690px">pass</span>
-  <span class="albl k" style="left:700px;top:690px">bids in</span>
-  <span class="albl k" style="left:610px;top:825px">accept</span>
-  <span class="albl k" style="left:610px;top:955px">approve</span>
-  <span class="albl" style="left:300px;top:596px">blocker</span>
-  <span class="albl" style="left:252px;top:556px">new rev</span>
-  <span class="albl" style="left:823px;top:747px">over budget</span>
-  <span class="albl" style="left:876px;top:688px">re-quote</span>
-  <span class="albl" style="left:372px;top:836px">changes</span>
-
-  <!-- nodes: happy-path spine -->
-  <a class="node hp" style="left:450px;top:180px" href="overview.html">
-    <div class="t">Dashboard</div><div class="f">overview.html</div>
-  </a>
-  <a class="node hp" style="left:450px;top:310px" href="parts.html">
-    <div class="t">Parts List</div><div class="f">parts.html</div>
-  </a>
-  <a class="node hp" style="left:450px;top:440px" href="part-detail.html">
-    <div class="t">Part Detail</div><div class="f">part-detail.html · Rev 3</div>
-  </a>
-
-  <!-- fork -->
-  <a class="node hp" style="left:320px;top:585px" href="dfm-review.html">
-    <div class="t">DFM Review</div><div class="f">dfm-review.html · 92</div>
-  </a>
-  <a class="node hp" style="left:700px;top:585px" href="rfq.html">
-    <div class="t">RFQ → Vendors</div><div class="f">rfq.html</div>
-  </a>
-
-  <!-- converge -->
-  <a class="node hp" style="left:450px;top:730px" href="quote-review.html">
-    <div class="t">Quote Review</div><div class="f">quote-review.html · 3 bids</div>
-  </a>
-  <a class="node hp" style="left:450px;top:860px" href="approval-workflow.html">
-    <div class="t">Approval</div><div class="f">approval-workflow.html</div>
-  </a>
-  <a class="node hp" style="left:450px;top:990px" href="production-release.html">
-    <div class="t">Production Release</div><div class="f">production-release.html</div>
-  </a>
-
-  <!-- DFM blocker loop (far left) -->
-  <a class="node" style="left:60px;top:585px" href="comment-thread.html">
-    <div class="t">Redline / Comments</div><div class="f">comment-thread.html</div>
-  </a>
-  <a class="node" style="left:60px;top:720px" href="revision-diff.html">
-    <div class="t">Revision Diff</div><div class="f">revision-diff.html</div>
-  </a>
-
-  <!-- quote negotiate branch (far right) -->
-  <a class="node" style="left:980px;top:730px" href="quote-submission.html">
-    <div class="t">Counter / Negotiate</div><div class="f">via quote-submission</div>
-  </a>
-
-  <!-- footer note -->
-  <div class="foot">
-    <span class="d"></span>
-    Every node links to a built screen — the journey now runs end to end with zero dead ends.
+  <!-- 5 · actors -->
+  <div class="section">
+    <h2><span class="n">5</span> Two actors, one source of truth</h2>
+    <div class="two">
+      <div class="who brand">
+        <div class="wh"><div class="wav">AL</div><div><div class="wn">Brand</div><div class="wr">ALSO · owns design intent</div></div></div>
+        <ul>
+          <li>Creates projects, parts, and uploads revisions</li>
+          <li>Makes the decision on every issue — accept, reject, clarify</li>
+          <li>Implements accepted fixes in a new revision</li>
+          <li class="no">Cannot validate its own fixes</li>
+        </ul>
+      </div>
+      <div class="who partner">
+        <div class="wh"><div class="wav">HP</div><div><div class="wn">Manufacturing Partner</div><div class="wr">Hsinchu Precision · owns manufacturability</div></div></div>
+        <ul>
+          <li>Reviews revisions and raises DFM issues with recommendations</li>
+          <li>Validates fixes by comparing revisions</li>
+          <li>Confirms the part is manufacturable</li>
+          <li class="no">Cannot see unrelated projects or parts</li>
+        </ul>
+      </div>
+    </div>
   </div>
 
 </div>

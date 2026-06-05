@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Chorus · DFM Issues</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+<style>
+  .filter-chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 14px; }
+  .fchip { font-size: 12.5px; font-weight: 500; padding: 6px 12px; border-radius: 999px; background: #fff; border: 1px solid var(--line); color: var(--ink-2); cursor: pointer; }
+  .fchip.on { background: var(--ink); color: #fff; border-color: var(--ink); }
+  .fchip b { font-weight: 700; }
+  .ino { color: var(--muted-2); font-size: 12.5px; font-family: ui-monospace, Menlo, monospace; }
+  .ititle { font-weight: 500; color: var(--ink); }
+  .isev { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; }
+  .isev .d { width: 8px; height: 8px; border-radius: 999px; }
+  .isev.crit { color: var(--red-600); } .isev.crit .d { background: var(--red-600); }
+  .isev.med { color: var(--amber-600); } .isev.med .d { background: var(--amber-600); }
+  .isev.low { color: var(--muted); } .isev.low .d { background: var(--muted-2); }
+  .cat { font-size: 11.5px; font-weight: 500; padding: 2px 9px; border-radius: 999px; background: var(--blue-50); color: var(--blue-600); }
+  .ist { display: inline-flex; align-items: center; gap: 6px; font-size: 11.5px; font-weight: 600; padding: 2px 9px; border-radius: 999px; }
+  .ist.open { background: var(--red-50); color: var(--red-600); }
+  .ist.accepted { background: var(--blue-50); color: var(--blue-600); }
+  .ist.await { background: #f5ecd4; color: var(--amber-600); }
+  .ist.validated { background: var(--green-50); color: var(--green-600t); }
+  .ist.closed { background: #ededed; color: var(--ink-2); }
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar" data-active="issues"></aside>
+  <main class="main">
+    <div class="page-head">
+      <div><h1>DFM Issues</h1><div class="subtitle" style="margin:4px 0 0">Every manufacturability issue · the atomic unit of work · across all parts</div></div>
+      <div class="page-actions">
+        <a class="btn btn--sm" href="overview.html">Overview</a>
+        <button class="btn btn--sm">Category ▾</button>
+        <button class="btn btn--sm">Severity ▾</button>
+      </div>
+    </div>
+
+    <div class="filter-chips">
+      <span class="fchip on">All <b>34</b></span>
+      <span class="fchip">Open <b>22</b></span>
+      <span class="fchip">Accepted <b>8</b></span>
+      <span class="fchip">Awaiting validation <b>6</b></span>
+      <span class="fchip">Validated <b>4</b></span>
+      <span class="fchip">Closed <b>112</b></span>
+    </div>
+
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead><tr><th>#</th><th>Issue</th><th>Part</th><th>Severity</th><th>Category</th><th>Status</th><th style="text-align:right">Updated</th></tr></thead>
+        <tbody>
+          <tr class="clickable" onclick="location.href='issue-detail.html'">
+            <td><span class="ino">#14</span></td><td><span class="ititle">Surface-finish callout missing</span></td><td>Top tube assembly</td>
+            <td><span class="isev med"><span class="d"></span>Medium</span></td><td><span class="cat">Process</span></td><td><span class="ist open">Open</span></td><td style="text-align:right" class="muted">2h</td>
+          </tr>
+          <tr class="clickable" onclick="location.href='issue-detail.html'">
+            <td><span class="ino">#13</span></td><td><span class="ititle">Gusset fillet radius unspecified</span></td><td>Top tube assembly</td>
+            <td><span class="isev low"><span class="d"></span>Low</span></td><td><span class="cat">Geometry</span></td><td><span class="ist open">Open</span></td><td style="text-align:right" class="muted">2h</td>
+          </tr>
+          <tr class="clickable" onclick="location.href='issue-detail.html'">
+            <td><span class="ino">#12</span></td><td><span class="ititle">Wall thickness too thin</span></td><td>Top tube assembly</td>
+            <td><span class="isev med"><span class="d"></span>Medium</span></td><td><span class="cat">Geometry</span></td><td><span class="ist await"><svg width="11" height="11" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="2"/><path d="M12 8v4l3 2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Awaiting validation</span></td><td style="text-align:right" class="muted">5h</td>
+          </tr>
+          <tr class="clickable" onclick="location.href='issue-detail.html'">
+            <td><span class="ino">#11</span></td><td><span class="ititle">Tolerance stack-up won't hold on CNC</span></td><td>Chain mount — hardware</td>
+            <td><span class="isev crit"><span class="d"></span>Critical</span></td><td><span class="cat">Tolerance</span></td><td><span class="ist open">Open · needs decision</span></td><td style="text-align:right" class="muted">1d</td>
+          </tr>
+          <tr class="clickable" onclick="location.href='issue-detail.html'">
+            <td><span class="ino">#10</span></td><td><span class="ititle">Bearing seat tolerance too tight</span></td><td>Wheel interface — rear</td>
+            <td><span class="isev med"><span class="d"></span>Medium</span></td><td><span class="cat">Tolerance</span></td><td><span class="ist accepted">Accepted</span></td><td style="text-align:right" class="muted">2d</td>
+          </tr>
+          <tr class="clickable" onclick="location.href='issue-detail.html'">
+            <td><span class="ino">#9</span></td><td><span class="ititle">Thread callout missing on shell</span></td><td>Bottom bracket shell</td>
+            <td><span class="isev low"><span class="d"></span>Low</span></td><td><span class="cat">Material</span></td><td><span class="ist open">Open</span></td><td style="text-align:right" class="muted">1d</td>
+          </tr>
+          <tr class="clickable" onclick="location.href='issue-detail.html'">
+            <td><span class="ino">#8</span></td><td><span class="ititle">Draft insufficient on cast lug</span></td><td>Seat component — lower</td>
+            <td><span class="isev med"><span class="d"></span>Medium</span></td><td><span class="cat">Tooling</span></td><td><span class="ist validated">Validated</span></td><td style="text-align:right" class="muted">3d</td>
+          </tr>
+          <tr class="clickable" onclick="location.href='issue-detail.html'">
+            <td><span class="ino">#7</span></td><td><span class="ititle">Weld access at gusset</span></td><td>Top tube assembly</td>
+            <td><span class="isev med"><span class="d"></span>Medium</span></td><td><span class="cat">Process</span></td><td><span class="ist closed"><svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Closed</span></td><td style="text-align:right" class="muted">May 13</td>
+          </tr>
+          <tr class="clickable" onclick="location.href='issue-detail.html'">
+            <td><span class="ino">#6</span></td><td><span class="ititle">Material substitution 6061 → 6082</span></td><td>Fork — exit</td>
+            <td><span class="isev low"><span class="d"></span>Low</span></td><td><span class="cat">Material</span></td><td><span class="ist closed"><svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Closed</span></td><td style="text-align:right" class="muted">May 10</td>
+          </tr>
+          <tr class="clickable" onclick="location.href='issue-detail.html'">
+            <td><span class="ino">#5</span></td><td><span class="ititle">Wall thickness — rear dropout</span></td><td>Wheel interface — rear</td>
+            <td><span class="isev med"><span class="d"></span>Medium</span></td><td><span class="cat">Geometry</span></td><td><span class="ist closed"><svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Closed</span></td><td style="text-align:right" class="muted">May 8</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="tbl-foot">
+        <span class="muted fs-13">Showing 10 of 34 open · lifecycle: Open → Accepted → Implemented → Validated → Closed</span>
+        <div class="pager"><span class="cur">1</span><a href="#">2</a><a href="#">3</a></div>
+      </div>
+    </div>
+  </main>
+</div>
+<script src="store.js"></script>
+<script src="sidebar.js"></script>
+<script src="switcher.js"></script>
+</body>
+</html>

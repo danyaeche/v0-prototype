@@ -8,135 +8,341 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="styles.css" />
 <style>
-  .detail { padding: 22px 26px; max-width: 1120px; margin: 0 auto; }
+  .detail { padding: 22px 26px; max-width: 1260px; margin: 0 auto; }
   .crumbs { display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 13px; margin-bottom: 16px; }
   .crumbs a:hover { color: var(--ink); }
-  .crumbs .sep { color: var(--muted-2); }
-  .detail-head { display: flex; align-items: flex-start; justify-content: space-between; }
+  .crumbs .sep { color: var(--line); }
+  .detail-head { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 16px; }
   .detail-head h1 { font-size: 22px; margin: 0 0 4px; display: flex; align-items: center; gap: 10px; }
   .detail-head .sub { color: var(--muted); font-size: 13px; }
-  .specs { display: flex; gap: 56px; margin: 18px 0 20px; }
-  .specs .k { font-size: 11px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); margin-bottom: 3px; }
-  .specs .v { font-size: 14px; font-weight: 500; }
-  .grid3 { display: grid; grid-template-columns: 220px 1fr 300px; gap: 16px; align-items: start; }
-  .col-card { background:#fff; border:1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); }
-  .col-card h3 { font-size: 13px; font-weight: 600; padding: 14px 16px; margin: 0; border-bottom: 1px solid var(--line-2); }
-  .rev { padding: 11px 16px; border-bottom: 1px solid var(--line-2); cursor: pointer; }
-  .rev:hover { background:#fafbfb; }
-  .rev .t { display:flex; align-items:center; gap:8px; font-size:13.5px; font-weight:500; }
-  .rev .d { font-size:12px; color: var(--muted); margin-top:2px; }
-  .rev.dim .t { color: var(--muted-2); font-weight:450; }
-  .rev-foot { padding: 11px 16px; }
-  .rev-foot a { color: var(--green); font-size: 13px; font-weight: 500; }
-  .viewer { aspect-ratio: 16/11; background: radial-gradient(120% 120% at 50% 20%, #fbfcfc 0%, #eef1f1 55%, #e2e6e6 100%); border:1px solid var(--line); border-radius: var(--radius); position: relative; overflow: hidden; }
-  .cad-host { position:absolute; inset:0; cursor: grab; }
-  .cad-host:active { cursor: grabbing; }
-  .cad-host canvas { display:block; }
-  .cad-hint { position:absolute; top:12px; left:14px; font-size:11px; color:var(--muted); background:rgba(255,255,255,.6); padding:3px 8px; border-radius:999px; pointer-events:none; max-width:60%; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-  .cad-load { position:absolute; top:11px; right:12px; display:inline-flex; align-items:center; gap:6px; font-size:11.5px; font-weight:500; color:var(--ink); background:#fff; border:1px solid var(--line); padding:5px 10px; border-radius:999px; cursor:pointer; box-shadow:var(--shadow); }
-  .cad-load:hover { background:#f6f6f6; }
-  .cad-host.drag { outline:2px dashed var(--green); outline-offset:-8px; background:rgba(0,149,113,.04); }
-  .viewer .tools { position:absolute; bottom:12px; left:50%; transform:translateX(-50%); display:flex; gap:4px; background:#fff; border:1px solid var(--line); border-radius:8px; padding:5px; box-shadow: var(--shadow); }
-  .viewer .tools button { width:30px; height:30px; border:0; background:transparent; border-radius:6px; display:grid; place-items:center; }
-  .viewer .tools button:hover { background:#f1f3f3; }
-  .cmt { padding: 13px 16px; border-bottom: 1px solid var(--line-2); }
-  .cmt .top { display:flex; align-items:center; gap:8px; }
-  .cmt .av { width:24px; height:24px; border-radius:6px; background:#cdd6d2; color:#3f4a47; display:grid; place-items:center; font-size:10px; font-weight:600; flex:none; }
-  .cmt .nm { font-size:12.5px; font-weight:600; }
-  .cmt .tm { font-size:11px; color: var(--muted); }
-  .cmt .body { font-size:13px; color: var(--ink-2); margin: 7px 0 0 32px; }
-  .quote-bar { display:flex; align-items:center; justify-content:space-between; margin-top:16px; background:#fff; border:1px solid var(--line); border-radius: var(--radius); padding:16px 18px; box-shadow: var(--shadow); }
-  .quote-bar .amt { font-size:22px; font-weight:600; }
-  .menu-btn { width:38px; }
+
+  .dfm-strip { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 12px 16px; box-shadow: var(--shadow); margin-bottom: 16px; }
+  .crit { display: inline-flex; align-items: center; gap: 7px; font-size: 12.5px; font-weight: 500; padding: 5px 11px; border-radius: 999px; }
+  .crit.ok { background: var(--green-50); color: var(--green-600t); }
+  .crit.bad { background: #f5ecd4; color: var(--amber-600); }
+  .crit svg { width: 14px; height: 14px; }
+  .dfm-goal { margin-left: auto; font-size: 12.5px; color: var(--muted); }
+  .dfm-goal b { color: var(--ink); }
+
+  .hero-grid { display: grid; grid-template-columns: 282px 1fr 372px; gap: 16px; align-items: start; margin-bottom: 16px; }
+
+  .tree { padding: 0 0 8px; }
+  .troot { display: flex; align-items: center; gap: 9px; font-size: 13.5px; font-weight: 600; padding: 13px 16px 11px; }
+  .troot svg { width: 18px; height: 18px; flex: none; }
+  .tnode { display: block; position: relative; padding: 12px 14px 12px 42px; border-top: 1px solid var(--line-2); text-decoration: none; }
+  .tnode::before { content: ""; position: absolute; left: 25px; top: 0; bottom: 0; width: 2px; background: var(--line-2); }
+  .tnode:last-child::before { bottom: auto; height: 22px; }
+  .tnode::after { content: ""; position: absolute; left: 20px; top: 20px; width: 12px; height: 12px; border-radius: 999px; background: #fff; border: 2px solid var(--line); }
+  .tnode.sel { box-shadow: inset 3px 0 0 var(--green); background: #fbfdfc; }
+  .tnode.sel::after { background: var(--green); border-color: var(--green); }
+  .tn-head { font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+  .tn-sub { font-size: 12px; color: var(--muted); margin-top: 4px; }
+  .tn-sub b { color: var(--green-600t); font-weight: 600; }
+  .tn-sub .nq { color: var(--muted-2); }
+  .tree-foot { padding: 11px 16px; border-top: 1px solid var(--line-2); }
+  .tree-foot a { color: var(--green); font-size: 12.5px; font-weight: 500; }
+
+  .rev-chip { display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; font-weight: 600; color: var(--ink); background: #eef1f0; border-radius: 999px; padding: 3px 10px; }
+  .rev-chip .cv { width: 6px; height: 6px; border-right: 1.5px solid var(--ink-2); border-bottom: 1.5px solid var(--ink-2); transform: translateY(-1px) rotate(45deg); }
+  .viewer { aspect-ratio: 4/3; background: radial-gradient(120% 120% at 50% 20%, #fbfcfc 0%, #eef1f1 55%, #e2e6e6 100%); position: relative; overflow: hidden; border-top: 1px solid var(--line-2); }
+  .cad-host { position: absolute; inset: 0; cursor: grab; } .cad-host:active { cursor: grabbing; }
+  .cad-host canvas { display: block; }
+  .cad-hint { position: absolute; top: 12px; left: 14px; font-size: 11px; color: var(--muted); background: rgba(255,255,255,.6); padding: 3px 8px; border-radius: 999px; pointer-events: none; max-width: 60%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .cad-load { position: absolute; top: 11px; right: 12px; display: inline-flex; align-items: center; gap: 6px; font-size: 11.5px; font-weight: 500; color: var(--ink); background: #fff; border: 1px solid var(--line); padding: 5px 10px; border-radius: 999px; cursor: pointer; box-shadow: var(--shadow); }
+  .cad-load:hover { background: #f6f6f6; }
+  .cad-host.drag { outline: 2px dashed var(--green); outline-offset: -8px; background: rgba(0,149,113,.04); }
+  .viewer .tools { position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%); display: flex; gap: 4px; background: #fff; border: 1px solid var(--line); border-radius: 8px; padding: 5px; box-shadow: var(--shadow); }
+  .viewer .tools button { width: 30px; height: 30px; border: 0; background: transparent; border-radius: 6px; display: grid; place-items: center; }
+  .viewer .tools button:hover { background: #f1f3f3; }
+  .files { display: flex; gap: 8px; padding: 11px 16px; flex-wrap: wrap; }
+  .file-chip { display: inline-flex; align-items: center; gap: 6px; font-size: 11.5px; color: var(--ink-2); background: #f1f3f3; border-radius: 6px; padding: 4px 9px; }
+
+  .disc-head .ctx { font-size: 11.5px; color: var(--muted); }
+  .issue { border-bottom: 1px solid var(--line-2); padding: 13px 16px; }
+  .issue:last-of-type { border-bottom: 0; }
+  .issue.resolved { background: #fbfcfc; }
+  .issue-head { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .issue-head .it { font-size: 13px; font-weight: 600; }
+  .issue-head .right { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+  .resolve-btn { font-size: 11.5px; font-weight: 600; color: var(--green-600t); background: var(--green-50); border: 0; padding: 4px 10px; border-radius: 999px; cursor: pointer; }
+  .reopen-btn { font-size: 11.5px; font-weight: 600; color: var(--muted); background: #ededed; border: 0; padding: 4px 10px; border-radius: 999px; cursor: pointer; }
+  .cmt { padding: 8px 0; }
+  .cmt .top { display: flex; align-items: center; gap: 8px; }
+  .cmt .av { width: 24px; height: 24px; border-radius: 6px; display: grid; place-items: center; font-size: 10px; font-weight: 600; color: #fff; flex: none; }
+  .av-mk { background: var(--green); } .av-bc { background: #3f6b8a; }
+  .cmt .nm { font-size: 12.5px; font-weight: 600; }
+  .cmt .role { font-size: 10.5px; font-weight: 500; padding: 1px 7px; border-radius: 999px; background: #ededed; color: var(--ink-2); }
+  .cmt .tm { font-size: 11px; color: var(--muted-2); margin-left: auto; white-space: nowrap; }
+  .cmt .body { font-size: 13px; color: var(--ink-2); margin: 6px 0 0 32px; }
+  .cmt .body .rec { display: block; margin-top: 6px; padding: 7px 10px; background: #f1f3f3; border-radius: 6px; font-size: 12.5px; color: var(--ink); }
+  .cmt.reply { margin-left: 32px; }
+  .resolved-in { font-size: 11px; color: var(--green-600t); margin: 4px 0 0 32px; }
+  .hist { display: flex; align-items: center; gap: 8px; padding: 10px 16px; font-size: 11.5px; color: var(--muted-2); background: #fafafa; border-bottom: 1px solid var(--line-2); }
+  .hist .tag { background: #e8e8e8; color: var(--muted); }
+  .composer { display: flex; gap: 10px; padding: 13px 16px; border-top: 1px solid var(--line); }
+  .composer .av { width: 26px; height: 26px; border-radius: 6px; background: var(--green); color: #fff; display: grid; place-items: center; font-size: 10.5px; font-weight: 600; flex: none; }
+  .composer .grow { flex: 1; }
+  .composer .row { display: flex; align-items: center; justify-content: space-between; margin-top: 9px; }
+
+  .qbadge { font-size: 11px; }
+  .qgrid { display: grid; grid-template-columns: repeat(4, 1fr); }
+  .qcell { padding: 14px 16px; border-right: 1px solid var(--line-2); }
+  .qcell:last-child { border-right: 0; }
+  .qcell .k { font-size: 11px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
+  .qcell .v { font-size: 19px; font-weight: 600; font-family: var(--font-head); margin-top: 4px; }
+  .qcell .v.accent { color: var(--green-600t); }
+  .qnotes { font-size: 12.5px; color: var(--ink-2); padding: 12px 16px; border-top: 1px solid var(--line-2); }
+  .qtie { display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 500; color: var(--green-600t); background: var(--green-50); padding: 9px 16px; }
+  .tbl tr.best td { background: var(--green-50); }
+  .tbl tr.best td:first-child { box-shadow: inset 3px 0 0 var(--green); }
+
+  .cm-logo { width: 36px; height: 36px; border-radius: 8px; background: var(--ink); color: #fff; display: grid; place-items: center; font-weight: 600; font-family: var(--font-head); font-size: 13px; flex: none; }
+
+  /* invite / request-quote modal */
+  .modal-bg { position: fixed; inset: 0; background: rgba(20,20,20,.45); display: none; place-items: center; z-index: 60; }
+  .modal-bg.open { display: grid; }
+  .modal { width: min(500px, 92%); background: #fff; border-radius: 14px; box-shadow: var(--shadow-lg); overflow: hidden; }
+  .modal-head { display: flex; align-items: center; justify-content: space-between; padding: 18px 20px; border-bottom: 1px solid var(--line-2); }
+  .modal-head h3 { margin: 0; font-size: 15px; font-weight: 600; font-family: var(--font-head); }
+  .modal-head .x { width: 28px; height: 28px; border-radius: 6px; border: 0; background: transparent; color: var(--muted); font-size: 18px; cursor: pointer; }
+  .modal-body { padding: 18px 20px; display: flex; flex-direction: column; gap: 14px; }
+  .modal-body p { margin: 0; font-size: 13.5px; color: var(--ink-2); line-height: 1.5; }
+  .modal-foot { display: flex; align-items: center; gap: 10px; padding: 16px 20px; border-top: 1px solid var(--line-2); }
+  .modal-foot .grow { flex: 1; }
+
+  /* DFM issue rows */
+  .irow { display: block; padding: 11px 16px; border-bottom: 1px solid var(--line-2); text-decoration: none; }
+  .irow:hover { background: #fafafa; }
+  .irow.closed { opacity: .68; }
+  .irow-t { display: flex; align-items: center; gap: 8px; }
+  .irow .ino { font-size: 11.5px; color: var(--muted-2); font-family: ui-monospace, Menlo, monospace; }
+  .irow .ititle { font-size: 13px; font-weight: 500; color: var(--ink); flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .irow-s { display: flex; align-items: center; gap: 10px; margin-top: 5px; font-size: 11.5px; color: var(--muted); }
+  .isev { display: inline-flex; align-items: center; gap: 5px; font-weight: 600; }
+  .isev .d { width: 7px; height: 7px; border-radius: 999px; }
+  .isev.crit { color: var(--red-600); } .isev.crit .d { background: var(--red-600); }
+  .isev.med { color: var(--amber-600); } .isev.med .d { background: var(--amber-600); }
+  .isev.low { color: var(--muted); } .isev.low .d { background: var(--muted-2); }
+  .cat { font-size: 11px; font-weight: 500; padding: 1px 8px; border-radius: 999px; background: var(--blue-50); color: var(--blue-600); }
+  .ist { font-size: 10.5px; font-weight: 600; padding: 1px 8px; border-radius: 999px; flex: none; }
+  .ist.open { background: var(--red-50); color: var(--red-600); }
+  .ist.await { background: #f5ecd4; color: var(--amber-600); }
+  .ist.closed { background: #ededed; color: var(--ink-2); }
+  .irow-foot { display: flex; align-items: center; justify-content: space-between; padding: 11px 16px; }
+  .irow-foot a { color: var(--green); font-size: 12.5px; font-weight: 500; }
 </style>
 </head>
 <body>
 <div class="main" style="padding:0">
   <div class="detail">
-    <div class="crumbs"><a href="parts.html">Parts</a><span class="sep">/</span><span style="color:var(--ink);font-weight:500">Top tube assembly (TM-4-1001)</span>
+    <div class="crumbs">
+      <a href="projects.html">Projects</a><span class="sep">/</span>
+      <a href="project-detail.html?p=TM-4%20Bike%20Program">TM-4 Bike Program</a><span class="sep">/</span>
+      <span style="color:var(--ink);font-weight:500">Top tube assembly</span>
       <span style="margin-left:auto;display:flex;gap:10px">
         <a class="btn btn--sm" href="revision-diff.html">Compare revisions</a>
-        <a class="btn btn--sm" href="part-detail.html">New revision</a>
-        <a class="btn btn--sm menu-btn" href="#">⋯</a>
+        <button class="btn btn--sm" onclick="openInvite()">Send to supplier</button>
+        <a class="btn btn--primary btn--sm" href="part-detail.html">Upload revision</a>
       </span>
     </div>
 
     <div class="detail-head">
       <div>
-        <h1>Top tube assembly <span class="badge badge--green">Current</span></h1>
-        <div class="sub">TM-4-1001</div>
+        <h1>Top tube assembly <span class="badge badge--blue">In DFM review</span></h1>
+        <div class="sub">TM-4-1001 · Frame · 6061-T6 Aluminum · TM-4 Bike Program</div>
       </div>
     </div>
 
-    <div class="specs">
-      <div><div class="k">Category</div><div class="v">Frame</div></div>
-      <div><div class="k">Material</div><div class="v">6061-T6 Aluminum</div></div>
-      <div><div class="k">Updated</div><div class="v">May 16, 2025</div></div>
+    <!-- DFM-complete criteria (part-level) -->
+    <div class="dfm-strip">
+      <span class="crit ok"><svg viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Latest revision · Rev 3</span>
+      <span class="crit bad"><svg viewBox="0 0 24 24" fill="none"><path d="M12 8v5M12 16.5v.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.6"/></svg>2 open DFM issues</span>
+      <span class="crit ok"><svg viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Quote attached · Rev 3</span>
+      <span class="dfm-goal">Resolve the 2 open issues → <b>DFM Complete</b> · part ready</span>
     </div>
 
-    <div class="grid3">
-      <!-- Revisions -->
-      <div class="col-card">
-        <h3>Revisions</h3>
-        <div class="rev"><div class="t">Rev 3 <span class="badge badge--green">Current</span></div><div class="d">May 16, 2025</div></div>
-        <div class="rev dim"><div class="t">Rev 2</div><div class="d">May 13, 2025</div></div>
-        <div class="rev dim"><div class="t">Rev 1</div><div class="d">Apr 25, 2025</div></div>
-        <div class="rev dim"><div class="t">Rev 0</div><div class="d">Apr 8, 2025</div></div>
-        <div class="rev-foot"><a href="revision-diff.html">Compare Rev 2 ↔ Rev 3</a></div>
+    <div class="hero-grid">
+      <!-- Revisions: each revision owns its comments + quote -->
+      <div class="panel">
+        <div class="panel-head"><h3>Revisions</h3><span class="muted fs-12">issues + quote per rev</span></div>
+        <div class="tree">
+          <div class="troot"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3 4 7.5v9L12 21l8-4.5v-9L12 3Z" stroke="#1c1c1c" stroke-width="1.5"/><path d="M4 7.5 12 12l8-4.5M12 12v9" stroke="#1c1c1c" stroke-width="1.5"/></svg> Top tube assembly</div>
+          <a class="tnode sel" href="part-detail.html">
+            <div class="tn-head">Rev 3 <span class="badge badge--green" style="height:18px;font-size:11px">Current</span></div>
+            <div class="tn-sub">2 open issues · <b>Quote $3.95</b></div>
+          </a>
+          <a class="tnode" href="part-detail.html">
+            <div class="tn-head">Rev 2</div>
+            <div class="tn-sub">issues resolved · <b>Quote $4.12</b></div>
+          </a>
+          <a class="tnode" href="part-detail.html">
+            <div class="tn-head">Rev 1</div>
+            <div class="tn-sub">1 issue · <span class="nq">no quote</span></div>
+          </a>
+        </div>
+        <div class="tree-foot"><a href="part-detail.html">+ Upload Rev 4</a></div>
       </div>
 
-      <!-- Viewer (real-time 3D) -->
-      <div class="viewer">
-        <div id="cadHost" class="cad-host"></div>
-        <div class="cad-hint">Loading model…</div>
-        <label class="cad-load" title="Load a CAD file (.stl, .glb, .gltf, .obj)">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M12 16V4m0 0L7 9m5-5 5 5M5 20h14" stroke="#1c1c1c" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          Load CAD
-          <input id="cadFile" type="file" accept=".stl,.glb,.gltf,.obj" hidden />
-        </label>
-        <div class="tools">
-          <button id="cadZoomIn" title="Zoom in"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="6" stroke="#3f4a47" stroke-width="1.6"/><path d="M11 8v6M8 11h6M20 20l-4-4" stroke="#3f4a47" stroke-width="1.6" stroke-linecap="round"/></svg></button>
-          <button id="cadFit" title="Fit"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" stroke="#3f4a47" stroke-width="1.6" stroke-linecap="round"/></svg></button>
-          <button id="cadZoomOut" title="Zoom out"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="6" stroke="#3f4a47" stroke-width="1.6"/><path d="M8 11h6M20 20l-4-4" stroke="#3f4a47" stroke-width="1.6" stroke-linecap="round"/></svg></button>
-          <button id="cadSpin" title="Toggle auto-rotate"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12a7 7 0 1 1 2 5" stroke="#3f4a47" stroke-width="1.6" stroke-linecap="round"/><path d="M7 13v4H3" stroke="#3f4a47" stroke-width="1.6" stroke-linecap="round"/></svg></button>
-          <button id="cadReset" title="Reset view"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="#3f4a47" stroke-width="1.6" stroke-linecap="round"/></svg></button>
-          <button id="cadGrid" title="Toggle grid"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="4" y="4" width="16" height="16" rx="2" stroke="#3f4a47" stroke-width="1.6"/><path d="M4 10h16M4 15h16M10 4v16M15 4v16" stroke="#3f4a47" stroke-width="1.2"/></svg></button>
+      <!-- Files / CAD preview for the selected revision -->
+      <div class="panel">
+        <div class="panel-head">
+          <div style="display:flex;align-items:center;gap:10px"><h3>Files — Rev 3</h3><span class="rev-chip">Rev 3 <span class="cv"></span></span></div>
+          <span class="muted fs-12">drag to orbit · scroll to zoom</span>
+        </div>
+        <div class="viewer">
+          <div id="cadHost" class="cad-host"></div>
+          <div class="cad-hint">Loading model…</div>
+          <label class="cad-load" title="Upload a CAD file (.stl, .glb, .gltf, .obj) — creates a new revision">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M12 16V4m0 0L7 9m5-5 5 5M5 20h14" stroke="#1c1c1c" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Upload CAD
+            <input id="cadFile" type="file" accept=".stl,.glb,.gltf,.obj" hidden />
+          </label>
+          <div class="tools">
+            <button id="cadZoomIn" title="Zoom in"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="6" stroke="#3f4a47" stroke-width="1.6"/><path d="M11 8v6M8 11h6M20 20l-4-4" stroke="#3f4a47" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+            <button id="cadFit" title="Fit"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" stroke="#3f4a47" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+            <button id="cadZoomOut" title="Zoom out"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="6" stroke="#3f4a47" stroke-width="1.6"/><path d="M8 11h6M20 20l-4-4" stroke="#3f4a47" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+            <button id="cadSpin" title="Toggle auto-rotate"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12a7 7 0 1 1 2 5" stroke="#3f4a47" stroke-width="1.6" stroke-linecap="round"/><path d="M7 13v4H3" stroke="#3f4a47" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+            <button id="cadReset" title="Reset view"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="#3f4a47" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+            <button id="cadGrid" title="Toggle grid"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="4" y="4" width="16" height="16" rx="2" stroke="#3f4a47" stroke-width="1.6"/><path d="M4 10h16M4 15h16M10 4v16M15 4v16" stroke="#3f4a47" stroke-width="1.2"/></svg></button>
+          </div>
+        </div>
+        <div class="files">
+          <span class="file-chip">📐 top-tube-assembly.step</span>
+          <span class="file-chip">🧊 top-tube-assembly.stl</span>
+          <span class="file-chip">📄 TM-4-1001_Rev3.pdf</span>
+          <span class="file-chip">🖼 render.png</span>
         </div>
       </div>
 
-      <!-- Comments -->
-      <div class="col-card">
-        <h3>Comments</h3>
-        <div class="cmt">
-          <div class="top"><span class="av">MK</span><span class="nm">Mathieu Kury</span><span class="tm">May 16, 10:22 AM</span></div>
-          <div class="body">Updated for tolerances</div>
+      <!-- DFM Issues — the atomic unit of work -->
+      <div class="panel">
+        <div class="panel-head disc-head">
+          <h3>DFM Issues</h3>
+          <span class="ctx">2 open · 1 awaiting · 4 closed</span>
         </div>
-        <div class="cmt">
-          <div class="top"><span class="av">BC</span><span class="nm">Benjamin Chen</span><span class="tm">May 15, 4:09 PM</span></div>
-          <div class="body">Rev 3 looks good — sent to supplier for new quotes.</div>
-        </div>
-        <div class="cmt">
-          <div class="top"><span class="av">TS</span><span class="nm">Thomas Sullivan</span><span class="tm">May 15, 9:15 AM</span></div>
-          <div class="body">Added FEA result references.</div>
-        </div>
-        <div class="rev-foot"><a href="#">View all comments</a></div>
+        <a class="irow" href="issue-detail.html">
+          <div class="irow-t"><span class="ino">#14</span><span class="ititle">Surface-finish callout missing</span><span class="ist open">Open</span></div>
+          <div class="irow-s"><span class="isev med"><span class="d"></span>Medium</span><span class="cat">Process</span><span>Benjamin Chen · Rev 3</span></div>
+        </a>
+        <a class="irow" href="issue-detail.html">
+          <div class="irow-t"><span class="ino">#13</span><span class="ititle">Gusset fillet radius unspecified</span><span class="ist open">Open</span></div>
+          <div class="irow-s"><span class="isev low"><span class="d"></span>Low</span><span class="cat">Geometry</span><span>Benjamin Chen · Rev 3</span></div>
+        </a>
+        <a class="irow" href="issue-detail.html">
+          <div class="irow-t"><span class="ino">#12</span><span class="ititle">Wall thickness too thin</span><span class="ist await">Awaiting validation</span></div>
+          <div class="irow-s"><span class="isev med"><span class="d"></span>Medium</span><span class="cat">Geometry</span><span>accepted · fixed in Rev 3</span></div>
+        </a>
+        <a class="irow closed" href="issue-detail.html">
+          <div class="irow-t"><span class="ino">#7</span><span class="ititle">Weld access at gusset</span><span class="ist closed">Closed</span></div>
+          <div class="irow-s"><span class="isev med"><span class="d"></span>Medium</span><span class="cat">Process</span><span>validated · Rev 2</span></div>
+        </a>
+        <div class="irow-foot"><a href="issues-list.html">View all 7 issues →</a><button class="btn btn--sm" onclick="openInvite()">+ New issue</button></div>
       </div>
     </div>
 
-    <!-- Quote summary -->
-    <div class="quote-bar">
-      <div>
-        <div style="font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);margin-bottom:4px">Quote summary</div>
-        <div style="display:flex;align-items:baseline;gap:10px"><span class="amt">$4,742.30</span><span class="muted fs-13">3 quotes</span></div>
-        <div class="muted fs-12" style="margin-top:3px">Updated May 16 · Received May 15, 2025</div>
+    <!-- Quote: attached to the revision -->
+    <div class="cols-2" style="margin-bottom:16px">
+      <div class="panel">
+        <div class="panel-head"><h3>Quote · attached to Rev 3</h3><span class="badge badge--green qbadge">Quote #2</span></div>
+        <div class="qgrid">
+          <div class="qcell"><div class="k">Unit cost</div><div class="v accent">$3.95</div></div>
+          <div class="qcell"><div class="k">MOQ</div><div class="v">1,000</div></div>
+          <div class="qcell"><div class="k">Lead time</div><div class="v">8 weeks</div></div>
+          <div class="qcell"><div class="k">Submitted</div><div class="v" style="font-size:15px">May 16</div></div>
+        </div>
+        <div class="qnotes"><b style="color:var(--ink)">Notes ·</b> Re-quoted on Rev 3. Price down from Rev 2 — the 1.5 mm wall + gusset fillet simplified the weld. — Benjamin Chen, Hsinchu Precision</div>
+        <div class="qtie">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M9 12a4 4 0 0 1 4-4h3a4 4 0 0 1 0 8h-1M15 12a4 4 0 0 1-4 4H8a4 4 0 0 1 0-8h1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          This quote is locked to Revision 3 — not buried in an email thread.
+        </div>
       </div>
-      <div style="display:flex;gap:10px">
-        <a class="btn" href="quote-submission.html">View quotes</a>
-        <a class="btn btn--primary" href="quote-submission.html">Request quote</a>
+      <div class="panel">
+        <div class="panel-head"><h3>Quote history</h3><span class="muted fs-12">one quote per revision</span></div>
+        <table class="tbl">
+          <thead><tr><th>Revision</th><th>Unit cost</th><th>MOQ</th><th>Lead time</th><th style="text-align:right">Submitted</th></tr></thead>
+          <tbody>
+            <tr class="best"><td><b>Rev 3</b> <span class="badge badge--green" style="height:18px;font-size:11px">Current</span></td><td><b>$3.95</b></td><td>1,000</td><td>8 weeks</td><td style="text-align:right">May 16</td></tr>
+            <tr><td>Rev 2</td><td>$4.12</td><td>1,000</td><td>8 weeks</td><td style="text-align:right">May 13</td></tr>
+            <tr><td>Rev 1</td><td class="muted">—</td><td class="muted">—</td><td class="muted">—</td><td style="text-align:right" class="muted">no quote</td></tr>
+          </tbody>
+        </table>
+        <div class="qnotes">“What did this part cost at <b style="color:var(--ink)">Rev 2 ($4.12)</b>, and why did it change at <b style="color:var(--ink)">Rev 3 ($3.95)</b>?” — the answer lives here, tied to the design.</div>
+      </div>
+    </div>
+
+    <!-- Supplier access -->
+    <div class="panel" style="margin-bottom:16px">
+      <div class="panel-head"><h3>Supplier access</h3><span class="muted fs-12">magic link · no account needed</span></div>
+      <div style="display:flex;align-items:center;gap:14px;padding:14px 18px">
+        <span class="cm-logo">HP</span>
+        <div style="flex:1"><div style="font-size:13.5px;font-weight:600">Hsinchu Precision</div><div style="font-size:12px;color:var(--muted)">benjamin.chen@hsinchu-precision.com · link active · expires May 30, 2025</div></div>
+        <a class="btn btn--sm" href="magic-link-view.html">Open supplier view</a>
+        <button class="btn btn--sm" onclick="openInvite()">Resend link</button>
+      </div>
+    </div>
+
+    <!-- Activity log -->
+    <div class="panel">
+      <div class="panel-head"><h3>Activity log</h3><span class="muted fs-12">every action on this part</span></div>
+      <div class="timeline">
+        <div class="tl-item">
+          <span class="tl-ic green"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12l16-8-6 16-2-6z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg></span>
+          <div class="tl-body"><div class="tl-t"><b>Quote submitted</b> against Rev 3 — $3.95/unit · MOQ 1,000 · 8 weeks</div><div class="tl-m">Benjamin Chen · Hsinchu Precision</div></div>
+          <span class="tl-time">2h ago</span>
+        </div>
+        <div class="tl-item">
+          <span class="tl-ic blue"><svg viewBox="0 0 24 24" fill="none"><path d="M12 16V4m0 0L7 9m5-5 5 5M5 20h14" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          <div class="tl-body"><div class="tl-t"><b>Revision uploaded</b> — Rev 3 · gusset fillet + tolerance ±0.1</div><div class="tl-m">Mathieu Kury · ALSO · Rev 2 comments marked historical</div></div>
+          <span class="tl-time">May 16</span>
+        </div>
+        <div class="tl-item">
+          <span class="tl-ic green"><svg viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          <div class="tl-body"><div class="tl-t"><b>Issue resolved</b> — Wall thickness (1.0 mm → 1.5 mm)</div><div class="tl-m">Mathieu Kury · ALSO · fixed in Rev 2</div></div>
+          <span class="tl-time">May 13</span>
+        </div>
+        <div class="tl-item">
+          <span class="tl-ic"><svg viewBox="0 0 24 24" fill="none"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4L3 21l1.1-3.1A8.4 8.4 0 1 1 21 11.5Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg></span>
+          <div class="tl-body"><div class="tl-t"><b>Comment added</b> — "Wall thickness too thin. Recommend 1.5 mm instead of 1.0 mm."</div><div class="tl-m">Benjamin Chen · Hsinchu Precision · on Rev 1</div></div>
+          <span class="tl-time">Apr 9</span>
+        </div>
+        <div class="tl-item">
+          <span class="tl-ic amber"><svg viewBox="0 0 24 24" fill="none"><path d="M9 12a4 4 0 0 1 4-4h3a4 4 0 0 1 0 8h-1M15 12a4 4 0 0 1-4 4H8a4 4 0 0 1 0-8h1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>
+          <div class="tl-body"><div class="tl-t"><b>Magic link opened</b> — supplier reviewed Rev 1</div><div class="tl-m">Hsinchu Precision · no account</div></div>
+          <span class="tl-time">Apr 8</span>
+        </div>
+        <div class="tl-item">
+          <span class="tl-ic blue"><svg viewBox="0 0 24 24" fill="none"><path d="M12 16V4m0 0L7 9m5-5 5 5M5 20h14" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          <div class="tl-body"><div class="tl-t"><b>Part created · Rev 1 uploaded</b> — top-tube-assembly.step</div><div class="tl-m">Mathieu Kury · ALSO</div></div>
+          <span class="tl-time">Apr 8</span>
+        </div>
       </div>
     </div>
   </div>
 </div>
+
+<!-- Send to supplier (magic link) -->
+<div class="modal-bg" id="inviteBg">
+  <div class="modal">
+    <div class="modal-head"><h3>Send to supplier</h3><button class="x" onclick="closeInvite()">×</button></div>
+    <div class="modal-body">
+      <p>Share this part with the supplier through a time-bounded magic link — no account. They land on the part, leave DFM comments, and submit a quote against the current revision.</p>
+      <div class="field"><label>Magic link · expires in 14 days</label><div class="input-group"><span class="prefix" style="font-size:13px">🔗</span><input value="https://chorus-v0.app/p/tm4-1001/8fK2q9x7" readonly /><button class="btn btn--sm" style="margin-left:8px">Copy</button></div></div>
+      <div class="field"><label>Send to</label><input class="input" value="benjamin.chen@hsinchu-precision.com" /></div>
+    </div>
+    <div class="modal-foot">
+      <a class="btn btn--sm" href="magic-link-view.html">Preview supplier view</a>
+      <span class="grow"></span>
+      <button class="btn" onclick="closeInvite()">Cancel</button>
+      <button class="btn btn--primary" onclick="closeInvite()">Send link</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  function openInvite(){ document.getElementById('inviteBg').classList.add('open'); }
+  function closeInvite(){ document.getElementById('inviteBg').classList.remove('open'); }
+  document.getElementById('inviteBg').addEventListener('click', function(e){ if (e.target === this) closeInvite(); });
+</script>
 <script src="cadstore.js"></script>
 <script type="importmap">
 {
@@ -155,7 +361,6 @@
   import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
 
   const host = document.getElementById('cadHost');
-
   const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   renderer.setSize(host.clientWidth, host.clientHeight);
@@ -164,8 +369,6 @@
   host.appendChild(renderer.domElement);
 
   const scene = new THREE.Scene();
-
-  // Image-based lighting for realistic metal reflections
   const pmrem = new THREE.PMREMGenerator(renderer);
   scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
 
@@ -182,7 +385,6 @@
   controls.autoRotate = true;
   controls.autoRotateSpeed = 1.1;
 
-  // Lights (complement the environment map)
   scene.add(new THREE.AmbientLight(0xffffff, 0.25));
   const key = new THREE.DirectionalLight(0xffffff, 1.6);
   key.position.set(4, 6, 5);
@@ -191,14 +393,12 @@
   rim.position.set(-5, 2, -4);
   scene.add(rim);
 
-  // ---- Machined-aluminium material + model holder ----
   const alu = new THREE.MeshStandardMaterial({ color: 0xc2c8c5, metalness: 0.96, roughness: 0.33 });
   const holder = new THREE.Group();
   holder.rotation.x = 0.18;
   scene.add(holder);
   const hint = document.querySelector('.cad-hint');
 
-  // Normalise any loaded model to a consistent size and centre it at the origin
   function showModel(obj, applyAlu) {
     if (applyAlu) obj.traverse(o => { if (o.isMesh) o.material = alu; });
     const box = new THREE.Box3().setFromObject(obj);
@@ -212,12 +412,8 @@
     holder.add(wrap);
     resetView();
   }
-  function showGeometry(geom) {
-    geom.computeVertexNormals();
-    showModel(new THREE.Mesh(geom, alu), false);
-  }
+  function showGeometry(geom) { geom.computeVertexNormals(); showModel(new THREE.Mesh(geom, alu), false); }
 
-  // Fallback procedural part if the file can't be fetched
   function buildProcedural() {
     const g = new THREE.Group();
     const cyl = (len, r, rx, ry, rz, x, y, z) => {
@@ -231,7 +427,6 @@
     return g;
   }
 
-  // ---- Parse a buffer/string by file extension and show it ----
   function parseAndShow(ext, data) {
     if (ext === 'stl') showGeometry(new STLLoader().parse(data));
     else if (ext === 'obj') showModel(new OBJLoader().parse(data), true);
@@ -239,17 +434,13 @@
     else throw new Error('Unsupported .' + ext);
   }
 
-  // ---- Default: the sample STL shipped on disk (procedural fallback) ----
   function loadDefault() {
-    new STLLoader().load(
-      'models/top-tube-assembly.stl',
-      geom => { showGeometry(geom); hint.textContent = 'top-tube-assembly.stl · drag a CAD file to replace'; },
+    new STLLoader().load('models/top-tube-assembly.stl',
+      geom => { showGeometry(geom); hint.textContent = 'top-tube-assembly.stl · Rev 3 · drag a CAD file to replace'; },
       undefined,
-      () => { showModel(buildProcedural(), false); hint.textContent = 'Drag to orbit · scroll to zoom'; }
-    );
+      () => { showModel(buildProcedural(), false); hint.textContent = 'Drag to orbit · scroll to zoom'; });
   }
 
-  // ---- A file handed off from the Parts "Upload CAD" button (via IndexedDB) ----
   (window.CadStore ? CadStore.takeCad() : Promise.resolve(null))
     .then(rec => {
       if (rec && rec.blob) {
@@ -261,14 +452,10 @@
     })
     .catch(() => loadDefault());
 
-  // ---- Load a user's own CAD file (drag-drop or picker) ----
   function loadFile(file) {
     const ext = file.name.split('.').pop().toLowerCase();
     const reader = new FileReader();
-    reader.onload = () => {
-      try { parseAndShow(ext, reader.result); hint.textContent = file.name; }
-      catch (e) { hint.textContent = 'Could not load ' + file.name; }
-    };
+    reader.onload = () => { try { parseAndShow(ext, reader.result); hint.textContent = file.name; } catch (e) { hint.textContent = 'Could not load ' + file.name; } };
     if (ext === 'obj') reader.readAsText(file); else reader.readAsArrayBuffer(file);
   }
   const hostEl = host;
@@ -277,11 +464,9 @@
   hostEl.addEventListener('drop', e => { const f = e.dataTransfer.files[0]; if (f) loadFile(f); });
   document.getElementById('cadFile').addEventListener('change', e => { const f = e.target.files[0]; if (f) loadFile(f); });
 
-  // toggleable grid
   const grid = new THREE.GridHelper(12, 24, 0xbcbfbf, 0xd6d9d9);
   grid.position.y = -1.4; grid.visible = false; scene.add(grid);
 
-  // ---- Toolbar wiring ----
   const dolly = f => { camera.position.sub(controls.target).multiplyScalar(f).add(controls.target); };
   document.getElementById('cadZoomIn').onclick  = () => dolly(0.86);
   document.getElementById('cadZoomOut').onclick = () => dolly(1.16);
@@ -291,7 +476,6 @@
   document.getElementById('cadFit').onclick   = resetView;
   document.getElementById('cadReset').onclick = resetView;
 
-  // ---- Resize ----
   new ResizeObserver(() => {
     const w = host.clientWidth, h = host.clientHeight;
     if (!w || !h) return;
@@ -299,12 +483,7 @@
     renderer.setSize(w, h);
   }).observe(host);
 
-  // ---- Render loop ----
-  (function animate() {
-    requestAnimationFrame(animate);
-    controls.update();
-    renderer.render(scene, camera);
-  })();
+  (function animate() { requestAnimationFrame(animate); controls.update(); renderer.render(scene, camera); })();
 </script>
 <script src="switcher.js"></script>
 </body>

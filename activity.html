@@ -8,13 +8,22 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="styles.css" />
 <style>
-  .filter-chips { display:flex; flex-wrap:wrap; gap:8px; margin:0 0 18px; }
-  .filter-chips .tag { cursor:pointer; }
-  .filter-chips .tag.on { background:var(--green); color:#fff; border-color:var(--green); }
-  .day-label { font-size:12px; font-weight:600; letter-spacing:.04em; text-transform:uppercase; color:var(--muted); margin:18px 0 8px; }
-  .day-label:first-child { margin-top:0; }
-  .tl-item a { color:inherit; text-decoration:none; border-bottom:1px solid var(--line); }
-  .tl-item a:hover { border-bottom-color:var(--green); color:var(--green); }
+  .filter-chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 18px; }
+  .filter-chips .tag { cursor: pointer; height: 26px; padding: 0 12px; }
+  .filter-chips .tag.on { background: var(--green); color: #fff; }
+  .day-label { font-size: 12px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); margin: 18px 0 8px; }
+  .day-label:first-child { margin-top: 0; }
+  .tl-item a { color: inherit; text-decoration: none; border-bottom: 1px solid var(--line); }
+  .tl-item a:hover { border-bottom-color: var(--green); color: var(--green); }
+  .tl-ic.red { background: var(--red-50); color: var(--red-600); }
+  .ev { display: inline-block; font-size: 10.5px; font-weight: 700; letter-spacing: .03em; text-transform: uppercase; padding: 1px 7px; border-radius: 5px; margin-right: 7px; vertical-align: 1px; }
+  .ev.created { background: var(--red-50); color: var(--red-600); }
+  .ev.accepted { background: var(--green-50); color: var(--green-600t); }
+  .ev.rejected { background: #efe0df; color: var(--red-600); }
+  .ev.revision { background: var(--blue-50); color: var(--blue-600); }
+  .ev.validation { background: #f5ecd4; color: var(--amber-600); }
+  .ev.closed { background: var(--green-50); color: var(--green-600t); }
+  .ev.complete { background: var(--ink); color: #fff; }
 </style>
 </head>
 <body>
@@ -25,189 +34,122 @@
     <div class="page-head">
       <h1>Activity</h1>
       <div class="page-actions">
-        <a class="btn" href="#">All events</a>
-        <a class="btn" href="#">Export log</a>
+        <a class="btn btn--sm" href="issues-list.html">All issues</a>
+        <a class="btn btn--sm" href="#">Export log (CSV)</a>
       </div>
     </div>
-    <p class="subtitle">Full audit log — TM-4 Bike DFM</p>
+    <p class="subtitle">DFM issue lifecycle across every project · TM-4 Bike Program with Hsinchu Precision</p>
 
     <div class="filter-chips">
       <span class="tag on">All</span>
-      <span class="tag">Comments</span>
-      <span class="tag">Revisions</span>
-      <span class="tag">Quotes</span>
-      <span class="tag">Magic-link</span>
-      <span class="tag">Status changes</span>
+      <span class="tag">Created</span>
+      <span class="tag">Decision</span>
+      <span class="tag">Revision</span>
+      <span class="tag">Validation</span>
+      <span class="tag">Closed</span>
+      <span class="tag">DFM complete</span>
     </div>
 
     <div class="panel">
-      <div class="panel-head"><h2>Activity</h2><a href="settings.html">Digest settings</a></div>
+      <div class="panel-head"><h2>Issue activity</h2><a href="settings.html">Digest settings</a></div>
       <div class="panel-body">
 
-        <div class="day-label">May 16, 2026</div>
+        <div class="day-label">May 16</div>
         <div class="timeline">
           <div class="tl-item">
-            <div class="tl-ic blue">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M6 3h9l4 4v14H6z" stroke="currentColor" stroke-width="1.6"/><path d="M14 3v5h5" stroke="currentColor" stroke-width="1.6"/></svg>
-            </div>
+            <span class="tl-ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="12" r="2.8" stroke="currentColor" stroke-width="1.6"/></svg></span>
             <div class="tl-body">
-              <div class="tl-t"><b>Mathieu Kury</b> uploaded <a href="part-detail.html">Rev 3 of Top tube assembly</a></div>
-              <div class="tl-m">TM-4-1001 · supersedes Rev 2 · 3 redline markups attached</div>
-              <div class="tl-time">May 16 · 9:42 AM</div>
+              <div class="tl-t"><span class="ev created">Created</span><b>Benjamin Chen</b> opened issue <a href="issue-detail.html">#14 — Surface-finish callout missing</a></div>
+              <div class="tl-m">Top tube assembly · Medium · Process · Hsinchu Precision · on Rev 3</div>
+              <div class="tl-time">May 16 · 2:40 PM</div>
             </div>
           </div>
           <div class="tl-item">
-            <div class="tl-ic green">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 1v22M5 6h11a3 3 0 0 1 0 6H8a3 3 0 0 0 0 6h11" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
-            </div>
+            <span class="tl-ic blue"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 16V4m0 0L7 9m5-5 5 5M5 20h14" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
             <div class="tl-body">
-              <div class="tl-t"><b>Taichung MetalWorks</b> submitted a <a href="quote-submission.html">quote — $42.80/unit</a></div>
-              <div class="tl-m">Top tube assembly Rev 3 · TM-4-1001 · MOQ 250 · lead time 18 days</div>
-              <div class="tl-time">May 16 · 8:15 AM</div>
+              <div class="tl-t"><span class="ev validation">Validation requested</span><b>Mathieu Kury</b> uploaded Rev 3 as the candidate fix for <a href="issue-detail.html">#12 — Wall thickness too thin</a></div>
+              <div class="tl-m">Top tube assembly · implemented 2.2 mm wall · supplier to confirm manufacturability</div>
+              <div class="tl-time">May 16 · 11:22 AM</div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <span class="tl-ic green"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M20 6 9 17l-5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <div class="tl-body">
+              <div class="tl-t"><span class="ev accepted">Accepted</span><b>Mathieu Kury</b> accepted <a href="issue-detail.html">#12 — Wall thickness too thin</a></div>
+              <div class="tl-m">Top tube assembly · "Agreed — will increase to 1.5 mm minimum next revision"</div>
+              <div class="tl-time">May 16 · 10:05 AM</div>
             </div>
           </div>
         </div>
 
-        <div class="day-label">May 15, 2026</div>
+        <div class="day-label">May 15</div>
         <div class="timeline">
           <div class="tl-item">
-            <div class="tl-ic amber">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M10 14a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1M14 10a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
-            </div>
+            <span class="tl-ic green"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M20 6 9 17l-5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
             <div class="tl-body">
-              <div class="tl-t"><b>Hsinchu Precision</b> opened the magic link for <a href="supplier-portal.html">Top tube assembly</a></div>
-              <div class="tl-m">TM-4-1001 · first view · no login required · IP logged</div>
-              <div class="tl-time">May 15 · 4:08 PM</div>
+              <div class="tl-t"><span class="ev closed">Validated · Closed</span><b>Benjamin Chen</b> validated <a href="issue-detail.html">#8 — Draft insufficient on cast lug</a></div>
+              <div class="tl-m">Seat component — lower · draft confirmed manufacturable on Rev 2 · issue closed</div>
+              <div class="tl-time">May 15 · 4:09 PM</div>
             </div>
           </div>
           <div class="tl-item">
-            <div class="tl-ic">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4L3 21l1.1-3.1A8.4 8.4 0 1 1 21 11.5Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
-            </div>
+            <span class="tl-ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="12" r="2.8" stroke="currentColor" stroke-width="1.6"/></svg></span>
             <div class="tl-body">
-              <div class="tl-t"><b>Benjamin Chen</b> commented on <a href="part-detail.html">Seat component - lower</a></div>
-              <div class="tl-m">TM-4-1002 · "Confirm rail spacing on Rev 2 before we lock tooling."</div>
+              <div class="tl-t"><span class="ev created">Created</span><b>Benjamin Chen</b> opened issue <a href="issue-detail.html">#13 — Gusset fillet radius unspecified</a></div>
+              <div class="tl-m">Top tube assembly · Low · Geometry · "Confirm 3 mm fillet so the torch can reach the joint"</div>
               <div class="tl-time">May 15 · 11:20 AM</div>
             </div>
           </div>
         </div>
 
-        <div class="day-label">May 14, 2026</div>
+        <div class="day-label">May 14</div>
         <div class="timeline">
           <div class="tl-item">
-            <div class="tl-ic">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4L3 21l1.1-3.1A8.4 8.4 0 1 1 21 11.5Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
-            </div>
+            <span class="tl-ic complete" style="background:var(--ink);color:#fff"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 21V4h9l-1.5 3.5L14 11H6" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg></span>
             <div class="tl-body">
-              <div class="tl-t"><b>Benjamin Chen</b> commented on <a href="part-detail.html">Wheel interface - rear</a></div>
-              <div class="tl-m">TM-4-1003 · "Bearing seat tolerance too tight for the listed process — please advise."</div>
-              <div class="tl-time">May 14 · 3:55 PM</div>
+              <div class="tl-t"><span class="ev complete">DFM complete</span><b>Cargo eBike — Mainframe</b> reached <a href="project-detail.html?p=Cargo%20eBike">0 open issues</a></div>
+              <div class="tl-m">All 38 issues closed · part released to production · Taichung MetalWorks</div>
+              <div class="tl-time">May 14 · 5:30 PM</div>
             </div>
           </div>
           <div class="tl-item">
-            <div class="tl-ic red">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 8v5M12 16.5v.01M10.3 3.9 2.7 17a2 2 0 0 0 1.7 3h15.2a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
-            </div>
+            <span class="tl-ic red"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg></span>
             <div class="tl-body">
-              <div class="tl-t"><b>System</b> flagged <a href="part-detail.html">Wheel interface - rear</a> as Needs quote</div>
-              <div class="tl-m">TM-4-1003 · Rev 1 · no supplier quote received within SLA window</div>
-              <div class="tl-time">May 14 · 9:00 AM</div>
+              <div class="tl-t"><span class="ev rejected">Rejected</span><b>Mathieu Kury</b> rejected <a href="issue-detail.html">#15 — Relocate mounting boss</a></div>
+              <div class="tl-m">Chain mount — hardware · "Out of scope — boss position is fixed by the frame interface"</div>
+              <div class="tl-time">May 14 · 3:10 PM</div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <span class="tl-ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="12" r="2.8" stroke="currentColor" stroke-width="1.6"/></svg></span>
+            <div class="tl-body">
+              <div class="tl-t"><span class="ev created">Created</span><b>Benjamin Chen</b> opened issue <a href="issue-detail.html">#11 — Tolerance stack-up won't hold on CNC</a></div>
+              <div class="tl-m">Chain mount — hardware · <b style="color:var(--red-600)">Critical</b> · Tolerance · needs a brand decision</div>
+              <div class="tl-time">May 14 · 1:05 PM</div>
             </div>
           </div>
         </div>
 
-        <div class="day-label">May 13, 2026</div>
+        <div class="day-label">May 13</div>
         <div class="timeline">
           <div class="tl-item">
-            <div class="tl-ic green">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M20 6 9 17l-5-5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </div>
+            <span class="tl-ic blue"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 16V4m0 0L7 9m5-5 5 5M5 20h14" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
             <div class="tl-body">
-              <div class="tl-t"><b>Thomas Sullivan</b> changed status on <a href="part-detail.html">Chain mount - hardware</a></div>
-              <div class="tl-m">TM-4-1004 · Needs quote → <span class="pill green"><span class="dot"></span>Quoted</span> · Kaohsiung CNC selected</div>
-              <div class="tl-time">May 13 · 2:30 PM</div>
-            </div>
-          </div>
-          <div class="tl-item">
-            <div class="tl-ic green">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 1v22M5 6h11a3 3 0 0 1 0 6H8a3 3 0 0 0 0 6h11" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
-            </div>
-            <div class="tl-body">
-              <div class="tl-t"><b>Kaohsiung CNC</b> submitted a <a href="quote-submission.html">quote — $11.25/unit</a></div>
-              <div class="tl-m">Chain mount - hardware Rev 4 · TM-4-1004 · MOQ 1,000 · lead time 12 days</div>
-              <div class="tl-time">May 13 · 10:12 AM</div>
+              <div class="tl-t"><span class="ev revision">Revision</span><b>Mathieu Kury</b> uploaded <a href="revision-diff.html">Rev 2 of Top tube assembly</a></div>
+              <div class="tl-m">Implemented fixes for #5 and #7 · validation requested · prior comments marked historical</div>
+              <div class="tl-time">May 13 · 9:10 AM</div>
             </div>
           </div>
         </div>
 
-        <div class="day-label">May 12, 2026</div>
+        <div class="day-label">May 8</div>
         <div class="timeline">
           <div class="tl-item">
-            <div class="tl-ic blue">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M6 3h9l4 4v14H6z" stroke="currentColor" stroke-width="1.6"/><path d="M14 3v5h5" stroke="currentColor" stroke-width="1.6"/></svg>
-            </div>
+            <span class="tl-ic amber"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M9 12a4 4 0 0 1 4-4h3a4 4 0 0 1 0 8h-1M15 12a4 4 0 0 1-4 4H8a4 4 0 0 1 0-8h1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>
             <div class="tl-body">
-              <div class="tl-t"><b>Mathieu Kury</b> uploaded <a href="part-detail.html">Rev 2 of Fork exit - deferred end</a></div>
-              <div class="tl-m">TM-4-1005 · status moved to <span class="pill blue"><span class="dot"></span>Pricing</span></div>
-              <div class="tl-time">May 12 · 5:01 PM</div>
-            </div>
-          </div>
-          <div class="tl-item">
-            <div class="tl-ic amber">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M10 14a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1M14 10a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
-            </div>
-            <div class="tl-body">
-              <div class="tl-t"><b>Shenzhen RapidTool</b> opened the magic link for <a href="supplier-portal.html">Chain mount - hardware</a></div>
-              <div class="tl-m">TM-4-1004 · Rev 4 · invited by Thomas Sullivan</div>
-              <div class="tl-time">May 12 · 1:44 PM</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="day-label">May 10, 2026</div>
-        <div class="timeline">
-          <div class="tl-item">
-            <div class="tl-ic green">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M20 6 9 17l-5-5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </div>
-            <div class="tl-body">
-              <div class="tl-t"><b>Thomas Sullivan</b> resolved a comment thread on <a href="part-detail.html">Seat component - lower</a></div>
-              <div class="tl-m">TM-4-1002 · "Rail spacing confirmed at 44 mm" · 2 replies · marked resolved</div>
-              <div class="tl-time">May 10 · 4:22 PM</div>
-            </div>
-          </div>
-          <div class="tl-item">
-            <div class="tl-ic blue">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M3 12h7l2-4 3 8 2-4h4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </div>
-            <div class="tl-body">
-              <div class="tl-t"><b>Benjamin Chen</b> compared revisions on <a href="revision-diff.html">Top tube assembly</a></div>
-              <div class="tl-m">TM-4-1001 · Rev 2 → Rev 3 · 4 dimensions modified, 1 feature added</div>
-              <div class="tl-time">May 10 · 11:08 AM</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="day-label">May 8, 2026</div>
-        <div class="timeline">
-          <div class="tl-item">
-            <div class="tl-ic amber">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M10 14a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1M14 10a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
-            </div>
-            <div class="tl-body">
-              <div class="tl-t"><b>Thomas Sullivan</b> sent a magic link to <a href="supplier-portal.html">Taichung MetalWorks</a></div>
-              <div class="tl-m">TM-4-1001 · Top tube assembly · access expires in 14 days</div>
+              <div class="tl-t"><b>Mathieu Kury</b> invited <a href="magic-link-view.html">Hsinchu Precision</a> to review for DFM issues</div>
+              <div class="tl-m">TM-4 Bike Program · magic link · access expires in 14 days · scoped to this project</div>
               <div class="tl-time">May 8 · 2:50 PM</div>
-            </div>
-          </div>
-          <div class="tl-item">
-            <div class="tl-ic">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4L3 21l1.1-3.1A8.4 8.4 0 1 1 21 11.5Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
-            </div>
-            <div class="tl-body">
-              <div class="tl-t"><b>Mathieu Kury</b> requested a quote on <a href="quote-submission.html">Top tube assembly</a></div>
-              <div class="tl-m">TM-4-1001 · Rev 2 · sent to Hsinchu Precision and Taichung MetalWorks</div>
-              <div class="tl-time">May 8 · 9:30 AM</div>
             </div>
           </div>
         </div>
@@ -216,6 +158,7 @@
     </div>
   </main>
 </div>
+<script src="store.js"></script>
 <script src="sidebar.js"></script>
 <script src="switcher.js"></script>
 </body>

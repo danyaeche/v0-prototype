@@ -288,3 +288,30 @@ table.tbl { width: 100%; border-collapse: collapse; background: #fff; }
 .flex { display: flex; } .items-center { align-items: center; } .gap-8 { gap: 8px; } .gap-12 { gap: 12px; }
 .between { justify-content: space-between; }
 .mt-0 { margin-top: 0; } .mb-16 { margin-bottom: 16px; }
+
+/* ---------- workspace switcher dropdown ---------- */
+.ws-switch { position: relative; transition: background .12s ease; }
+.ws-switch:hover { background: rgba(255,255,255,.10); }
+.ws-switch .chev { transition: transform .16s ease; }
+.ws-switch.open .chev { transform: rotate(225deg); }
+.ws-menu { position: absolute; left: 0; right: 0; top: calc(100% + 7px); background: #2a2a2a; border: 1px solid rgba(255,255,255,.1); border-radius: 10px; padding: 6px; box-shadow: 0 14px 34px rgba(0,0,0,.5); z-index: 30; cursor: default; opacity: 0; transform: translateY(-6px); pointer-events: none; transition: opacity .15s ease, transform .15s ease; }
+.ws-switch.open .ws-menu { opacity: 1; transform: translateY(0); pointer-events: auto; }
+.ws-menu-lbl { font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: #6f6f6f; padding: 5px 9px 6px; }
+.ws-item { display: block; padding: 8px 10px; border-radius: 7px; cursor: pointer; text-decoration: none; }
+.ws-item:hover { background: rgba(255,255,255,.07); }
+.ws-item.on { background: rgba(70,199,159,.12); }
+.ws-item .ws-nm { display: block; position: relative; font-size: 13px; color: #ededed; }
+.ws-item.on .ws-nm { color: #fff; font-weight: 500; }
+.ws-item.on .ws-nm::after { content: "✓"; position: absolute; right: 0; color: #46c79f; }
+.ws-item .ws-sub { display: block; font-size: 11px; color: #8a8a8a; margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ws-div { height: 1px; background: rgba(255,255,255,.09); margin: 6px 4px; }
+.ws-new { color: #46c79f; font-weight: 500; }
+.ws-new:hover { background: rgba(70,199,159,.10); }
+
+/* ---------- generic centered modal (shared) ---------- */
+.cmodal-bg { position: fixed; inset: 0; background: rgba(20,20,20,.45); display: none; place-items: center; z-index: 200; }
+.cmodal-bg.open { display: grid; }
+.cmodal { width: min(420px, 92%); background: #fff; border-radius: 14px; box-shadow: var(--shadow-lg); overflow: hidden; }
+.cmodal-head { padding: 16px 18px; font-family: var(--font-head); font-weight: 600; font-size: 15px; border-bottom: 1px solid var(--line-2); }
+.cmodal-body { padding: 16px 18px; display: flex; flex-direction: column; gap: 12px; }
+.cmodal-foot { padding: 14px 18px; display: flex; gap: 10px; justify-content: flex-end; border-top: 1px solid var(--line-2); }

@@ -8,203 +8,72 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="styles.css" />
 <style>
-  .diff-page { padding: 22px 26px; max-width: 1120px; margin: 0 auto; }
+  .detail { padding: 22px 26px; max-width: 1120px; margin: 0 auto; }
   .crumbs { display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 13px; margin-bottom: 16px; }
   .crumbs a:hover { color: var(--ink); }
-  .crumbs .sep { color: var(--muted-2); }
-  .page-actions .select-wrap select { padding: 8px 34px 8px 12px; font-size: 13px; }
-  .diff-view { position: relative; }
-  .cad-host { position: absolute; inset: 0; cursor: grab; }
-  .cad-host:active { cursor: grabbing; }
-  .cad-host canvas { display: block; }
-  .pane-tag { font-size: 10.5px; font-weight: 600; padding: 1px 7px; border-radius: 999px; }
-  .pane-tag.base { background: #eef1f1; color: var(--muted); }
-  .pane-tag.cur { background: var(--green-50); color: var(--green-600t); }
-  .diff-note { padding: 12px 16px; border-top: 1px solid var(--line-2); font-size: 12.5px; color: var(--muted); }
-  .di .di-text { color: var(--ink-2); }
+  .crumbs .sep { color: var(--line); }
+  .detail-head { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 18px; }
+  .detail-head h1 { font-size: 22px; margin: 0 0 4px; display: flex; align-items: center; gap: 10px; }
+  .detail-head .sub { color: var(--muted); font-size: 13px; }
+  .cmp-sel { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--ink-2); }
+  .cmp-sel .pill2 { background: #eef1f0; border-radius: 999px; padding: 4px 11px; font-weight: 600; }
+  .diff-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 18px; }
+  .diff-pane { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
+  .diff-pane.changed { border-color: var(--green); box-shadow: 0 0 0 1px var(--green); }
+  .diff-head { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; border-bottom: 1px solid var(--line-2); font-size: 13px; font-weight: 600; }
+  .diff-view { aspect-ratio: 16/11; background: radial-gradient(120% 120% at 50% 20%, #fbfcfc 0%, #eef1f1 55%, #e2e6e6 100%); position: relative; display: grid; place-items: center; }
+  .diff-view .silh { width: 64%; opacity: .55; }
+  .diff-view .tag { position: absolute; top: 12px; left: 14px; font-size: 11px; color: var(--muted); background: rgba(255,255,255,.65); padding: 3px 8px; border-radius: 999px; }
+  .di { display: flex; gap: 10px; padding: 11px 16px; font-size: 13px; align-items: flex-start; border-top: 1px solid var(--line-2); }
+  .di-badge { font-size: 10.5px; font-weight: 600; padding: 1px 7px; border-radius: 4px; flex: none; margin-top: 1px; }
+  .di-badge.add { background: var(--green-50); color: var(--green-600t); }
+  .di-badge.mod { background: #f5ecd4; color: var(--amber-600); }
+  .di-badge.del { background: var(--red-50); color: var(--red-600); }
+  .di .t { font-weight: 500; } .di .m { color: var(--muted); font-size: 12.5px; }
 </style>
 </head>
 <body>
-<div class="app">
-  <aside class="sidebar" data-active="parts"></aside>
-  <main class="main">
-    <div class="diff-page">
-      <div class="crumbs">
-        <a href="parts.html">Parts</a><span class="sep">/</span>
-        <a href="part-detail.html">Top tube assembly (TM-4-1001)</a><span class="sep">/</span>
-        <span style="color:var(--ink);font-weight:500">Compare revisions</span>
-      </div>
+<div class="main" style="padding:0">
+  <div class="detail">
+    <div class="crumbs">
+      <a href="projects.html">Projects</a><span class="sep">/</span>
+      <a href="project-detail.html?p=TM-4%20Bike%20Program">TM-4 Bike Program</a><span class="sep">/</span>
+      <a href="part-detail.html">Top tube assembly</a><span class="sep">/</span>
+      <span style="color:var(--ink);font-weight:500">Compare revisions</span>
+      <span style="margin-left:auto"><a class="btn btn--sm" href="part-detail.html">Back to part</a></span>
+    </div>
 
-      <div class="page-head">
-        <h1>Compare revisions</h1>
-        <div class="page-actions">
-          <div class="select-wrap">
-            <select class="select" aria-label="Left revision">
-              <option selected>Rev 2 · May 13</option>
-              <option>Rev 1 · Apr 25</option>
-              <option>Rev 0 · Apr 8</option>
-            </select>
-          </div>
-          <div class="select-wrap">
-            <select class="select" aria-label="Right revision">
-              <option selected>Rev 3 · May 16</option>
-              <option>Rev 2 · May 13</option>
-              <option>Rev 1 · Apr 25</option>
-            </select>
-          </div>
-          <a class="btn" href="part-detail.html">Back to part</a>
+    <div class="detail-head">
+      <div>
+        <h1>Revision diff <span class="badge badge--green">3 changes</span></h1>
+        <div class="sub">Top tube assembly · TM-4-1001</div>
+      </div>
+      <div class="cmp-sel">Comparing <span class="pill2">Rev 2</span> → <span class="pill2">Rev 3</span></div>
+    </div>
+
+    <div class="diff-wrap">
+      <div class="diff-pane">
+        <div class="diff-head"><span>Rev 2 · May 13</span><span class="muted fs-12">previous</span></div>
+        <div class="diff-view"><span class="tag">top-tube-assembly · Rev 2</span>
+          <svg class="silh" viewBox="0 0 200 150" fill="none"><path d="M28 96 L150 96 L172 60 L150 60 L40 60 Z" stroke="#9aa3a1" stroke-width="3" stroke-linejoin="round"/><circle cx="28" cy="96" r="14" stroke="#9aa3a1" stroke-width="3"/><circle cx="150" cy="96" r="14" stroke="#9aa3a1" stroke-width="3"/><path d="M150 60 L165 30" stroke="#9aa3a1" stroke-width="3" stroke-linecap="round"/></svg>
         </div>
       </div>
-      <div class="subtitle">Side-by-side CAD comparison · Top tube assembly · 6061-T6 Aluminum</div>
-
-      <div class="diff-wrap" style="margin-top:18px">
-        <div class="diff-pane">
-          <div class="diff-head"><span>Rev 2 · May 13</span><span class="pane-tag base">Base</span></div>
-          <div class="diff-view"><div id="hostA" class="cad-host"></div></div>
-        </div>
-        <div class="diff-pane changed">
-          <div class="diff-head"><span>Rev 3 · May 16</span><span class="pane-tag cur">Current</span></div>
-          <div class="diff-view"><div id="hostB" class="cad-host"></div></div>
-        </div>
-      </div>
-
-      <div class="panel" style="margin-top:18px">
-        <div class="panel-head"><h2>Changes in Rev 3</h2><a href="part-detail.html">View part</a></div>
-        <div class="panel-body" style="padding:0">
-          <div class="diff-list">
-            <div class="di"><span class="di-badge add">ADD</span><span class="di-text">Added M5 bolt boss on left collar</span></div>
-            <div class="di"><span class="di-badge mod">MOD</span><span class="di-text">Wall thickness 2.0mm → 2.4mm</span></div>
-            <div class="di"><span class="di-badge mod">MOD</span><span class="di-text">Bore tolerance tightened to ±0.05mm</span></div>
-            <div class="di"><span class="di-badge del">DEL</span><span class="di-text">Removed deferred fillet on fork exit</span></div>
-          </div>
-          <div class="diff-note">Rev 3 is the current revision. All open quotes from Hsinchu Precision, Taichung MetalWorks and Kaohsiung CNC are issued against Rev 3 — earlier revisions are retained for the audit log only.</div>
+      <div class="diff-pane changed">
+        <div class="diff-head"><span>Rev 3 · May 16</span><span class="badge badge--green" style="height:18px;font-size:11px">Current</span></div>
+        <div class="diff-view"><span class="tag">top-tube-assembly · Rev 3</span>
+          <svg class="silh" viewBox="0 0 200 150" fill="none"><path d="M28 96 L150 96 L172 60 L150 60 L40 60 Z" stroke="#1f7a4d" stroke-width="3.4" stroke-linejoin="round"/><circle cx="28" cy="96" r="14" stroke="#1f7a4d" stroke-width="3.4"/><circle cx="150" cy="96" r="14" stroke="#1f7a4d" stroke-width="3.4"/><path d="M150 60 L165 30" stroke="#1f7a4d" stroke-width="3.4" stroke-linecap="round"/><path d="M44 60 q-8 8 0 16" stroke="#1f7a4d" stroke-width="3"/></svg>
         </div>
       </div>
     </div>
-  </main>
+
+    <div class="panel">
+      <div class="panel-head"><h3>Changes · Rev 2 → Rev 3</h3><span class="muted fs-12">3 changes</span></div>
+      <div class="di"><span class="di-badge mod">MOD</span><div><div class="t">Wall thickness · dropout</div><div class="m">1.5 mm → 2.2 mm — for a sound weld (resolves Benjamin's redline)</div></div></div>
+      <div class="di"><span class="di-badge add">ADD</span><div><div class="t">Gusset fillet</div><div class="m">3 mm fillet added at the gusset for torch clearance</div></div></div>
+      <div class="di"><span class="di-badge mod">MOD</span><div><div class="t">Head-tube bore tolerance</div><div class="m">±0.2 → ±0.1 mm</div></div></div>
+    </div>
+  </div>
 </div>
-
-<script type="importmap">
-{
-  "imports": {
-    "three": "./vendor/three/build/three.module.js",
-    "three/addons/": "./vendor/three/addons/"
-  }
-}
-</script>
-<script type="module">
-  import * as THREE from 'three';
-  import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-  import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
-  import { STLLoader } from 'three/addons/loaders/STLLoader.js';
-
-  // Build an independent auto-rotating viewer in a host element.
-  // `revB` adds a small extra boss cylinder + slightly larger scale so the diff is visible.
-  function makeViewer(host, revB) {
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    renderer.setSize(host.clientWidth || 1, host.clientHeight || 1);
-    renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.05;
-    host.appendChild(renderer.domElement);
-
-    const scene = new THREE.Scene();
-    const pmrem = new THREE.PMREMGenerator(renderer);
-    scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
-
-    const camera = new THREE.PerspectiveCamera(35, (host.clientWidth || 1) / (host.clientHeight || 1), 0.1, 100);
-    const HOME = new THREE.Vector3(3.4, 2.2, 4.4);
-    camera.position.copy(HOME);
-
-    const controls = new OrbitControls(camera, renderer.domElement);
-    controls.enableDamping = true;
-    controls.dampingFactor = 0.08;
-    controls.enablePan = false;
-    controls.minDistance = 3;
-    controls.maxDistance = 14;
-    controls.autoRotate = true;
-    controls.autoRotateSpeed = 1.0;
-
-    scene.add(new THREE.AmbientLight(0xffffff, 0.25));
-    const key = new THREE.DirectionalLight(0xffffff, 1.6);
-    key.position.set(4, 6, 5);
-    scene.add(key);
-    const rim = new THREE.DirectionalLight(0xffffff, 0.6);
-    rim.position.set(-5, 2, -4);
-    scene.add(rim);
-
-    const alu = new THREE.MeshStandardMaterial({ color: 0xc2c8c5, metalness: 0.96, roughness: 0.33 });
-    const holder = new THREE.Group();
-    holder.rotation.x = 0.18;
-    scene.add(holder);
-
-    function showObject(obj) {
-      const box = new THREE.Box3().setFromObject(obj);
-      const c = box.getCenter(new THREE.Vector3());
-      const r = box.getBoundingSphere(new THREE.Sphere()).radius || 1;
-      obj.position.sub(c);
-      const wrap = new THREE.Group();
-      wrap.add(obj);
-      wrap.scale.setScalar(2.4 / r);
-      holder.clear();
-      holder.add(wrap);
-    }
-
-    function buildFrom(geom) {
-      geom.computeVertexNormals();
-      const grp = new THREE.Group();
-      const mesh = new THREE.Mesh(geom, alu);
-      grp.add(mesh);
-      if (revB) {
-        // Rev 3: slightly larger overall + an added M5 bolt boss on the left collar
-        mesh.scale.setScalar(1.05);
-        const bb = new THREE.Box3().setFromObject(mesh);
-        const boss = new THREE.Mesh(new THREE.CylinderGeometry(bb.max.y * 0.16, bb.max.y * 0.16, bb.max.y * 0.5, 32), alu);
-        boss.rotation.z = Math.PI / 2;
-        boss.position.set(bb.min.x + (bb.max.x - bb.min.x) * 0.12, bb.max.y * 0.55, 0);
-        grp.add(boss);
-      }
-      showObject(grp);
-    }
-
-    function buildProcedural() {
-      const g = new THREE.Group();
-      const cyl = (len, rad, rz, x, y) => {
-        const m = new THREE.Mesh(new THREE.CylinderGeometry(rad, rad, len, 48), alu);
-        m.rotation.z = rz; m.position.set(x, y, 0); g.add(m);
-      };
-      cyl(3.4, 0.52, Math.PI / 2, 0, 0);
-      cyl(0.5, 0.74, Math.PI / 2, -1.7, 0);
-      cyl(0.5, 0.74, Math.PI / 2, 1.7, 0);
-      if (revB) cyl(0.6, 0.22, Math.PI / 2, -1.45, 0.62); // extra boss on Rev 3
-      showObject(g);
-    }
-
-    new STLLoader().load(
-      'models/top-tube-assembly.stl',
-      geom => buildFrom(geom),
-      undefined,
-      () => buildProcedural()
-    );
-
-    new ResizeObserver(() => {
-      const w = host.clientWidth, h = host.clientHeight;
-      if (!w || !h) return;
-      camera.aspect = w / h; camera.updateProjectionMatrix();
-      renderer.setSize(w, h);
-    }).observe(host);
-
-    (function animate() {
-      requestAnimationFrame(animate);
-      controls.update();
-      renderer.render(scene, camera);
-    })();
-  }
-
-  makeViewer(document.getElementById('hostA'), false);
-  makeViewer(document.getElementById('hostB'), true);
-</script>
-<script src="sidebar.js"></script>
 <script src="switcher.js"></script>
 </body>
 </html>

@@ -8,15 +8,19 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="styles.css" />
 <style>
-  .set-wrap { max-width: 720px; }
+  .set-wrap { max-width: 760px; }
   .set-section { margin-bottom: 18px; }
-  .member { display:flex; align-items:center; gap:12px; padding:12px 18px; border-bottom:1px solid var(--line-2); }
-  .member:last-child { border-bottom:0; }
-  .member .av { width:32px; height:32px; border-radius:8px; background:var(--green); color:#fff; display:grid; place-items:center; font-size:12px; font-weight:600; flex:none; }
-  .member .grow { flex:1; }
-  .member .nm { font-size:13.5px; font-weight:500; }
-  .member .em { font-size:12px; color:var(--muted); }
-  .member .role { font-size:12px; color:var(--ink-2); background:#eef1f0; padding:3px 9px; border-radius:999px; }
+  .member { display: flex; align-items: center; gap: 12px; padding: 12px 18px; border-bottom: 1px solid var(--line-2); }
+  .member:last-child { border-bottom: 0; }
+  .member .av { width: 32px; height: 32px; border-radius: 8px; background: var(--green); color: #fff; display: grid; place-items: center; font-size: 12px; font-weight: 600; flex: none; }
+  .member .grow { flex: 1; }
+  .member .nm { font-size: 13.5px; font-weight: 500; }
+  .member .em { font-size: 12px; color: var(--muted); }
+  .member .role { font-size: 12px; color: var(--ink-2); background: #eef1f0; padding: 3px 9px; border-radius: 999px; }
+  .sec-head { display: flex; align-items: center; gap: 10px; }
+  .sec-head .lock { width: 30px; height: 30px; border-radius: 8px; background: var(--green-50); color: var(--green-600t); display: grid; place-items: center; flex: none; }
+  .sec-val { font-size: 13px; font-weight: 500; color: var(--ink); }
+  .sec-val.muted { color: var(--muted); font-weight: 450; }
 </style>
 </head>
 <body>
@@ -24,40 +28,47 @@
   <aside class="sidebar" data-active=""></aside>
   <main class="main">
     <div class="page-head">
-      <div><h1>Settings</h1><div class="subtitle" style="margin:4px 0 0">ALSO workspace</div></div>
+      <div><h1>Settings</h1><div class="subtitle" style="margin:4px 0 0">ALSO workspace · account &amp; security</div></div>
     </div>
 
     <div class="set-wrap">
-      <!-- Notifications / email digest (v0 scope) -->
+      <!-- Security & data residency — the procurement one-pager -->
       <div class="set-section">
         <div class="panel">
-          <div class="panel-head"><h2>Notifications</h2></div>
-          <div class="set-row">
-            <div><div class="label">Daily email digest</div><div class="desc">One email each morning summarizing new comments, revisions, and quotes across parts you follow.</div></div>
-            <button class="toggle on" onclick="this.classList.toggle('on')"></button>
+          <div class="panel-head">
+            <div class="sec-head">
+              <span class="lock"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="9" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="currentColor" stroke-width="1.6"/></svg></span>
+              <h2>Security &amp; data residency</h2>
+            </div>
+            <a href="#">View one-pager (PDF)</a>
           </div>
-          <div class="set-row">
-            <div><div class="label">New comment on a followed part</div><div class="desc">Notify me as soon as a brand teammate or manufacturer comments.</div></div>
-            <button class="toggle on" onclick="this.classList.toggle('on')"></button>
-          </div>
-          <div class="set-row">
-            <div><div class="label">New revision uploaded</div><div class="desc">Notify me when any part gets a new CAD revision.</div></div>
-            <button class="toggle on" onclick="this.classList.toggle('on')"></button>
-          </div>
-          <div class="set-row">
-            <div><div class="label">Quote submitted by a manufacturer</div><div class="desc">Notify me when a contract manufacturer submits a quote.</div></div>
-            <button class="toggle" onclick="this.classList.toggle('on')"></button>
-          </div>
+          <div class="set-row"><div><div class="label">Hosting &amp; data residency</div><div class="desc">Your CAD, comments, and quotes live in a dedicated tenant database in AWS US-East 1. No data leaves Chorus infrastructure.</div></div><span class="sec-val">AWS US-East 1</span></div>
+          <div class="set-row"><div><div class="label">Encryption</div><div class="desc">TLS 1.3 in transit · AES-256 at rest with AWS KMS.</div></div><span class="sec-val">TLS 1.3 · AES-256</span></div>
+          <div class="set-row"><div><div class="label">Access &amp; authentication</div><div class="desc">Brand sign-in by email. Suppliers via time-bounded magic link — no account, scoped to one RFQ. SSO/SAML on the V1 roadmap.</div></div><span class="sec-val">Email + magic link</span></div>
+          <div class="set-row"><div><div class="label">AI policy</div><div class="desc">Anthropic Enterprise tier — zero retention, no training on your data under any circumstance.</div></div><span class="sec-val">Zero retention</span></div>
+          <div class="set-row"><div><div class="label">Audit log</div><div class="desc">Every comment, revision, quote, and magic-link open is recorded. CSV export available on request.</div></div><a class="btn btn--sm" href="activity.html">Open log</a></div>
         </div>
       </div>
 
-      <!-- Workspace members -->
+      <!-- Notifications / email digest -->
       <div class="set-section">
         <div class="panel">
-          <div class="panel-head"><h2>Members</h2><a href="manufacturers.html">Invite manufacturer</a></div>
+          <div class="panel-head"><h2>Notifications</h2></div>
+          <div class="set-row"><div><div class="label">Daily email digest</div><div class="desc">One email each morning summarizing new comments, revisions, and quotes across parts you follow.</div></div><button class="toggle on" onclick="this.classList.toggle('on')"></button></div>
+          <div class="set-row"><div><div class="label">New comment on a followed part</div><div class="desc">Notify me as soon as the supplier or a teammate comments.</div></div><button class="toggle on" onclick="this.classList.toggle('on')"></button></div>
+          <div class="set-row"><div><div class="label">New revision uploaded</div><div class="desc">Notify me when any part gets a new CAD revision.</div></div><button class="toggle on" onclick="this.classList.toggle('on')"></button></div>
+          <div class="set-row"><div><div class="label">Quote submitted by supplier</div><div class="desc">Notify me when the supplier submits a quote against a revision.</div></div><button class="toggle on" onclick="this.classList.toggle('on')"></button></div>
+        </div>
+      </div>
+
+      <!-- Workspace members (brand team) -->
+      <div class="set-section">
+        <div class="panel">
+          <div class="panel-head"><h2>Members</h2><a href="#">Invite teammate</a></div>
           <div class="member"><div class="av">MK</div><div class="grow"><div class="nm">Mathieu Kury</div><div class="em">mkury@also.com</div></div><span class="role">Owner</span></div>
-          <div class="member"><div class="av" style="background:#3f6b8a">BC</div><div class="grow"><div class="nm">Benjamin Chen</div><div class="em">bchen@also.com</div></div><span class="role">ME</span></div>
-          <div class="member"><div class="av" style="background:#8a6d1f">TS</div><div class="grow"><div class="nm">Thomas Sullivan</div><div class="em">tsullivan@also.com</div></div><span class="role">Supply chain</span></div>
+          <div class="member"><div class="av" style="background:#8a6d1f">TS</div><div class="grow"><div class="nm">Thomas Sullivan</div><div class="em">tsullivan@also.com</div></div><span class="role">Sourcing</span></div>
+          <div class="member"><div class="av" style="background:#3f6b8a">ER</div><div class="grow"><div class="nm">Elena Rossi</div><div class="em">erossi@also.com</div></div><span class="role">Design / ME</span></div>
+          <div class="set-row"><div><div class="label">Suppliers</div><div class="desc">Contract manufacturers aren't members — they join a single RFQ through a magic link, with no account.</div></div><span class="sec-val muted">Via magic link</span></div>
         </div>
       </div>
 
@@ -66,12 +77,11 @@
         <div class="panel">
           <div class="panel-head"><h2>Workspace</h2></div>
           <div class="set-row"><div><div class="label">Workspace name</div><div class="desc">ALSO</div></div><a class="btn btn--sm" href="#">Rename</a></div>
-          <div class="set-row"><div><div class="label">Active project</div><div class="desc">TM-4 Bike DFM — 5 parts, demo June 12</div></div><a class="btn btn--sm" href="parts.html">View</a></div>
-          <div class="set-row"><div><div class="label">Audit log</div><div class="desc">Full record of every comment, revision, quote, and magic-link open.</div></div><a class="btn btn--sm" href="activity.html">Open log</a></div>
+          <div class="set-row"><div><div class="label">Active project</div><div class="desc">TM-4 Bike Program — 12 parts · demo June 12</div></div><a class="btn btn--sm" href="parts-list.html">View parts</a></div>
         </div>
       </div>
 
-      <!-- Danger / session -->
+      <!-- Account -->
       <div class="set-section">
         <div class="panel">
           <div class="panel-head"><h2>Account</h2></div>
@@ -81,6 +91,7 @@
     </div>
   </main>
 </div>
+<script src="store.js"></script>
 <script src="sidebar.js"></script>
 <script src="switcher.js"></script>
 </body>

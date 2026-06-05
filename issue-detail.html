@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Chorus · Issue #12</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+<style>
+  .detail { padding: 22px 26px; max-width: 1120px; margin: 0 auto; }
+  .crumbs { display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 13px; margin-bottom: 16px; }
+  .crumbs a:hover { color: var(--ink); }
+  .crumbs .sep { color: var(--line); }
+  .ih { margin-bottom: 14px; }
+  .ih h1 { font-size: 22px; margin: 0 0 8px; font-weight: 600; }
+  .ih h1 .no { color: var(--muted-2); font-weight: 400; }
+  .ih .tags { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .sev { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 999px; }
+  .sev.crit { background: var(--red-50); color: var(--red-600); }
+  .sev.med { background: #f5ecd4; color: var(--amber-600); }
+  .sev.low { background: #ededed; color: var(--ink-2); }
+  .cat { font-size: 12px; font-weight: 500; padding: 3px 10px; border-radius: 999px; background: var(--blue-50); color: var(--blue-600); }
+  .st-big { display: inline-flex; align-items: center; gap: 7px; font-size: 12.5px; font-weight: 600; padding: 4px 12px; border-radius: 999px; }
+  .st-big.amber { background: #f5ecd4; color: var(--amber-600); }
+  .st-big.green { background: var(--green-50); color: var(--green-600t); }
+  .st-big.red { background: var(--red-50); color: var(--red-600); }
+
+  /* lifecycle stepper */
+  .stepper { display: flex; align-items: flex-start; background: #fff; border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); padding: 18px 16px 14px; margin-bottom: 18px; }
+  .sstep { flex: 1; display: flex; flex-direction: column; align-items: center; position: relative; text-align: center; }
+  .sstep::before { content: ""; position: absolute; top: 13px; left: -50%; width: 100%; height: 2px; background: var(--line); z-index: 0; }
+  .sstep:first-child::before { display: none; }
+  .sstep.done::before, .sstep.active::before { background: var(--green); }
+  .sstep .dot { width: 28px; height: 28px; border-radius: 999px; display: grid; place-items: center; z-index: 1; background: #eef1f0; color: var(--muted-2); font-size: 12px; font-weight: 700; }
+  .sstep.done .dot { background: var(--green); color: #fff; }
+  .sstep.active .dot { background: #fff; border: 2px solid var(--green); color: var(--green-600t); box-shadow: 0 0 0 4px rgba(0,149,113,.12); }
+  .sstep .lbl { font-size: 11.5px; font-weight: 600; color: var(--ink); margin-top: 8px; line-height: 1.2; }
+  .sstep.todo .lbl { color: var(--muted-2); font-weight: 500; }
+  .sstep .dt { font-size: 10.5px; color: var(--muted); margin-top: 2px; }
+
+  .ig { display: grid; grid-template-columns: 1fr 320px; gap: 16px; align-items: start; }
+
+  .ibody { padding: 16px 18px; }
+  .ibody .who { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+  .ibody .av { width: 26px; height: 26px; border-radius: 6px; display: grid; place-items: center; font-size: 10.5px; font-weight: 600; color: #fff; }
+  .av-bc { background: #3f6b8a; } .av-mk { background: var(--green); } .av-sys { background: #8a8a8a; }
+  .ibody .nm { font-size: 13px; font-weight: 600; } .ibody .role { font-size: 10.5px; font-weight: 500; padding: 1px 7px; border-radius: 999px; background: #ededed; color: var(--ink-2); }
+  .ibody .tm { font-size: 11px; color: var(--muted-2); margin-left: auto; }
+  .ibody .txt { font-size: 13.5px; color: var(--ink-2); line-height: 1.55; }
+  .reco { margin-top: 10px; background: var(--green-50); border-radius: 8px; padding: 10px 12px; font-size: 13px; color: var(--green-600t); }
+  .reco b { color: var(--ink); }
+
+  .revlink { display: flex; align-items: center; gap: 10px; padding: 12px 18px; font-size: 12.5px; color: var(--ink-2); border-top: 1px solid var(--line-2); }
+  .revlink .chip { background: #eef1f0; border-radius: 999px; padding: 3px 9px; font-weight: 600; font-size: 12px; }
+  .revlink .arr { color: var(--muted-2); }
+  .revlink a { margin-left: auto; color: var(--green); font-weight: 500; }
+
+  .cmt { display: flex; gap: 11px; padding: 13px 18px; border-top: 1px solid var(--line-2); }
+  .cmt .av { width: 28px; height: 28px; border-radius: 7px; display: grid; place-items: center; font-size: 11px; font-weight: 600; color: #fff; flex: none; }
+  .cmt .grow { flex: 1; min-width: 0; }
+  .cmt .top { display: flex; align-items: center; gap: 8px; }
+  .cmt .nm { font-size: 12.5px; font-weight: 600; }
+  .cmt .badge2 { font-size: 10.5px; font-weight: 600; padding: 1px 7px; border-radius: 999px; }
+  .cmt .badge2.acc { background: var(--green-50); color: var(--green-600t); }
+  .cmt .badge2.impl { background: var(--blue-50); color: var(--blue-600); }
+  .cmt .tm { font-size: 11px; color: var(--muted-2); margin-left: auto; }
+  .cmt .body { font-size: 13px; color: var(--ink-2); margin-top: 5px; }
+  .composer { display: flex; gap: 11px; padding: 14px 18px; border-top: 1px solid var(--line); }
+  .composer .av { width: 28px; height: 28px; border-radius: 7px; background: var(--green); color: #fff; display: grid; place-items: center; font-size: 11px; font-weight: 600; flex: none; }
+  .composer .grow { flex: 1; }
+  .composer .row { display: flex; align-items: center; justify-content: flex-end; gap: 8px; margin-top: 9px; }
+
+  /* sidebar meta */
+  .side .mrow { padding: 12px 16px; border-bottom: 1px solid var(--line-2); }
+  .side .mrow:last-child { border-bottom: 0; }
+  .side .k { font-size: 11px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); margin-bottom: 5px; }
+  .side .v { font-size: 13px; font-weight: 500; }
+  .side .person { display: flex; align-items: center; gap: 8px; }
+  .side .av { width: 22px; height: 22px; border-radius: 5px; display: grid; place-items: center; font-size: 9.5px; font-weight: 600; color: #fff; }
+  .act-card { padding: 14px 16px; }
+  .act-card .lbl { font-size: 12px; font-weight: 600; margin-bottom: 9px; }
+  .act-row { display: flex; gap: 8px; }
+  .act-note { font-size: 12px; color: var(--muted); margin-top: 9px; line-height: 1.45; }
+  .mini-tl { padding: 4px 0; }
+  .mini-tl .e { display: flex; gap: 10px; padding: 7px 16px; font-size: 12px; }
+  .mini-tl .e .dot2 { width: 8px; height: 8px; border-radius: 999px; margin-top: 4px; flex: none; }
+  .mini-tl .e .em { color: var(--muted); }
+</style>
+</head>
+<body>
+<div class="main" style="padding:0">
+  <div class="detail">
+    <div class="crumbs">
+      <a href="projects.html">Projects</a><span class="sep">/</span>
+      <a href="project-detail.html?p=TM-4%20Bike%20Program">TM-4 Bike Program</a><span class="sep">/</span>
+      <a href="part-detail.html">Top tube assembly</a><span class="sep">/</span>
+      <span style="color:var(--ink);font-weight:500">Issue #12</span>
+      <span style="margin-left:auto;display:flex;gap:10px">
+        <a class="btn btn--sm" href="revision-diff.html">Compare Rev 1 ↔ 3</a>
+        <a class="btn btn--sm" href="part-detail.html">Back to part</a>
+      </span>
+    </div>
+
+    <div class="ih">
+      <h1>Wall thickness too thin <span class="no">#12</span></h1>
+      <div class="tags">
+        <span class="st-big amber"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="1.8"/><path d="M12 8v4l3 2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>Awaiting validation</span>
+        <span class="sev med">Medium</span>
+        <span class="cat">Geometry</span>
+        <span class="muted fs-12">opened by Benjamin Chen · Hsinchu Precision · on Rev 1</span>
+      </div>
+    </div>
+
+    <!-- lifecycle state machine -->
+    <div class="stepper">
+      <div class="sstep done"><span class="dot"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="lbl">Open</span><span class="dt">Apr 9</span></div>
+      <div class="sstep done"><span class="dot"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="lbl">Accepted</span><span class="dt">Apr 9 · MK</span></div>
+      <div class="sstep done"><span class="dot"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="lbl">Implemented</span><span class="dt">Rev 3 · May 16</span></div>
+      <div class="sstep active"><span class="dot">4</span><span class="lbl">Validation requested</span><span class="dt">May 16</span></div>
+      <div class="sstep todo"><span class="dot">5</span><span class="lbl">Validated</span><span class="dt">—</span></div>
+      <div class="sstep todo"><span class="dot">6</span><span class="lbl">Closed</span><span class="dt">—</span></div>
+    </div>
+
+    <div class="ig">
+      <!-- main thread -->
+      <div class="panel">
+        <div class="ibody">
+          <div class="who"><span class="av av-bc">BC</span><span class="nm">Benjamin Chen</span><span class="role">Hsinchu Precision</span><span class="tm">Apr 9, 4:09 PM</span></div>
+          <div class="txt">The 1.0 mm wall at the dropout is too thin — it'll likely cause sink and yield issues at the weld. This is a manufacturability risk on the current geometry.</div>
+          <div class="reco"><b>Recommendation ·</b> Increase the wall to 1.5 mm at the dropout.</div>
+        </div>
+        <div class="revlink"><span class="chip">Rev 1</span><span class="arr">— introduced</span><span class="arr">→</span><span class="chip">Rev 3</span><span class="arr">candidate fix</span><a href="revision-diff.html">View diff →</a></div>
+
+        <div class="cmt">
+          <span class="av av-mk">MK</span>
+          <div class="grow">
+            <div class="top"><span class="nm">Mathieu Kury</span><span class="badge2 acc">✓ Accepted</span><span class="tm">Apr 9, 6:30 PM</span></div>
+            <div class="body">Accepted — we'll increase the wall to 1.5 mm in the next revision.</div>
+          </div>
+        </div>
+        <div class="cmt">
+          <span class="av av-sys">⚙</span>
+          <div class="grow">
+            <div class="top"><span class="nm">Mathieu Kury</span><span class="badge2 impl">↑ Implemented</span><span class="tm">May 16, 9:42 AM</span></div>
+            <div class="body">Uploaded <b>Rev 3</b> as the candidate fix — wall increased to 1.5 mm at the dropout, gusset fillet added. Requesting validation.</div>
+          </div>
+        </div>
+        <div class="cmt">
+          <span class="av av-bc">BC</span>
+          <div class="grow">
+            <div class="top"><span class="nm">Benjamin Chen</span><span class="role">Hsinchu Precision</span><span class="tm">reviewing…</span></div>
+            <div class="body" style="color:var(--muted)">Comparing Rev 1 → Rev 3 to confirm the fix. Will validate shortly.</div>
+          </div>
+        </div>
+
+        <div class="composer">
+          <span class="av">MK</span>
+          <div class="grow">
+            <textarea class="textarea" rows="2" placeholder="Add a comment…"></textarea>
+            <div class="row"><a class="btn btn--primary btn--sm" href="#">Comment</a></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- meta sidebar -->
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <div class="panel side">
+          <div class="mrow"><div class="k">Status</div><div class="v" style="color:var(--amber-600)">Awaiting validation</div></div>
+          <div class="mrow"><div class="k">Brand decision</div><div class="v" style="color:var(--green-600t)">✓ Accepted · Apr 9</div></div>
+          <div class="mrow"><div class="k">Severity</div><div class="v">Medium</div></div>
+          <div class="mrow"><div class="k">Category</div><div class="v">Geometry</div></div>
+          <div class="mrow"><div class="k">Introduced / fix</div><div class="v">Rev 1 → Rev 3</div></div>
+          <div class="mrow"><div class="k">Reporter</div><div class="v person"><span class="av av-bc">BC</span>Benjamin Chen · Hsinchu</div></div>
+          <div class="mrow"><div class="k">Owner</div><div class="v person"><span class="av av-mk">MK</span>Mathieu Kury · ALSO</div></div>
+        </div>
+
+        <div class="panel">
+          <div class="act-card">
+            <div class="lbl">Validate the fix</div>
+            <div class="act-row"><button class="btn btn--primary btn--sm">✓ Validate &amp; close</button><button class="btn btn--sm">Still open</button></div>
+            <div class="act-note">Supplier action — confirm Rev 3 resolves this issue, or send it back to <b>Open</b> if the fix doesn't hold.</div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head"><h3 style="font-size:13px;margin:0;padding:13px 16px;font-weight:600">Issue activity</h3></div>
+          <div class="mini-tl">
+            <div class="e"><span class="dot2" style="background:#3f6b8a"></span><div>Issue created <span class="em">· BC · Apr 9</span></div></div>
+            <div class="e"><span class="dot2" style="background:var(--green)"></span><div>Accepted <span class="em">· MK · Apr 9</span></div></div>
+            <div class="e"><span class="dot2" style="background:#3f6b8a"></span><div>Rev 3 uploaded · fix <span class="em">· MK · May 16</span></div></div>
+            <div class="e"><span class="dot2" style="background:var(--amber-600)"></span><div>Validation requested <span class="em">· May 16</span></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="switcher.js"></script>
+</body>
+</html>
