@@ -34,4 +34,5 @@
       })
       .join("");
   document.body.appendChild(el);
+  if (/noswitch/.test(location.hash)) el.style.display = 'none';
 })();

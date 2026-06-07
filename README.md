@@ -1,107 +1,126 @@
-# Chorus — v0 clickable prototype
+# Chorus
 
-A high-fidelity, fully-wired clickable prototype of **Chorus** — an RFQ Copilot whose first
-workflow is the **DFM (Design-for-Manufacturing) loop**: a shareable web app that replaces the
-PowerPoint-over-email redline cycle between a design-led brand and its contract manufacturers.
+> **DFM as a workflow — not a slide deck.**
+> A GitHub-Issues-style system for Design-for-Manufacturability between a brand and its manufacturing partner.
 
-- **Chorus** is the product. **ALSO** is the example customer workspace (user: Mathieu Kury,
-  `mkury@also.com`), with **TM-4 Bike DFM** as the active project.
-- Pure static HTML/CSS/JS — no build step. Runs locally or fully offline.
-- Real-time **3D CAD viewer** (Three.js) on the part page; animated **particle globes** on the
-  auth pages. Structured to import into Figma.
+**Live:** **[withchorus.ai](https://withchorus.ai)**
 
-## Run it
-```bash
-cd "chorus-prototype" && python3 -m http.server 4599
+Chorus replaces the **CAD → PowerPoint → email** loop that DFM review usually lives in. Every manufacturing risk becomes a tracked, stateful **issue** — raised on a revision, decided by the brand, implemented in a new revision, validated by the partner, and closed. A part is done when its open-issue count hits zero.
+
+> **The DFM Issue is the atomic unit of work.**  `CAD → Issues → Resolution → Validation`
+
+![Dashboard](screenshots/dashboard.png)
+
+---
+
+## The model
+
+**Hierarchy**
+
 ```
-Open **http://localhost:4599** — best viewed at ≥1280px wide. `index.html` redirects to login;
-login/signup route to the Overview dashboard. A floating **Screens** pill (bottom-right) jumps
-between every screen, and all internal links are wired (no dead ends).
+Workspace → Project → Part → Revision → DFM Issue → Decision → Validation → Closure
+```
+
+**Issue lifecycle — the state machine**
+
+```
+Open → Accepted → Implemented → Validation requested → Validated → Closed
+ ├─ Open → Rejected                              (terminal)
+ ├─ Open → Needs clarification → Open            (loop)
+ └─ Validation requested → Validation failed → Open
+```
+
+Each issue carries: title, description, supplier recommendation, **severity** (Critical/Medium/Low), **category** (Tolerance/Material/Tooling/Geometry/Process), **priority**, **impact type**, current → proposed values, the brand **decision** (Accept / Accept-with-modification / Reject / Needs clarification), implementation status, validation status, and the revisions it was *introduced on* and *fixed in*.
+
+**Two actors, one source of truth**
+
+| Brand (e.g. ALSO) | Manufacturing partner (e.g. Hsinchu Precision) |
+|---|---|
+| Owns design intent | Owns manufacturability |
+| Creates projects, parts, uploads revisions | Reviews revisions, raises DFM issues |
+| Decides every issue, implements fixes | Validates fixes, confirms manufacturable |
+| *Cannot validate its own fixes* | *Scoped — cannot see unrelated projects* |
+
+---
 
 ## Screens
-| File | Screen |
+
+### Issue Inbox & Issue Detail — the atomic unit
+The full DFM ledger, and a single issue with its lifecycle stepper, decision thread, spec change, and validation action.
+
+| Issue Inbox | Issue Detail |
 |---|---|
-| `login.html` | Login — animated wireframe-globe hero |
-| `signup.html` | Sign up — animated dotted-Earth point-cloud globe |
-| `overview.html` | Workspace dashboard (post-login landing) — status, attention list, activity |
-| `parts.html` | Parts list — thumbnails are **rendered 3D CAD models** |
-| `part-detail.html` | Part detail — **live 3D CAD viewer**, revisions, comments, quotes |
-| `revision-diff.html` | Side-by-side CAD revision compare — **two live 3D viewers** |
-| `manufacturers.html` | Contract manufacturers — magic-link DFM access + access log |
-| `suppliers.html` | Materials & components catalog (pricing, MOQ, lead time, stock) |
-| `activity.html` | Full audit log — comments, revisions, quotes, magic-link opens |
-| `settings.html` | Workspace settings + **daily email digest** toggle |
-| `supplier-portal.html` | Manufacturer magic-link landing (no account required) |
-| `quote-submission.html` | Quote submission, linked to a CAD revision |
+| ![Issue inbox](screenshots/issue-inbox.png) | ![Issue detail](screenshots/issue-detail.png) |
 
-### Manufacturers vs Suppliers (two distinct workflows)
-- **Manufacturers** *fabricate* custom parts → magic-link portal, CAD revisions, DFM redlines,
-  quotes issued per revision.
-- **Suppliers** provide *raw materials & off-the-shelf components* → a sourcing catalog with
-  pricing, MOQ, lead time, and stock. No redline loop.
+### Part Detail
+Metadata, a 6-point **completion checklist** (the part is DFM-complete at zero open issues), per-revision issue counts, an in-browser **CAD viewer**, and the part's DFM issues.
 
-## Shared modules
-| File | Role |
+![Part detail](screenshots/part-detail.png)
+
+### Projects & Activity
+
+| Projects | Activity feed |
 |---|---|
-| `styles.css` | The whole design system (CSS variables) + every component |
-| `sidebar.js` | Canonical workspace sidebar injected on every app page |
-| `switcher.js` | Floating prototype-only screen switcher (`data-figma-skip`) |
-| `thumbnails.js` | Renders `.thumb-img[data-model]` cells as real 3D CAD PNGs |
-| `cadstore.js` | IndexedDB hand-off for the Parts "Upload CAD" button (no size cap) |
-| `auth-logo.js` | Login hero — wireframe globe + emanating/returning signal trails |
-| `auth-globe-signup.js` | Signup hero — dotted-Earth point cloud + signal trails |
-| `logo.png` | The Chorus coil mark |
+| ![Projects](screenshots/projects.png) | ![Activity](screenshots/activity.png) |
 
-## Design system (in `styles.css` as `--*` variables)
-- **Colors** — Logistics Green `#009571` (accent/CTA), Charcoal `#1c1c1c` (text + dark panels),
-  Steel Gray `#7a7a7a`, Border `#d0d3d3`, Concrete `#f4f4f4` (bg), Surface `#fcfcfc`.
-- **Type** — Inter for body/UI; **Space Grotesk** for headings (free stand-in for *Laygrotesk* —
-  swap `--font-head` when the real face is licensed).
-- **Shape** — radii sm `4px` · md `8px` · lg `24px`; 4px-based spacing.
+### External Reviewer Portal
+A scoped, no-account **magic link** for the manufacturing partner — permissions matrix, link expiry, and an audit log. They review the CAD, raise issues, and validate fixes.
 
-Change any token at the top of `styles.css` to restyle the whole prototype at once.
+![Reviewer portal](screenshots/reviewer-portal.png)
 
-## Real-time 3D CAD viewer (`part-detail.html`)
-An interactive metallic part rendered with **Three.js**: PBR aluminium material, environment-map
-reflections, orbit + scroll-zoom, and a working toolbar (zoom, fit/reset, auto-rotate, grid).
+### Notifications & Magic-link management
 
-**It loads a real CAD file** — `models/top-tube-assembly.stl`, an actual binary STL generated by
-`models/generate_stl.py` (re-run to tweak the geometry).
+| Notifications | Magic links |
+|---|---|
+| ![Notifications](screenshots/notifications.png) | ![Magic links](screenshots/magic-links.png) |
 
-**Load your own CAD**, three ways (all auto-centre & scale to fit):
-- Drag a `.stl`/`.glb`/`.gltf`/`.obj` onto the viewer, or use the **Load CAD** button.
-- Use **Upload CAD** on the Parts page — picks a file, hands it to the viewer via IndexedDB
-  (`cadstore.js`, no practical size cap).
+### Workflow reference
+The object hierarchy, the issue state machine, and the 12-step process — printed in-app.
 
-STL/OBJ get the aluminium material; glTF keeps its own. STEP/IGES aren't browser-native — export
-to STL or glTF first (Fusion 360 / SolidWorks / FreeCAD).
+![Workflow](screenshots/workflow.png)
 
-`revision-diff.html` runs **two** of these viewers side by side (Rev 2 vs Rev 3) to visualize the
-change set. The Parts list thumbnails are rendered once at load by `thumbnails.js`.
+---
 
-## Auth-page globes
-- **Login** (`auth-logo.js`) — a clean lat/long **wireframe globe**, slowly rotating, with
-  high-arc signal trails that emanate from the surface, sweep across, and return (ring nodes at
-  both ends).
-- **Signup** (`auth-globe-signup.js`) — a **dotted-Earth point cloud**: dots sampled onto the
-  continents from `assets/earth-water.png`, with organic size/opacity/jitter variation, a
-  silhouette outline at the top, and the same signal-trail logic.
-- Both are **white-to-grey**, slowly rotate, and respect `prefers-reduced-motion`.
+## Tech
 
-## Runs fully offline
-Three.js (core + OrbitControls, RoomEnvironment, the STL/GLTF/OBJ loaders, BufferGeometryUtils)
-is **vendored locally** under `vendor/three/` — no CDN. Import maps point at those local files.
-The only remaining network use is Google Fonts; offline, type falls back to system fonts.
+- **Static HTML / CSS / JS** — no build step, no framework, no backend.
+- **Three.js** CAD viewer (STEP/STL/GLB/OBJ, orbit + drag-drop) on Part Detail.
+- **Pure CSS/SVG charts** — donut, bars, progress (no chart library, clean Figma import).
+- **`localStorage`** store (`store.js`) so created projects/parts/links persist as you navigate.
+- Shared **`sidebar.js`** (nav + workspace switcher) and **`switcher.js`** (a dev-only screen jumper; append `#noswitch` to any URL to hide it).
+- Hosted on **GitHub Pages** at the apex domain `withchorus.ai`.
 
-## Import into Figma (editable layers)
-Use the free **html.to.design** plugin (Figma → Plugins → "html.to.design"):
-1. Run the server, then paste each screen URL into the plugin (import at ~1280px width so tables
-   stay single-row). Each screen becomes a native, editable Figma frame.
-2. After import, delete the bottom-right "Screens" pill layer (tagged `data-figma-skip`) and wire
-   Figma's native prototype arrows between frames.
+## Run locally
 
-**3D caveat:** the live 3D canvases (CAD viewer, globes) can't import as editable vectors — Figma
-captures only a still. Drop in a rendered image for those frames.
+No dependencies — just serve the folder:
 
-## Repo
-Hosted privately at **github.com/danyaeche/v0-prototype**.
+```bash
+python3 -m http.server 4599
+# open http://localhost:4599
+```
+
+## Project structure
+
+```
+overview.html ......... Dashboard (issue KPIs, throughput, completion)
+projects.html ......... Projects index
+project-detail.html ... a Project → its parts
+part-detail.html ...... Part hub (metadata, completion, CAD, issues, revisions)
+issues-list.html ...... Issue Inbox (GitHub-style)
+issue-detail.html ..... a DFM Issue + lifecycle state machine   <- the atomic unit
+revision-history.html . a part's revision timeline
+revision-diff.html .... Rev <-> Rev compare
+magic-link-view.html .. External Reviewer Portal (scoped magic link)
+activity.html ......... Issue lifecycle feed
+notifications.html .... Actionable inbox
+team.html ............. Team management (roles + external reviewers)
+magic-links.html ...... Magic-link admin (scope, permissions, expiry)
+create-project.html ... New-project form
+user-flow.html ........ Workflow tree + state machine + 12 steps
+settings.html | login.html | signup.html
+store.js | sidebar.js | switcher.js | flows.js | styles.css
+```
+
+---
+
+*Prototype — front-end only, seeded with a worked example (the **TM-4 Bike Program** between **ALSO** and **Hsinchu Precision**).*
