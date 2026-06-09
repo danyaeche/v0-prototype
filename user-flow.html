@@ -136,20 +136,22 @@
     <div class="tree">
 <pre><span class="t-ws">Workspace / Organization</span>
 <span class="t-br">│</span>
-<span class="t-br">└──</span> <span class="t-pr">Project</span>  <span class="t-note">(TM-4 Bike Program · one manufacturing partner)</span>
+<span class="t-br">└──</span> <span class="t-pr">Project</span>  <span class="t-note">(TM-4 Bike Program · many parts · rolls up DFMs across providers)</span>
     <span class="t-br">├──</span> <span class="t-node">Project Metadata</span>  <span class="t-mut">name · product · owners · reviewers · status</span>
     <span class="t-br">│</span>
     <span class="t-br">├──</span> <span class="t-node">Parts</span>
     <span class="t-br">│   └──</span> <span class="t-node">Part</span>  <span class="t-note">(Battery enclosure — lower · Injection Mold)</span>
     <span class="t-br">│       ├──</span> <span class="t-node">Part Metadata</span>  <span class="t-mut">number · material · process · owner · status</span>
     <span class="t-br">│       ├──</span> <span class="t-node">Package</span>        <span class="t-mut">CAD/STEP · 2D drawing · render · material spec · volume</span>
-    <span class="t-br">│       ├──</span> <span class="t-node">Revisions</span>      <span class="t-mut">Rev A → Rev B → Rev C  (files · uploaded by · change summary)</span>
-    <span class="t-br">│       ├──</span> <span class="t-atom">DFM Issues</span>  <span class="t-note">◀── the atomic unit of work</span>
-    <span class="t-br">│       │   └──</span> <span class="t-atom">Issue</span>  <span class="t-note">(#12 Insufficient draft for ejection)</span>
-    <span class="t-br">│       │       ├──</span> <span class="t-node">Decision</span>        <span class="t-mut">Accept · Reject · Needs clarification</span>
-    <span class="t-br">│       │       ├──</span> <span class="t-node">Implementation</span>  <span class="t-mut">Rev B — engineering fix</span>
-    <span class="t-br">│       │       ├──</span> <span class="t-node">Validation</span>      <span class="t-mut">compare Rev A vs Rev B</span>
-    <span class="t-br">│       │       └──</span> <span class="t-node">Closure</span>         <span class="t-mut">Open Issues − 1</span>
+    <span class="t-br">│       ├──</span> <span class="t-node">Revisions</span>  <span class="t-mut">Rev A → Rev B → Rev C  (shared design — every provider reviews these)</span>
+    <span class="t-br">│       ├──</span> <span class="t-atom">DFMs</span>  <span class="t-note">◀── one per provider · parallel · confidential to each</span>
+    <span class="t-br">│       │   └──</span> <span class="t-node">DFM</span>  <span class="t-note">(Hsinchu Precision · CM · scoped magic link)</span>
+    <span class="t-br">│       │       └──</span> <span class="t-atom">DFM Issues</span>  <span class="t-note">◀── the atomic unit of work</span>
+    <span class="t-br">│       │           └──</span> <span class="t-atom">Issue</span>  <span class="t-note">(#12 Insufficient draft for ejection)</span>
+    <span class="t-br">│       │               ├──</span> <span class="t-node">Decision</span>        <span class="t-mut">Accept · Reject · Needs clarification</span>
+    <span class="t-br">│       │               ├──</span> <span class="t-node">Implementation</span>  <span class="t-mut">Rev B — engineering fix</span>
+    <span class="t-br">│       │               ├──</span> <span class="t-node">Validation</span>      <span class="t-mut">compare Rev A vs Rev B</span>
+    <span class="t-br">│       │               └──</span> <span class="t-node">Closure</span>         <span class="t-mut">Open Issues − 1</span>
     <span class="t-br">│       ├──</span> <span class="t-node">Part State</span>     <span class="t-mut">Draft → Under review → DFM Active → Awaiting validation → DFM Complete</span>
     <span class="t-br">│       └──</span> <span class="t-node">Activity</span>       <span class="t-mut">revision · issue created · decision · validation · closed</span>
     <span class="t-br">│</span>
@@ -189,10 +191,10 @@
     <h2><span class="n">4</span> The core flow · 10 steps</h2>
     <div class="card">
       <div class="steps">
-        <div class="step done"><span class="sn">1</span><div class="sbody"><div class="st">Create Project<span class="actor brand">Brand</span></div><div class="sm2">Brand creates a project and adds metadata — scoped to one manufacturing partner.</div></div></div>
+        <div class="step done"><span class="sn">1</span><div class="sbody"><div class="st">Create Project<span class="actor brand">Brand</span></div><div class="sm2">Brand creates a project with one or more parts; each part can be DFM'd by multiple providers.</div></div></div>
         <div class="step done"><span class="sn">2</span><div class="sbody"><div class="st">Add Part<span class="actor brand">Brand</span></div><div class="sm2">Create a part record — it carries its own revisions and issue ledger.</div></div></div>
         <div class="step done"><span class="sn">3</span><div class="sbody"><div class="st">Upload Package<span class="actor brand">Brand</span></div><div class="sm2">CAD/STEP, 2D drawing, material spec, volume forecast, render — Rev A.</div></div></div>
-        <div class="step done"><span class="sn">4</span><div class="sbody"><div class="st">Invite Reviewer<span class="actor brand">Brand</span></div><div class="sm2">Scoped magic link to the CM / supplier / fabricator — no account.</div></div></div>
+        <div class="step done"><span class="sn">4</span><div class="sbody"><div class="st">Invite Reviewer<span class="actor brand">Brand</span></div><div class="sm2">Scoped magic link to a CM / supplier / fabricator — no account. Each invite starts a new DFM for that part.</div></div></div>
         <div class="step"><span class="sn">5</span><div class="sbody"><div class="st">Review Part<span class="actor partner">Reviewer</span></div><div class="sm2">Reviewer examines the package and creates DFM issues.</div></div></div>
         <div class="step"><span class="sn">6</span><div class="sbody"><div class="st">Disposition Issues<span class="actor brand">Brand</span></div><div class="sm2">Accept · reject · request clarification on each issue, with rationale.</div></div></div>
         <div class="step"><span class="sn">7</span><div class="sbody"><div class="st">Upload New Revision<span class="actor brand">Brand</span></div><div class="sm2">Rev B (or later) implements the accepted changes.</div></div></div>

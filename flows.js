@@ -109,6 +109,7 @@
   var pFile = null;
   function buildPart() {
     if (document.getElementById('flPartBg')) return;
+    var projOpts = ['TM-4 Bike Program', 'Cargo eBike'].concat(S.projects().map(function (p) { return p.name; })).map(function (n) { return '<option>' + n + '</option>'; }).join('');
     var bg = document.createElement('div'); bg.className = 'fl-bg'; bg.id = 'flPartBg';
     bg.innerHTML =
       '<div class="fl-modal" style="width:min(480px,94%)">' +
@@ -116,7 +117,8 @@
         '<div class="fl-body">' +
           '<p>A part carries its own revisions and DFM issues. Add its details and upload the package — the first upload becomes <b>Rev A</b>.</p>' +
           '<div class="fl-row2"><div class="field"><label>Part name</label><input class="input" id="flPName" placeholder="e.g. Charge-port cap"></div><div class="field"><label>Part number</label><input class="input" id="flPNum" placeholder="e.g. TM-4-2007"></div></div>' +
-          '<div class="field"><label>Process</label><div class="select-wrap"><select class="select" id="flPRfq"><option>Injection Mold</option><option>CNC</option><option>Sheet Metal</option><option>Die Cast</option></select></div></div>' +
+          '<div class="fl-row2"><div class="field"><label>Project</label><div class="select-wrap"><select class="select" id="flPProj">' + projOpts + '</select></div></div>' +
+          '<div class="field"><label>Process</label><div class="select-wrap"><select class="select" id="flPRfq"><option>Injection Mold</option><option>CNC</option><option>Sheet Metal</option><option>Die Cast</option></select></div></div></div>' +
           '<label class="fl-drop"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 16V4m0 0L7 9m5-5 5 5M5 20h14" stroke="#1c1c1c" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg> <span id="flPTxt">Upload package → Rev A</span><input id="flPFile" type="file" accept=".step,.stp,.stl,.pdf,.glb,.gltf,.obj" hidden></label>' +
         '</div>' +
         '<div class="fl-foot"><span class="muted fs-12">Creates the part on Rev A</span><span class="fl-grow"></span><button class="btn" data-close>Cancel</button><button class="btn btn--primary" id="flPCreate">Create part</button></div>' +
@@ -127,10 +129,10 @@
     q('#flPFile').addEventListener('change', function (e) { pFile = e.target.files[0] || null; if (pFile) { q('#flPTxt').textContent = pFile.name; if (!q('#flPName').value) q('#flPName').value = titleCase(pFile.name); } });
     q('#flPCreate').addEventListener('click', function () {
       var name = q('#flPName').value.trim() || 'New part', num = q('#flPNum').value.trim() || ('TM-4-' + (1007 + S.parts().length));
-      S.addPart({ id: 'p' + Date.now(), name: name, number: num, rfq: q('#flPRfq').value, file: pFile ? pFile.name : '' });
+      S.addPart({ id: 'p' + Date.now(), name: name, number: num, process: q('#flPRfq').value, project: q('#flPProj').value, file: pFile ? pFile.name : '' });
       bg.classList.remove('open');
       appendPartRow(name, num);
-      toast(name + ' created on Rev A');
+      toast(name + ' added to ' + q('#flPProj').value + ' · Rev A');
     });
     bg._open = function () { pFile = null; q('#flPName').value = ''; q('#flPNum').value = ''; q('#flPTxt').textContent = 'Upload package → Rev A'; bg.classList.add('open'); setTimeout(function () { q('#flPName').focus(); }, 30); };
   }

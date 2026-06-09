@@ -30,6 +30,9 @@
   .nda-opt { display: flex; align-items: center; gap: 8px; border: 1px solid var(--line); border-radius: 9px; padding: 9px 13px; font-size: 13px; cursor: pointer; }
   .nda-opt input { accent-color: var(--green); }
   .nda-opt.on { border-color: var(--green); background: rgba(0,149,113,.05); }
+  .prow { display: grid; grid-template-columns: 1fr 180px 168px 34px; gap: 10px; align-items: center; margin-bottom: 10px; }
+  .prx { width: 34px; height: 40px; border: 1px solid var(--line); border-radius: 9px; background: #fff; color: var(--muted); font-size: 17px; cursor: pointer; }
+  .prx:hover { background: #faf0ef; color: var(--red-600); border-color: #f0d9d6; }
 </style>
 </head>
 <body>
@@ -38,7 +41,7 @@
   <main class="main">
     <div class="breadcrumb" style="margin-bottom:14px"><a href="overview.html">Overview</a> <span>/</span> <b id="crumbMode">New project</b></div>
     <div class="page-head">
-      <div><h1 id="pgTitle">New project</h1><div class="subtitle" style="margin:4px 0 0">One project per program, scoped to a single manufacturing partner.</div></div>
+      <div><h1 id="pgTitle">New project</h1><div class="subtitle" style="margin:4px 0 0">One project per program. Add parts now — each can be DFM'd by multiple providers.</div></div>
       <div class="page-actions">
         <a class="btn btn--sm" href="overview.html">Cancel</a>
         <button class="btn btn--primary btn--sm" onclick="createProject()" id="topCreate">Create project</button>
@@ -68,7 +71,22 @@
         </div>
 
         <div class="panel" style="margin-top:16px">
-          <div class="panel-head"><h2>Manufacturing partner</h2><span class="muted fs-12">scoped to this project</span></div>
+          <div class="panel-head"><h2>Parts</h2><span class="muted fs-12">add one or more — each gets its own revisions + DFMs</span></div>
+          <div class="form">
+            <div id="partRows">
+              <div class="prow">
+                <input class="input pp-name" placeholder="Part name — e.g. Battery enclosure — lower" />
+                <input class="input pp-num" placeholder="Part № — e.g. TM-4-2001" />
+                <div class="select-wrap"><select class="select pp-proc"><option>Injection Mold</option><option>CNC</option><option>Sheet Metal</option><option>Die Cast</option><option>Other</option></select></div>
+                <button class="prx" onclick="removePartRow(this)" title="Remove">×</button>
+              </div>
+            </div>
+            <button class="btn btn--sm" onclick="addPartRow()" style="align-self:flex-start">+ Add part</button>
+          </div>
+        </div>
+
+        <div class="panel" style="margin-top:16px">
+          <div class="panel-head"><h2>Invite a reviewer</h2><span class="muted fs-12">optional · starts the first DFM — add more providers per part later</span></div>
           <div class="form">
             <div class="grid2">
               <div class="field"><label>Partner / reviewer name</label><input class="input" id="pjPartner" placeholder="Hsinchu Precision" /></div>
@@ -89,15 +107,15 @@
       <div>
         <div class="aside-card">
           <h3>What happens next</h3>
-          <p>Creating the project sets up its issue ledger. Then you'll add parts and upload the first revision.</p>
-          <div class="mini-step on"><span class="mn">1</span><span>Create project</span></div>
-          <div class="mini-step"><span class="mn">2</span><span>Add parts</span></div>
-          <div class="mini-step"><span class="mn">3</span><span>Upload Rev A (STEP · PDF · Render)</span></div>
-          <div class="mini-step"><span class="mn">4</span><span>Invite the partner via magic link</span></div>
+          <p>Add your parts now — each gets its own revisions and can be DFM'd by multiple providers.</p>
+          <div class="mini-step on"><span class="mn">1</span><span>Create project + parts</span></div>
+          <div class="mini-step"><span class="mn">2</span><span>Upload each part's package (Rev A)</span></div>
+          <div class="mini-step"><span class="mn">3</span><span>Invite providers — one DFM each</span></div>
+          <div class="mini-step"><span class="mn">4</span><span>Review → resolve → validate</span></div>
         </div>
         <div class="aside-card" style="margin-top:16px">
-          <h3>Scope</h3>
-          <p>One manufacturing partner per project. The reviewer sees only this project's parts — never your other programs.</p>
+          <h3>DFMs &amp; providers</h3>
+          <p>A part can carry <b>multiple DFMs</b> — one per provider (CM, supplier, fabricator). Each reviewer is scoped to their DFM and sees only the parts they're invited to.</p>
         </div>
         <button class="btn btn--primary" style="width:100%;margin-top:16px;height:42px" onclick="createProject()">Create project</button>
       </div>
@@ -133,10 +151,23 @@
   })();
 
   function nav(href){ var a=document.createElement('a'); a.href=href; document.body.appendChild(a); a.click(); }
+  function addPartRow(){
+    var w = document.getElementById('partRows');
+    var d = document.createElement('div'); d.className = 'prow';
+    d.innerHTML = '<input class="input pp-name" placeholder="Part name" /><input class="input pp-num" placeholder="Part №" /><div class="select-wrap"><select class="select pp-proc"><option>Injection Mold</option><option>CNC</option><option>Sheet Metal</option><option>Die Cast</option><option>Other</option></select></div><button class="prx" onclick="removePartRow(this)" title="Remove">×</button>';
+    w.appendChild(d);
+  }
+  function removePartRow(b){ if (document.querySelectorAll('#partRows .prow').length > 1) b.closest('.prow').remove(); }
+
   function createProject(){
     var name = document.getElementById('pjName').value.trim();
     if (!name){ var n=document.getElementById('pjName'); n.focus(); n.style.borderColor='var(--red-600)'; return; }
     var nda = (document.querySelector('input[name=nda]:checked')||{}).value || 'Standard';
+    var parts = [];
+    Array.prototype.forEach.call(document.querySelectorAll('#partRows .prow'), function(r){
+      var nm = r.querySelector('.pp-name').value.trim(); if (!nm) return;
+      parts.push({ name: nm, number: r.querySelector('.pp-num').value.trim(), process: r.querySelector('.pp-proc').value });
+    });
     window.ChorusStore.addProject({
       id: 'pj' + Date.now(),
       name: name,
@@ -149,8 +180,7 @@
       target: document.getElementById('pjTarget').value,
       partner: document.getElementById('pjPartner').value.trim(),
       reviewer: document.getElementById('pjReviewer').value.trim(),
-      nda: nda,
-      created: true
+      nda: nda, parts: parts, created: true
     });
     nav('project-detail.html?p=' + encodeURIComponent(name));
   }

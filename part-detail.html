@@ -161,6 +161,16 @@
   .ps.now { background: var(--ink); color: #fff; }
   .ps.todo { background: #eef1f0; color: var(--muted-2); }
   .psar { color: var(--muted-2); font-size: 13px; }
+  /* DFM reviews (one per provider) */
+  .dfm-rev { display: flex; align-items: center; gap: 14px; padding: 13px 18px; border-bottom: 1px solid var(--line-2); }
+  .dfm-rev:last-of-type { border-bottom: 0; }
+  .dfm-rev.sel { box-shadow: inset 3px 0 0 var(--green); background: #fbfdfc; }
+  .dr-main { flex: 1; min-width: 0; }
+  .dr-nm { font-size: 13.5px; font-weight: 600; display: flex; align-items: center; gap: 7px; flex-wrap: wrap; }
+  .dr-sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .dr-open { color: var(--amber-600); font-weight: 600; font-size: 12.5px; white-space: nowrap; }
+  .dr-open.zero { color: var(--muted); }
+  .dfm-rev-foot { display: flex; align-items: center; gap: 12px; padding: 12px 18px; border-top: 1px solid var(--line-2); }
 </style>
 </head>
 <body>
@@ -204,7 +214,7 @@
           <div class="mc"><div class="mk">Cosmetic grade</div><div class="mv">Class A · visible</div></div>
           <div class="mc"><div class="mk">Volume forecast</div><div class="mv">50,000 / yr</div></div>
           <div class="mc"><div class="mk">Owner</div><div class="mv">Mathieu Kury · ALSO</div></div>
-          <div class="mc"><div class="mk">Reviewer</div><div class="mv">Benjamin Chen · Hsinchu</div></div>
+          <div class="mc"><div class="mk">DFMs</div><div class="mv">2 · Hsinchu · Shenzhen</div></div>
           <div class="mc"><div class="mk">Status</div><div class="mv">DFM Active</div></div>
         </div>
         <div class="meta-foot">
@@ -284,8 +294,8 @@
       <!-- DFM Issues — the atomic unit of work -->
       <div class="panel">
         <div class="panel-head disc-head">
-          <h3>DFM Issues</h3>
-          <span class="ctx">2 open · 1 awaiting · 4 closed</span>
+          <div style="display:flex;align-items:center;gap:8px"><h3>DFM Issues</h3><span class="rev-chip" title="Switch DFM / provider">Hsinchu Precision <span class="cv"></span></span></div>
+          <span class="ctx">2 open · 1 awaiting</span>
         </div>
         <a class="irow" href="issue-detail.html">
           <div class="irow-t"><span class="ino">#14</span><span class="ititle">Ejector pins mark Class A face</span><span class="ist open">Open</span></div>
@@ -307,15 +317,28 @@
       </div>
     </div>
 
-    <!-- Reviewer access -->
+    <!-- DFM reviews — one per provider, in parallel -->
     <div class="panel" style="margin-bottom:16px">
-      <div class="panel-head"><h3>Reviewer access</h3><span class="muted fs-12">magic link · no account needed</span></div>
-      <div style="display:flex;align-items:center;gap:14px;padding:14px 18px">
+      <div class="panel-head"><h3>DFM reviews</h3><span class="muted fs-12">2 providers reviewing this part in parallel · each a scoped magic link</span></div>
+      <div class="dfm-rev sel">
         <span class="cm-logo">HP</span>
-        <div style="flex:1"><div style="font-size:13.5px;font-weight:600">Hsinchu Precision <span class="badge badge--soft" style="height:18px;font-size:11px">CM</span></div><div style="font-size:12px;color:var(--muted)">benjamin.chen@hsinchu-precision.com · link active · scoped to this part · expires May 30, 2025</div></div>
+        <div class="dr-main">
+          <div class="dr-nm">Hsinchu Precision <span class="badge badge--soft" style="height:18px;font-size:11px">CM</span> <span class="badge badge--blue" style="height:18px;font-size:11px">DFM Active</span></div>
+          <div class="dr-sub">benjamin.chen@hsinchu-precision.com · link active · scoped to this DFM · expires May 30</div>
+        </div>
+        <span class="dr-open">● 2 open</span>
         <a class="btn btn--sm" href="magic-link-view.html">Open reviewer view</a>
-        <button class="btn btn--sm" onclick="openInvite()">Resend link</button>
       </div>
+      <div class="dfm-rev">
+        <span class="cm-logo" style="background:#2f73c4">SO</span>
+        <div class="dr-main">
+          <div class="dr-nm">Shenzhen Optics <span class="badge badge--soft" style="height:18px;font-size:11px">Supplier</span> <span class="badge" style="height:18px;font-size:11px;background:#f5ecd4;color:#b7791f">Awaiting validation</span></div>
+          <div class="dr-sub">sora@shenzhen-optics.com · link active · scoped to this DFM · expires Jun 4 · different tooling, different findings</div>
+        </div>
+        <span class="dr-open">● 1 open</span>
+        <a class="btn btn--sm" href="magic-link-view.html">Open reviewer view</a>
+      </div>
+      <div class="dfm-rev-foot"><button class="btn btn--sm" onclick="openInvite()">+ Invite another provider</button><span class="muted fs-12">a part can be DFM'd by several providers at once — each gets its own scoped DFM, the parties never see each other</span></div>
     </div>
 
     <!-- Activity log -->
