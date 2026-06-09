@@ -12,7 +12,6 @@
     ["revision-diff.html", "9", "Revision compare"],
     ["magic-link-view.html", "R", "Reviewer portal"],
     ["activity.html", "A", "Activity"],
-    ["notifications.html", "N", "Notifications"],
     ["team.html", "T", "Team"],
     ["magic-links.html", "K", "Magic links"],
     ["settings.html", "G", "Settings"],
