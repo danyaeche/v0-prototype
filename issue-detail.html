@@ -103,6 +103,7 @@
   .imp.up { background: var(--green-50); color: var(--green-600t); }
   .imp.neu { background: #eef1f0; color: var(--ink-2); }
   .imp.down { background: var(--red-50); color: var(--red-600); }
+  .sev.high { background: #fbe7d6; color: #b5651d; }
 </style>
 </head>
 <body>
@@ -111,22 +112,22 @@
     <div class="crumbs">
       <a href="projects.html">Projects</a><span class="sep">/</span>
       <a href="project-detail.html?p=TM-4%20Bike%20Program">TM-4 Bike Program</a><span class="sep">/</span>
-      <a href="part-detail.html">Top tube assembly</a><span class="sep">/</span>
+      <a href="part-detail.html">Battery enclosure — lower</a><span class="sep">/</span>
       <span style="color:var(--ink);font-weight:500">Issue #12</span>
       <span style="margin-left:auto;display:flex;gap:10px">
-        <a class="btn btn--sm" href="revision-diff.html">Compare Rev 1 ↔ 3</a>
+        <a class="btn btn--sm" href="revision-diff.html">Compare Rev A ↔ C</a>
         <a class="btn btn--sm" href="part-detail.html">Back to part</a>
       </span>
     </div>
 
     <div class="ih">
-      <h1>Wall thickness too thin <span class="no">#12</span></h1>
+      <h1>Insufficient draft for ejection <span class="no">#12</span></h1>
       <div class="tags">
         <span class="st-big amber"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="1.8"/><path d="M12 8v4l3 2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>Awaiting validation</span>
-        <span class="sev med">Medium</span>
-        <span class="cat">Geometry</span>
+        <span class="sev high">High</span>
+        <span class="cat">Tooling</span>
         <span class="pri must">⚑ Must fix</span>
-        <span class="muted fs-12">opened by Benjamin Chen · Hsinchu Precision · on Rev 1</span>
+        <span class="muted fs-12">opened by Benjamin Chen · Hsinchu Precision · on Rev A</span>
       </div>
     </div>
 
@@ -134,7 +135,7 @@
     <div class="stepper">
       <div class="sstep done"><span class="dot"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="lbl">Open</span><span class="dt">Apr 9</span></div>
       <div class="sstep done"><span class="dot"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="lbl">Accepted</span><span class="dt">Apr 9 · MK</span></div>
-      <div class="sstep done"><span class="dot"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="lbl">Implemented</span><span class="dt">Rev 3 · May 16</span></div>
+      <div class="sstep done"><span class="dot"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="lbl">Implemented</span><span class="dt">Rev C · May 16</span></div>
       <div class="sstep active"><span class="dot">4</span><span class="lbl">Validation requested</span><span class="dt">May 16</span></div>
       <div class="sstep todo"><span class="dot">5</span><span class="lbl">Validated</span><span class="dt">—</span></div>
       <div class="sstep todo"><span class="dot">6</span><span class="lbl">Closed</span><span class="dt">—</span></div>
@@ -145,33 +146,33 @@
       <div class="panel">
         <div class="ibody">
           <div class="who"><span class="av av-bc">BC</span><span class="nm">Benjamin Chen</span><span class="role">Hsinchu Precision</span><span class="tm">Apr 9, 4:09 PM</span></div>
-          <div class="txt">The 1.0 mm wall at the dropout is too thin — it'll likely cause sink and yield issues at the weld. This is a manufacturability risk on the current geometry.</div>
-          <div class="reco"><b>Recommendation ·</b> Increase the wall to 1.5 mm at the dropout and add a reinforcing rib.
-            <div class="spec"><div class="sp"><span class="spk">Current</span><span class="spv">1.0 mm</span></div><span class="sparr">→</span><div class="sp"><span class="spk">Proposed</span><span class="spv hl">1.5 mm</span></div></div>
+          <div class="txt">The side walls carry only <b>0.5° of draft</b> on the textured (MT-11010) PC-ABS faces. The part won't release cleanly from the cavity — expect drag marks and ejector stress on the Class A surface. Not moldable as drawn.</div>
+          <div class="reco"><b>Recommendation ·</b> Open the draft to ≥1.5° on all textured side walls; 3° preferred on the deep ribs to clear the texture.
+            <div class="spec"><div class="sp"><span class="spk">Current</span><span class="spv">0.5°</span></div><span class="sparr">→</span><div class="sp"><span class="spk">Proposed</span><span class="spv hl">1.5°</span></div></div>
           </div>
-          <div class="impacts"><span class="imp neu">Impact · Manufacturability</span><span class="imp up">Yield ↑ improves</span><span class="imp neu">Cost ~ neutral</span><span class="imp neu">Lead time — none</span></div>
+          <div class="impacts"><span class="imp neu">Impact · Manufacturability</span><span class="imp up">Yield ↑ improves</span><span class="imp neu">Tooling ~ neutral</span><span class="imp down">Show-stopper if unfixed</span></div>
         </div>
-        <div class="revlink"><span class="chip">Rev 1</span><span class="arr">— introduced</span><span class="arr">→</span><span class="chip">Rev 3</span><span class="arr">candidate fix</span><a href="revision-diff.html">View diff →</a></div>
+        <div class="revlink"><span class="chip">Rev A</span><span class="arr">— introduced</span><span class="arr">→</span><span class="chip">Rev C</span><span class="arr">candidate fix</span><a href="revision-diff.html">View diff →</a></div>
 
         <div class="cmt">
           <span class="av av-mk">MK</span>
           <div class="grow">
-            <div class="top"><span class="nm">Mathieu Kury</span><span class="badge2 acc">✓ Accepted with modification</span><span class="tm">Apr 9, 6:30 PM</span></div>
-            <div class="body">Accepted the 1.5 mm wall — but skipping the extra rib; the gusset fillet covers the load path and holds our weight target. Applying in the next revision.</div>
+            <div class="top"><span class="nm">Mathieu Kury</span><span class="badge2 acc">✓ Accepted</span><span class="tm">Apr 9, 6:30 PM</span></div>
+            <div class="body">Accepted — we'll open the draft to 1.5° on the textured walls (3° on the deep ribs) in the next revision. Cosmetic faces unaffected.</div>
           </div>
         </div>
         <div class="cmt">
           <span class="av av-sys">⚙</span>
           <div class="grow">
             <div class="top"><span class="nm">Mathieu Kury</span><span class="badge2 impl">↑ Implemented</span><span class="tm">May 16, 9:42 AM</span></div>
-            <div class="body">Uploaded <b>Rev 3</b> as the candidate fix — wall increased to 1.5 mm at the dropout, gusset fillet added. Requesting validation.</div>
+            <div class="body">Uploaded <b>Rev C</b> as the candidate fix — draft opened to 1.5° on the side walls, 3° on the ribs, and the gate relocated off the Class A face. Requesting validation.</div>
           </div>
         </div>
         <div class="cmt">
           <span class="av av-bc">BC</span>
           <div class="grow">
             <div class="top"><span class="nm">Benjamin Chen</span><span class="role">Hsinchu Precision</span><span class="tm">reviewing…</span></div>
-            <div class="body" style="color:var(--muted)">Comparing Rev 1 → Rev 3 to confirm the fix. Will validate shortly.</div>
+            <div class="body" style="color:var(--muted)">Comparing Rev A → Rev C to confirm the draft clears the texture. Will validate shortly.</div>
           </div>
         </div>
 
@@ -188,15 +189,15 @@
       <div style="display:flex;flex-direction:column;gap:16px">
         <div class="panel side">
           <div class="mrow"><div class="k">Status</div><div class="v" style="color:var(--amber-600)">Awaiting validation</div></div>
-          <div class="mrow"><div class="k">Brand decision</div><div class="v" style="color:var(--green-600t)">✓ Accepted with modification · Apr 9</div></div>
-          <div class="mrow"><div class="k">Severity</div><div class="v">Medium</div></div>
+          <div class="mrow"><div class="k">Brand decision</div><div class="v" style="color:var(--green-600t)">✓ Accepted · Apr 9</div></div>
+          <div class="mrow"><div class="k">Severity</div><div class="v" style="color:#b5651d">High</div></div>
           <div class="mrow"><div class="k">Priority</div><div class="v" style="color:var(--red-600)">Must fix</div></div>
-          <div class="mrow"><div class="k">Category</div><div class="v">Geometry</div></div>
+          <div class="mrow"><div class="k">Category</div><div class="v">Tooling</div></div>
           <div class="mrow"><div class="k">Impact type</div><div class="v">Manufacturability · Yield</div></div>
-          <div class="mrow"><div class="k">Expected impact</div><div class="v">Yield ↑ · Cost ~ · Lead —</div></div>
-          <div class="mrow"><div class="k">Spec change</div><div class="v">1.0 mm → 1.5 mm</div></div>
-          <div class="mrow"><div class="k">Introduced / fix</div><div class="v">Rev 1 → Rev 3</div></div>
-          <div class="mrow"><div class="k">Reporter</div><div class="v person"><span class="av av-bc">BC</span>Benjamin Chen · Hsinchu</div></div>
+          <div class="mrow"><div class="k">Spec change</div><div class="v">0.5° → 1.5° draft</div></div>
+          <div class="mrow"><div class="k">Created on</div><div class="v">Rev A</div></div>
+          <div class="mrow"><div class="k">Resolved in</div><div class="v">Rev C · candidate</div></div>
+          <div class="mrow"><div class="k">Created by</div><div class="v person"><span class="av av-bc">BC</span>Benjamin Chen · Hsinchu</div></div>
           <div class="mrow"><div class="k">Owner</div><div class="v person"><span class="av av-mk">MK</span>Mathieu Kury · ALSO</div></div>
         </div>
 
@@ -204,7 +205,7 @@
           <div class="act-card">
             <div class="lbl">Validate the fix</div>
             <div class="act-row"><button class="btn btn--primary btn--sm">✓ Validate &amp; close</button><button class="btn btn--sm">Still open</button></div>
-            <div class="act-note">Supplier action — confirm Rev 3 resolves this issue, or send it back to <b>Open</b> if the fix doesn't hold.</div>
+            <div class="act-note">Reviewer action — confirm Rev C releases cleanly, or send it back to <b>Open</b> if the draft still drags.</div>
           </div>
         </div>
 
@@ -213,7 +214,7 @@
           <div class="mini-tl">
             <div class="e"><span class="dot2" style="background:#3f6b8a"></span><div>Issue created <span class="em">· BC · Apr 9</span></div></div>
             <div class="e"><span class="dot2" style="background:var(--green)"></span><div>Accepted <span class="em">· MK · Apr 9</span></div></div>
-            <div class="e"><span class="dot2" style="background:#3f6b8a"></span><div>Rev 3 uploaded · fix <span class="em">· MK · May 16</span></div></div>
+            <div class="e"><span class="dot2" style="background:#3f6b8a"></span><div>Rev C uploaded · fix <span class="em">· MK · May 16</span></div></div>
             <div class="e"><span class="dot2" style="background:var(--amber-600)"></span><div>Validation requested <span class="em">· May 16</span></div></div>
           </div>
         </div>

@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Chorus · Top tube assembly</title>
+<title>Chorus · Battery enclosure — lower</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="styles.css" />
@@ -154,6 +154,13 @@
   .ck-prog { font-size: 11.5px; font-weight: 600; color: var(--muted); }
   .ck-foot { padding: 11px 16px; border-top: 1px solid var(--line-2); font-size: 12.5px; color: var(--muted); }
   .ck-foot b { color: var(--green-600t); }
+  .isev.high { color: #d9772e; } .isev.high .d { background: #d9772e; }
+  .pstate { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+  .ps { font-size: 12px; font-weight: 600; padding: 5px 12px; border-radius: 999px; }
+  .ps.done { background: var(--green-50); color: var(--green-600t); }
+  .ps.now { background: var(--ink); color: #fff; }
+  .ps.todo { background: #eef1f0; color: var(--muted-2); }
+  .psar { color: var(--muted-2); font-size: 13px; }
 </style>
 </head>
 <body>
@@ -162,38 +169,47 @@
     <div class="crumbs">
       <a href="projects.html">Projects</a><span class="sep">/</span>
       <a href="project-detail.html?p=TM-4%20Bike%20Program">TM-4 Bike Program</a><span class="sep">/</span>
-      <span style="color:var(--ink);font-weight:500">Top tube assembly</span>
+      <span style="color:var(--ink);font-weight:500">Battery enclosure — lower</span>
       <span style="margin-left:auto;display:flex;gap:10px">
         <a class="btn btn--sm" href="revision-diff.html">Compare revisions</a>
-        <button class="btn btn--sm" onclick="openInvite()">Send to supplier</button>
+        <button class="btn btn--sm" onclick="openInvite()">Invite reviewer</button>
         <a class="btn btn--primary btn--sm" href="part-detail.html">Upload revision</a>
       </span>
     </div>
 
     <div class="detail-head">
       <div>
-        <h1>Top tube assembly <span class="badge badge--blue">In DFM review</span></h1>
-        <div class="sub">TM-4-1001 · Frame · 6061-T6 Aluminum · TM-4 Bike Program</div>
+        <h1>Battery enclosure — lower <span class="badge badge--blue">DFM Active</span></h1>
+        <div class="sub">TM-4-2001 · Injection Mold · PC-ABS · 50,000 / yr · TM-4 Bike Program</div>
       </div>
+    </div>
+
+    <!-- Part State -->
+    <div class="pstate">
+      <span class="ps done">Draft</span><span class="psar">→</span>
+      <span class="ps done">Under review</span><span class="psar">→</span>
+      <span class="ps now">DFM Active</span><span class="psar">→</span>
+      <span class="ps todo">Awaiting validation</span><span class="psar">→</span>
+      <span class="ps todo">DFM Complete</span>
     </div>
 
     <!-- Part metadata + DFM-complete logic -->
     <div class="pd-row">
       <div class="panel">
-        <div class="panel-head"><h3>Part details</h3><span class="muted fs-12">TM-4-1001 · Rev 3</span></div>
+        <div class="panel-head"><h3>Part details</h3><span class="muted fs-12">TM-4-2001 · Rev C</span></div>
         <div class="meta-grid">
-          <div class="mc"><div class="mk">Part number</div><div class="mv">TM-4-1001</div></div>
-          <div class="mc"><div class="mk">Material</div><div class="mv">6061-T6 Aluminum</div></div>
-          <div class="mc"><div class="mk">Finish</div><div class="mv">Bead blast · clear anodize</div></div>
-          <div class="mc"><div class="mk">Process</div><div class="mv">CNC + TIG weld</div></div>
-          <div class="mc"><div class="mk">Target volume</div><div class="mv">5,000 / yr</div></div>
-          <div class="mc"><div class="mk">Target cost</div><div class="mv">$4.20 / unit</div></div>
+          <div class="mc"><div class="mk">Part number</div><div class="mv">TM-4-2001</div></div>
+          <div class="mc"><div class="mk">Material</div><div class="mv">PC-ABS (Cycoloy)</div></div>
+          <div class="mc"><div class="mk">Process</div><div class="mv">Injection Mold</div></div>
+          <div class="mc"><div class="mk">Cosmetic grade</div><div class="mv">Class A · visible</div></div>
+          <div class="mc"><div class="mk">Volume forecast</div><div class="mv">50,000 / yr</div></div>
           <div class="mc"><div class="mk">Owner</div><div class="mv">Mathieu Kury · ALSO</div></div>
           <div class="mc"><div class="mk">Reviewer</div><div class="mv">Benjamin Chen · Hsinchu</div></div>
+          <div class="mc"><div class="mk">Status</div><div class="mv">DFM Active</div></div>
         </div>
         <div class="meta-foot">
-          <span class="mk">Description</span> Welded top-tube + head-tube subassembly for the TM-4 frameset — the main structural spine of the frame.
-          <div class="tagrow"><span class="ptag">Frame</span><span class="ptag">Structural</span><span class="ptag">Weldment</span></div>
+          <span class="mk">Description</span> Lower battery-enclosure housing for the TM-4 down-tube pack — Class A visible faces, snap-fits to the upper shell.
+          <div class="tagrow"><span class="ptag">Injection Mold</span><span class="ptag">Class A</span><span class="ptag">Enclosure</span></div>
         </div>
       </div>
 
@@ -204,40 +220,40 @@
           <div class="ckrow done"><span class="ci">✓</span>No critical issues open</div>
           <div class="ckrow done"><span class="ci">✓</span>No accepted issues awaiting implementation</div>
           <div class="ckrow"><span class="ci bad">1</span>1 issue awaiting validation (#12)</div>
-          <div class="ckrow done"><span class="ci">✓</span>Latest revision (Rev 3) reviewed</div>
-          <div class="ckrow todo"><span class="ci">○</span>Reviewer confirms manufacturable</div>
+          <div class="ckrow done"><span class="ci">✓</span>Latest revision (Rev C) reviewed</div>
+          <div class="ckrow todo"><span class="ci">○</span>Reviewer confirms moldable</div>
         </div>
         <div class="ck-foot">Clear the 3 remaining → <b>DFM Complete</b> · part ready for production</div>
       </div>
     </div>
 
     <div class="hero-grid">
-      <!-- Revisions: each revision owns its comments + quote -->
+      <!-- Revisions: each revision owns its DFM issues -->
       <div class="panel">
         <div class="panel-head"><h3>Revisions</h3><a href="revision-history.html" style="color:var(--green);font-weight:500;font-size:12px">History →</a></div>
         <div class="tree">
-          <div class="troot"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3 4 7.5v9L12 21l8-4.5v-9L12 3Z" stroke="#1c1c1c" stroke-width="1.5"/><path d="M4 7.5 12 12l8-4.5M12 12v9" stroke="#1c1c1c" stroke-width="1.5"/></svg> Top tube assembly</div>
+          <div class="troot"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3 4 7.5v9L12 21l8-4.5v-9L12 3Z" stroke="#1c1c1c" stroke-width="1.5"/><path d="M4 7.5 12 12l8-4.5M12 12v9" stroke="#1c1c1c" stroke-width="1.5"/></svg> Battery enclosure — lower</div>
           <a class="tnode sel" href="part-detail.html">
-            <div class="tn-head">Rev 3 <span class="badge badge--green" style="height:18px;font-size:11px">Current</span></div>
-            <div class="tn-sub">2 open issues · <b>Quote $3.95</b></div>
+            <div class="tn-head">Rev C <span class="badge badge--green" style="height:18px;font-size:11px">Current</span></div>
+            <div class="tn-sub">2 open · 1 awaiting validation</div>
           </a>
           <a class="tnode" href="part-detail.html">
-            <div class="tn-head">Rev 2</div>
-            <div class="tn-sub">issues resolved · <b>Quote $4.12</b></div>
+            <div class="tn-head">Rev B</div>
+            <div class="tn-sub">2 issues validated</div>
           </a>
           <a class="tnode" href="part-detail.html">
-            <div class="tn-head">Rev 1</div>
-            <div class="tn-sub">1 issue · <span class="nq">no quote</span></div>
+            <div class="tn-head">Rev A</div>
+            <div class="tn-sub"><span class="nq">introduced · first review</span></div>
           </a>
         </div>
-        <div class="tree-foot"><a href="part-detail.html">+ Upload Rev 4</a></div>
+        <div class="tree-foot"><a href="part-detail.html">+ Upload Rev D</a></div>
       </div>
 
       <!-- Files / CAD preview for the selected revision -->
       <div class="panel">
         <div class="panel-head">
-          <div style="display:flex;align-items:center;gap:10px"><h3>Files — Rev 3</h3><span class="rev-chip">Rev 3 <span class="cv"></span></span></div>
-          <span class="muted fs-12">drag to orbit · scroll to zoom</span>
+          <div style="display:flex;align-items:center;gap:10px"><h3>Package — Rev C</h3><span class="rev-chip">Rev C <span class="cv"></span></span></div>
+          <span class="muted fs-12">CAD · drawing · specs</span>
         </div>
         <div class="viewer">
           <div id="cadHost" class="cad-host"></div>
@@ -257,10 +273,11 @@
           </div>
         </div>
         <div class="files">
-          <span class="file-chip">📐 top-tube-assembly.step</span>
-          <span class="file-chip">🧊 top-tube-assembly.stl</span>
-          <span class="file-chip">📄 TM-4-1001_Rev3.pdf</span>
+          <span class="file-chip">📐 enclosure-lower.step</span>
+          <span class="file-chip">📄 TM-4-2001_Rev-C.pdf · 2D + GD&amp;T</span>
           <span class="file-chip">🖼 render.png</span>
+          <span class="file-chip">📃 material-spec_PC-ABS.pdf</span>
+          <span class="file-chip">📊 volume-forecast.pdf</span>
         </div>
       </div>
 
@@ -271,62 +288,32 @@
           <span class="ctx">2 open · 1 awaiting · 4 closed</span>
         </div>
         <a class="irow" href="issue-detail.html">
-          <div class="irow-t"><span class="ino">#14</span><span class="ititle">Surface-finish callout missing</span><span class="ist open">Open</span></div>
-          <div class="irow-s"><span class="isev med"><span class="d"></span>Medium</span><span class="cat">Process</span><span>Benjamin Chen · Rev 3</span></div>
+          <div class="irow-t"><span class="ino">#14</span><span class="ititle">Ejector pins mark Class A face</span><span class="ist open">Open</span></div>
+          <div class="irow-s"><span class="isev med"><span class="d"></span>Medium</span><span class="cat">Process</span><span>Benjamin Chen · Rev C</span></div>
         </a>
         <a class="irow" href="issue-detail.html">
-          <div class="irow-t"><span class="ino">#13</span><span class="ititle">Gusset fillet radius unspecified</span><span class="ist open">Open</span></div>
-          <div class="irow-s"><span class="isev low"><span class="d"></span>Low</span><span class="cat">Geometry</span><span>Benjamin Chen · Rev 3</span></div>
+          <div class="irow-t"><span class="ino">#13</span><span class="ititle">Rib-to-wall ratio causes sink</span><span class="ist open">Open</span></div>
+          <div class="irow-s"><span class="isev low"><span class="d"></span>Low</span><span class="cat">Geometry</span><span>Benjamin Chen · Rev C</span></div>
         </a>
         <a class="irow" href="issue-detail.html">
-          <div class="irow-t"><span class="ino">#12</span><span class="ititle">Wall thickness too thin</span><span class="ist await">Awaiting validation</span></div>
-          <div class="irow-s"><span class="isev med"><span class="d"></span>Medium</span><span class="cat">Geometry</span><span>accepted · fixed in Rev 3</span></div>
+          <div class="irow-t"><span class="ino">#12</span><span class="ititle">Insufficient draft for ejection</span><span class="ist await">Awaiting validation</span></div>
+          <div class="irow-s"><span class="isev high"><span class="d"></span>High</span><span class="cat">Tooling</span><span>accepted · fixed in Rev C</span></div>
         </a>
         <a class="irow closed" href="issue-detail.html">
-          <div class="irow-t"><span class="ino">#7</span><span class="ititle">Weld access at gusset</span><span class="ist closed">Closed</span></div>
-          <div class="irow-s"><span class="isev med"><span class="d"></span>Medium</span><span class="cat">Process</span><span>validated · Rev 2</span></div>
+          <div class="irow-t"><span class="ino">#7</span><span class="ititle">Gate witness on cosmetic face</span><span class="ist closed">Closed</span></div>
+          <div class="irow-s"><span class="isev med"><span class="d"></span>Medium</span><span class="cat">Tooling</span><span>validated · Rev B</span></div>
         </a>
         <div class="irow-foot"><a href="issues-list.html">View all 7 issues →</a><button class="btn btn--sm" onclick="openInvite()">+ New issue</button></div>
       </div>
     </div>
 
-    <!-- Quote: attached to the revision -->
-    <div class="cols-2" style="margin-bottom:16px">
-      <div class="panel">
-        <div class="panel-head"><h3>Quote · attached to Rev 3</h3><span class="badge badge--green qbadge">Quote #2</span></div>
-        <div class="qgrid">
-          <div class="qcell"><div class="k">Unit cost</div><div class="v accent">$3.95</div></div>
-          <div class="qcell"><div class="k">MOQ</div><div class="v">1,000</div></div>
-          <div class="qcell"><div class="k">Lead time</div><div class="v">8 weeks</div></div>
-          <div class="qcell"><div class="k">Submitted</div><div class="v" style="font-size:15px">May 16</div></div>
-        </div>
-        <div class="qnotes"><b style="color:var(--ink)">Notes ·</b> Re-quoted on Rev 3. Price down from Rev 2 — the 1.5 mm wall + gusset fillet simplified the weld. — Benjamin Chen, Hsinchu Precision</div>
-        <div class="qtie">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M9 12a4 4 0 0 1 4-4h3a4 4 0 0 1 0 8h-1M15 12a4 4 0 0 1-4 4H8a4 4 0 0 1 0-8h1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
-          This quote is locked to Revision 3 — not buried in an email thread.
-        </div>
-      </div>
-      <div class="panel">
-        <div class="panel-head"><h3>Quote history</h3><span class="muted fs-12">one quote per revision</span></div>
-        <table class="tbl">
-          <thead><tr><th>Revision</th><th>Unit cost</th><th>MOQ</th><th>Lead time</th><th style="text-align:right">Submitted</th></tr></thead>
-          <tbody>
-            <tr class="best"><td><b>Rev 3</b> <span class="badge badge--green" style="height:18px;font-size:11px">Current</span></td><td><b>$3.95</b></td><td>1,000</td><td>8 weeks</td><td style="text-align:right">May 16</td></tr>
-            <tr><td>Rev 2</td><td>$4.12</td><td>1,000</td><td>8 weeks</td><td style="text-align:right">May 13</td></tr>
-            <tr><td>Rev 1</td><td class="muted">—</td><td class="muted">—</td><td class="muted">—</td><td style="text-align:right" class="muted">no quote</td></tr>
-          </tbody>
-        </table>
-        <div class="qnotes">“What did this part cost at <b style="color:var(--ink)">Rev 2 ($4.12)</b>, and why did it change at <b style="color:var(--ink)">Rev 3 ($3.95)</b>?” — the answer lives here, tied to the design.</div>
-      </div>
-    </div>
-
-    <!-- Supplier access -->
+    <!-- Reviewer access -->
     <div class="panel" style="margin-bottom:16px">
-      <div class="panel-head"><h3>Supplier access</h3><span class="muted fs-12">magic link · no account needed</span></div>
+      <div class="panel-head"><h3>Reviewer access</h3><span class="muted fs-12">magic link · no account needed</span></div>
       <div style="display:flex;align-items:center;gap:14px;padding:14px 18px">
         <span class="cm-logo">HP</span>
-        <div style="flex:1"><div style="font-size:13.5px;font-weight:600">Hsinchu Precision</div><div style="font-size:12px;color:var(--muted)">benjamin.chen@hsinchu-precision.com · link active · expires May 30, 2025</div></div>
-        <a class="btn btn--sm" href="magic-link-view.html">Open supplier view</a>
+        <div style="flex:1"><div style="font-size:13.5px;font-weight:600">Hsinchu Precision <span class="badge badge--soft" style="height:18px;font-size:11px">CM</span></div><div style="font-size:12px;color:var(--muted)">benjamin.chen@hsinchu-precision.com · link active · scoped to this part · expires May 30, 2025</div></div>
+        <a class="btn btn--sm" href="magic-link-view.html">Open reviewer view</a>
         <button class="btn btn--sm" onclick="openInvite()">Resend link</button>
       </div>
     </div>
@@ -336,33 +323,33 @@
       <div class="panel-head"><h3>Activity log</h3><span class="muted fs-12">every action on this part</span></div>
       <div class="timeline">
         <div class="tl-item">
-          <span class="tl-ic green"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12l16-8-6 16-2-6z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg></span>
-          <div class="tl-body"><div class="tl-t"><b>Quote submitted</b> against Rev 3 — $3.95/unit · MOQ 1,000 · 8 weeks</div><div class="tl-m">Benjamin Chen · Hsinchu Precision</div></div>
+          <span class="tl-ic"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="12" r="2.8" stroke="currentColor" stroke-width="1.6"/></svg></span>
+          <div class="tl-body"><div class="tl-t"><b>Issue opened</b> — #14 Ejector pins mark Class A face</div><div class="tl-m">Benjamin Chen · Hsinchu Precision · on Rev C</div></div>
           <span class="tl-time">2h ago</span>
         </div>
         <div class="tl-item">
           <span class="tl-ic blue"><svg viewBox="0 0 24 24" fill="none"><path d="M12 16V4m0 0L7 9m5-5 5 5M5 20h14" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-          <div class="tl-body"><div class="tl-t"><b>Revision uploaded</b> — Rev 3 · gusset fillet + tolerance ±0.1</div><div class="tl-m">Mathieu Kury · ALSO · Rev 2 comments marked historical</div></div>
+          <div class="tl-body"><div class="tl-t"><b>Revision uploaded</b> — Rev C · draft to 1.5°, gate relocated off Class A</div><div class="tl-m">Mathieu Kury · ALSO · validation requested for #12</div></div>
           <span class="tl-time">May 16</span>
         </div>
         <div class="tl-item">
           <span class="tl-ic green"><svg viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-          <div class="tl-body"><div class="tl-t"><b>Issue resolved</b> — Wall thickness (1.0 mm → 1.5 mm)</div><div class="tl-m">Mathieu Kury · ALSO · fixed in Rev 2</div></div>
-          <span class="tl-time">May 13</span>
+          <div class="tl-body"><div class="tl-t"><b>Decision recorded</b> — accepted #12 Insufficient draft for ejection</div><div class="tl-m">Mathieu Kury · ALSO · will increase to 1.5° next revision</div></div>
+          <span class="tl-time">May 15</span>
         </div>
         <div class="tl-item">
-          <span class="tl-ic"><svg viewBox="0 0 24 24" fill="none"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4L3 21l1.1-3.1A8.4 8.4 0 1 1 21 11.5Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg></span>
-          <div class="tl-body"><div class="tl-t"><b>Comment added</b> — "Wall thickness too thin. Recommend 1.5 mm instead of 1.0 mm."</div><div class="tl-m">Benjamin Chen · Hsinchu Precision · on Rev 1</div></div>
+          <span class="tl-ic"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="12" r="2.8" stroke="currentColor" stroke-width="1.6"/></svg></span>
+          <div class="tl-body"><div class="tl-t"><b>Issue opened</b> — #12 — "0.5° draft won't release on textured PC-ABS; recommend ≥1.5°"</div><div class="tl-m">Benjamin Chen · Hsinchu Precision · on Rev A</div></div>
           <span class="tl-time">Apr 9</span>
         </div>
         <div class="tl-item">
           <span class="tl-ic amber"><svg viewBox="0 0 24 24" fill="none"><path d="M9 12a4 4 0 0 1 4-4h3a4 4 0 0 1 0 8h-1M15 12a4 4 0 0 1-4 4H8a4 4 0 0 1 0-8h1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>
-          <div class="tl-body"><div class="tl-t"><b>Magic link opened</b> — supplier reviewed Rev 1</div><div class="tl-m">Hsinchu Precision · no account</div></div>
+          <div class="tl-body"><div class="tl-t"><b>Reviewer invited</b> — Hsinchu Precision opened the package on Rev A</div><div class="tl-m">magic link · no account · scoped to this part</div></div>
           <span class="tl-time">Apr 8</span>
         </div>
         <div class="tl-item">
           <span class="tl-ic blue"><svg viewBox="0 0 24 24" fill="none"><path d="M12 16V4m0 0L7 9m5-5 5 5M5 20h14" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-          <div class="tl-body"><div class="tl-t"><b>Part created · Rev 1 uploaded</b> — top-tube-assembly.step</div><div class="tl-m">Mathieu Kury · ALSO</div></div>
+          <div class="tl-body"><div class="tl-t"><b>Part added · Rev A uploaded</b> — enclosure-lower.step + 2D drawing</div><div class="tl-m">Mathieu Kury · ALSO</div></div>
           <span class="tl-time">Apr 8</span>
         </div>
       </div>
@@ -370,17 +357,18 @@
   </div>
 </div>
 
-<!-- Send to supplier (magic link) -->
+<!-- Invite reviewer (magic link) -->
 <div class="modal-bg" id="inviteBg">
   <div class="modal">
-    <div class="modal-head"><h3>Send to supplier</h3><button class="x" onclick="closeInvite()">×</button></div>
+    <div class="modal-head"><h3>Invite reviewer</h3><button class="x" onclick="closeInvite()">×</button></div>
     <div class="modal-body">
-      <p>Share this part with the supplier through a time-bounded magic link — no account. They land on the part, leave DFM comments, and submit a quote against the current revision.</p>
-      <div class="field"><label>Magic link · expires in 14 days</label><div class="input-group"><span class="prefix" style="font-size:13px">🔗</span><input value="https://chorus-v0.app/p/tm4-1001/8fK2q9x7" readonly /><button class="btn btn--sm" style="margin-left:8px">Copy</button></div></div>
-      <div class="field"><label>Send to</label><input class="input" value="benjamin.chen@hsinchu-precision.com" /></div>
+      <p>Share this part with the manufacturing partner through a time-bounded magic link — no account. They review the package, raise DFM issues, and validate fixes. Files stay scoped to this part.</p>
+      <div class="field"><label>Magic link · expires in 14 days</label><div class="input-group"><span class="prefix" style="font-size:13px">🔗</span><input value="https://withchorus.ai/r/tm4-2001/8fK2q9x7" readonly /><button class="btn btn--sm" style="margin-left:8px">Copy</button></div></div>
+      <div class="field"><label>Reviewer email</label><input class="input" value="benjamin.chen@hsinchu-precision.com" /></div>
+      <div class="field"><label>Role</label><div class="select-wrap"><select class="select"><option>CM</option><option>Supplier</option><option>Fabricator</option><option>Tooling partner</option></select></div></div>
     </div>
     <div class="modal-foot">
-      <a class="btn btn--sm" href="magic-link-view.html">Preview supplier view</a>
+      <a class="btn btn--sm" href="magic-link-view.html">Preview reviewer view</a>
       <span class="grow"></span>
       <button class="btn" onclick="closeInvite()">Cancel</button>
       <button class="btn btn--primary" onclick="closeInvite()">Send link</button>
@@ -486,7 +474,7 @@
 
   function loadDefault() {
     new STLLoader().load('models/top-tube-assembly.stl',
-      geom => { showGeometry(geom); hint.textContent = 'top-tube-assembly.stl · Rev 3 · drag a CAD file to replace'; },
+      geom => { showGeometry(geom); hint.textContent = 'enclosure-lower.stl · Rev C · drag a CAD file to replace'; },
       undefined,
       () => { showModel(buildProcedural(), false); hint.textContent = 'Drag to orbit · scroll to zoom'; });
   }

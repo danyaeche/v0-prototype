@@ -114,12 +114,12 @@
       '<div class="fl-modal" style="width:min(480px,94%)">' +
         '<div class="fl-head"><h3>New part</h3><button class="fl-x" data-close>×</button></div>' +
         '<div class="fl-body">' +
-          '<p>A part lives inside an RFQ. Add its details and CAD — the upload becomes <b>Revision 1</b>.</p>' +
-          '<div class="fl-row2"><div class="field"><label>Part name</label><input class="input" id="flPName" placeholder="e.g. Down tube"></div><div class="field"><label>Part number</label><input class="input" id="flPNum" placeholder="e.g. TM-4-1007"></div></div>' +
-          '<div class="field"><label>RFQ</label><div class="select-wrap"><select class="select" id="flPRfq"><option>TM-4 Frameset (Assembly)</option><option>New single-part RFQ</option></select></div></div>' +
-          '<label class="fl-drop"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 16V4m0 0L7 9m5-5 5 5M5 20h14" stroke="#1c1c1c" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg> <span id="flPTxt">Upload CAD → Revision 1</span><input id="flPFile" type="file" accept=".step,.stp,.stl,.pdf,.glb,.gltf,.obj" hidden></label>' +
+          '<p>A part carries its own revisions and DFM issues. Add its details and upload the package — the first upload becomes <b>Rev A</b>.</p>' +
+          '<div class="fl-row2"><div class="field"><label>Part name</label><input class="input" id="flPName" placeholder="e.g. Charge-port cap"></div><div class="field"><label>Part number</label><input class="input" id="flPNum" placeholder="e.g. TM-4-2007"></div></div>' +
+          '<div class="field"><label>Process</label><div class="select-wrap"><select class="select" id="flPRfq"><option>Injection Mold</option><option>CNC</option><option>Sheet Metal</option><option>Die Cast</option></select></div></div>' +
+          '<label class="fl-drop"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 16V4m0 0L7 9m5-5 5 5M5 20h14" stroke="#1c1c1c" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg> <span id="flPTxt">Upload package → Rev A</span><input id="flPFile" type="file" accept=".step,.stp,.stl,.pdf,.glb,.gltf,.obj" hidden></label>' +
         '</div>' +
-        '<div class="fl-foot"><span class="muted fs-12">Creates the part on Revision 1</span><span class="fl-grow"></span><button class="btn" data-close>Cancel</button><button class="btn btn--primary" id="flPCreate">Create part</button></div>' +
+        '<div class="fl-foot"><span class="muted fs-12">Creates the part on Rev A</span><span class="fl-grow"></span><button class="btn" data-close>Cancel</button><button class="btn btn--primary" id="flPCreate">Create part</button></div>' +
       '</div>';
     document.body.appendChild(bg);
     function q(s) { return bg.querySelector(s); }
@@ -130,16 +130,16 @@
       S.addPart({ id: 'p' + Date.now(), name: name, number: num, rfq: q('#flPRfq').value, file: pFile ? pFile.name : '' });
       bg.classList.remove('open');
       appendPartRow(name, num);
-      toast(name + ' created on Revision 1');
+      toast(name + ' created on Rev A');
     });
-    bg._open = function () { pFile = null; q('#flPName').value = ''; q('#flPNum').value = ''; q('#flPTxt').textContent = 'Upload CAD → Revision 1'; bg.classList.add('open'); setTimeout(function () { q('#flPName').focus(); }, 30); };
+    bg._open = function () { pFile = null; q('#flPName').value = ''; q('#flPNum').value = ''; q('#flPTxt').textContent = 'Upload package → Rev A'; bg.classList.add('open'); setTimeout(function () { q('#flPName').focus(); }, 30); };
   }
   function appendPartRow(name, num) {
     var firstRow = document.querySelector('table.tbl tbody tr');
     if (!firstRow || !firstRow.querySelector('.part-cell')) return;
     var n = firstRow.children.length;
     var tr = document.createElement('tr'); tr.className = 'clickable'; tr.onclick = function () { location.href = 'part-detail.html'; };
-    var cells = '<td><div class="part-cell"><span class="thumb">' + CUBE + '</span><span><span class="pname">' + name + '</span><br><span class="pid">' + num + '</span></span></div></td><td>Rev 1</td><td><span class="badge badge--soft">New</span></td>';
+    var cells = '<td><div class="part-cell"><span class="thumb">' + CUBE + '</span><span><span class="pname">' + name + '</span><br><span class="pid">' + num + '</span></span></div></td><td>Rev A</td><td>Injection Mold</td><td><span class="badge badge--soft">New</span></td>';
     for (var i = 3; i < n; i++) cells += '<td class="muted">—</td>';
     tr.innerHTML = cells; firstRow.parentNode.insertBefore(tr, firstRow);
   }
